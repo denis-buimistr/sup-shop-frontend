@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+@theme {
+  /* Бирюзовый — основной акцент */
+  --color-brand-500: #7FC6D6;
+  --color-brand-600: #0B7A91;
+  --color-brand-700: #085F72;
+  --color-brand-light: #9FD9E6;
+
+  /* Тёмный фон: топбар, промо-блоки, футер */
+  --color-deep-900: #0B2F3A;
+  --color-deep-800: #123C49;
+  --color-deep-700: #174E5C;
+  --color-deep-line: #1C4551;
+  --color-deep-border: #2C5560;
+  --color-deep-input: #0A2730;
+  --color-deep-text: #CFE0E5;
+  --color-deep-muted: #9FB8BF;
+  --color-deep-accent: #5EC4CD;
+
+  /* Мягкий бирюзовый: чипы, выбранные опции, прогресс доставки */
+  --color-tint-100: #D9ECEA;
+  --color-tint-300: #9FCBD2;
+  --color-tint-900: #084A54;
+
+  /* Текст */
+  --color-ink-900: #0A2A3B;
+  --color-ink-600: #44585F;
+  --color-ink-400: #5A6F77;
+
+  /* Поверхности */
+  --color-surface: #FFFFFF;
+  --color-surface-50: #F4F7F8;
+  --color-surface-100: #EEF3F5;
+  --color-surface-200: #DCE8EC;
+
+  /* Границы */
+  --color-line: #E3EAED;
+  --color-line-strong: #CBDBE1;
+  --color-line-divider: #C3D2D7;
+  --color-line-input: #857C70;
+
+  /* Акценты */
+  --color-sun: #F2B544;
+  --color-star: #F0A020;
+  --color-alert: #C62B12;
+  --color-danger: #B0241B;
+  --color-warn: #8A5A00;
+  --color-success: #15794A;
+
+  /* Бейджи на карточках */
+  --color-badge-info-bg: #DCEFF4;
+  --color-badge-info-ink: #0A5F72;
+  --color-badge-warm-bg: #FBE6C4;
+  --color-badge-warm-ink: #7A4E00;
+
+  /* Контейнер из макета */
+  --spacing-container: 1320px;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  color: var(--color-ink-900);
+  background: var(--color-surface);
+  -webkit-font-smoothing: antialiased;
+}
