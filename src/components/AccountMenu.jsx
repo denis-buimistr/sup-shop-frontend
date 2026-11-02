@@ -10,7 +10,7 @@ const MENU_LINKS = [
 
 // Гость видит ссылку на вход; вошедший — своё имя и выпадающее меню из макета (Nav · Account menu)
 function AccountMenu() {
-    const { user, logout } = useAuth();
+    const { user, isAdmin, logout } = useAuth();
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const menuRef = useRef(null);
@@ -76,6 +76,16 @@ function AccountMenu() {
                         <span className="min-w-0 truncate text-[15px] font-bold text-ink-900">{user.username}</span>
                     </div>
 
+                    {isAdmin && (
+                        <Link
+                            to="/admin"
+                            role="menuitem"
+                            onClick={() => setOpen(false)}
+                            className="block rounded-[10px] px-3 py-2.5 text-[15px] font-semibold text-brand-600 hover:bg-surface-50"
+                        >
+                            Admin panel
+                        </Link>
+                    )}
                     {MENU_LINKS.map(link => (
                         <Link
                             key={link.to}

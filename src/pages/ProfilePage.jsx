@@ -11,6 +11,7 @@ import { useAuth } from '../context/auth';
 import { useCart } from '../context/cart';
 import { formatPrice, formatOrderNumber, formatDate } from '../utils/format';
 import { getErrorMessage } from '../utils/forms';
+import { getOrderStatus } from '../utils/orders';
 
 // Из макета оставили только то, что есть на бэкенде: заказы и профиль.
 // Избранное, адреса и сохранённые карты появятся вместе с эндпоинтами под них
@@ -19,14 +20,6 @@ const SECTIONS = [
     { id: 'settings', label: 'Settings' },
 ];
 
-// Статусы Order.Status на бэкенде → подпись и цвет плашки
-const STATUSES = {
-    NEW: { label: 'Processing', className: 'bg-badge-warm-bg text-badge-warm-ink' },
-    PAID: { label: 'Paid', className: 'bg-tint-100 text-tint-900' },
-    SHIPPED: { label: 'In delivery', className: 'bg-tint-100 text-tint-900' },
-    COMPLETED: { label: 'Delivered', className: 'bg-surface-100 text-ink-600' },
-    CANCELLED: { label: 'Cancelled', className: 'bg-surface-100 text-danger' },
-};
 
 const fieldClass =
     'h-12 w-full rounded-lg border border-line-input px-3.5 text-[15px] text-ink-900 outline-none focus:border-[1.5px] focus:border-brand-600';
@@ -47,7 +40,7 @@ function Kpi({ value, label }) {
 }
 
 function OrderCard({ order, onBuyAgain }) {
-    const status = STATUSES[order.status] ?? { label: order.status, className: 'bg-surface-100 text-ink-600' };
+    const status = getOrderStatus(order.status);
     const items = order.items ?? [];
     // productId есть, только если бэкенд отдаёт его в позиции заказа — без него повторить заказ нельзя
     const canBuyAgain = items.length > 0 && items.every(item => item.productId);
