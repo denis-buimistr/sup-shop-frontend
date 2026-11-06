@@ -57,7 +57,7 @@ function CartPage() {
                                 return (
                                     <div key={item.id} className="flex flex-wrap gap-5 border-b border-surface-100 p-[22px] last:border-b-0">
                                         <Link
-                                            to={`/products/${item.id}`}
+                                            to={`/products/${item.slug ?? item.id}`}
                                             className="flex h-[100px] w-[120px] flex-none items-center justify-center overflow-hidden rounded-[14px] bg-surface-100"
                                         >
                                             {item.image ? (
@@ -72,7 +72,7 @@ function CartPage() {
                                                 {item.brandName ?? '—'}
                                             </p>
                                             <h2 className="mb-2 text-[17px] font-bold leading-[1.35]">
-                                                <Link to={`/products/${item.id}`} className="text-ink-900 hover:text-brand-600">
+                                                <Link to={`/products/${item.slug ?? item.id}`} className="text-ink-900 hover:text-brand-600">
                                                     {item.name}
                                                 </Link>
                                             </h2>

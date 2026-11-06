@@ -40,6 +40,7 @@ export function CartProvider({ children }) {
                 ...current,
                 {
                     id: product.id,
+                    slug: product.slug,
                     name: product.name,
                     brandName: product.brandName,
                     price: product.price,

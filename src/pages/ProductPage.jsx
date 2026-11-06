@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Heart, CircleCheck, Truck, ShieldCheck, RotateCcw, Store, Minus, Plus } from 'lucide-react';
 import api from '../api/client';
 import Container from '../components/Container';
@@ -14,13 +14,14 @@ const ASSURANCES = [
     { icon: Store, title: 'Test before you buy', body: 'Come to the showroom and try the board' },
 ];
 
-// key={id} пересоздаёт страницу при переходе на другой товар — галерея, количество и вкладка сбрасываются сами
+// key={slug} пересоздаёт страницу при переходе на другой товар — галерея, количество и вкладка сбрасываются сами
 function ProductPage() {
-    const { id } = useParams();
-    return <ProductView key={id} id={id} />;
+    const { slug } = useParams();
+    return <ProductView key={slug} slug={slug} />;
 }
 
-function ProductView({ id }) {
+function ProductView({ slug }) {
+    const navigate = useNavigate();
     const addToCart = useAddToCart();
     const [product, setProduct] = useState(null);
     const [related, setRelated] = useState([]);
@@ -31,17 +32,24 @@ function ProductView({ id }) {
     const [added, setAdded] = useState(false);
 
     useEffect(() => {
-        api.get(`/products/${id}`)
-            .then(response => {
-                setProduct(response.data);
+        // старые ссылки вида /products/12 (закладки, товары в заказах профиля) переводим на адрес со slug
+        const isLegacyId = /^\d+$/.test(slug);
+
+        api.get(isLegacyId ? `/products/${slug}` : `/products/slug/${slug}`)
+            .then(({ data }) => {
+                if (isLegacyId) {
+                    navigate(`/products/${data.slug}`, { replace: true });
+                    return;
+                }
+                setProduct(data);
                 setLoading(false);
             })
             .catch(() => setLoading(false));
 
         api.get('/products', { params: { size: 20 } })
-            .then(response => setRelated(response.data.content.filter(p => String(p.id) !== id).slice(0, 4)))
+            .then(response => setRelated(response.data.content.filter(p => p.slug !== slug).slice(0, 4)))
             .catch(() => setRelated([]));
-    }, [id]);
+    }, [slug, navigate]);
 
     if (loading) return <Container className="py-10 text-ink-400">Загрузка...</Container>;
     if (!product) return <Container className="py-10">Товар не найден</Container>;
@@ -331,7 +339,7 @@ function RelatedCard({ product }) {
 
     return (
         <article className="flex flex-col overflow-hidden rounded-[22px] border border-line bg-white">
-            <Link to={`/products/${product.id}`} className="flex h-40 items-center justify-center bg-surface-100 p-5">
+            <Link to={`/products/${product.slug}`} className="flex h-40 items-center justify-center bg-surface-100 p-5">
                 {image ? (
                     <img src={image.imageUrl} alt={product.name} className="max-h-full max-w-full object-contain" />
                 ) : (
@@ -341,7 +349,7 @@ function RelatedCard({ product }) {
             <div className="flex flex-grow flex-col p-4">
                 <p className="mb-1.5 text-[11px] font-bold uppercase tracking-[0.08em] text-ink-400">{product.brandName ?? '—'}</p>
                 <h3 className="mb-2.5 text-[15px] font-bold leading-[1.35]">
-                    <Link to={`/products/${product.id}`} className="text-ink-900 hover:text-brand-600">{product.name}</Link>
+                    <Link to={`/products/${product.slug}`} className="text-ink-900 hover:text-brand-600">{product.name}</Link>
                 </h3>
                 <p className="mb-3 mt-auto text-[19px] font-extrabold tabular-nums">{formatPrice(product.price)}</p>
                 <button
