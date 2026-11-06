@@ -4,7 +4,7 @@ import { FormError } from '../../components/AuthShell';
 import { useToast } from '../../context/toast';
 import { formatPrice, formatOrderNumber, formatDate } from '../../utils/format';
 import { getErrorMessage } from '../../utils/forms';
-import { ORDER_STATUSES, getOrderStatus, getNextStatuses } from '../../utils/orders';
+import { ORDER_STATUSES, PAYMENT_LABELS, formatDelivery, getOrderStatus, getNextStatuses } from '../../utils/orders';
 
 const FILTERS = [{ id: 'ALL', label: 'All' }, ...Object.entries(ORDER_STATUSES).map(([id, s]) => ({ id, label: s.label }))];
 
@@ -80,8 +80,38 @@ function OrderRow({ order, onStatusChange }) {
                                 </>
                             )}
                         </dd>
+                        {order.firstName && (
+                            <>
+                                <dt className="font-semibold text-ink-900">Recipient</dt>
+                                <dd className="text-ink-600">
+                                    {order.firstName} {order.lastName}
+                                    {order.phone && (
+                                        <>
+                                            {' · '}
+                                            <a href={`tel:${order.phone}`} className="text-brand-600 hover:text-brand-700">{order.phone}</a>
+                                        </>
+                                    )}
+                                    {order.email && ` · ${order.email}`}
+                                </dd>
+                            </>
+                        )}
                         <dt className="font-semibold text-ink-900">Delivery</dt>
-                        <dd className="text-ink-600">{order.shippingAddress || '—'}</dd>
+                        <dd className="text-ink-600">
+                            {formatDelivery(order) || '—'}
+                            {order.deliveryPrice > 0 && ` · ${formatPrice(order.deliveryPrice)}`}
+                        </dd>
+                        {order.paymentMethod && (
+                            <>
+                                <dt className="font-semibold text-ink-900">Payment</dt>
+                                <dd className="text-ink-600">{PAYMENT_LABELS[order.paymentMethod] ?? order.paymentMethod}</dd>
+                            </>
+                        )}
+                        {order.comment && (
+                            <>
+                                <dt className="font-semibold text-ink-900">Comment</dt>
+                                <dd className="text-ink-600">{order.comment}</dd>
+                            </>
+                        )}
                     </dl>
                     <table className="w-full text-sm">
                         <thead>
