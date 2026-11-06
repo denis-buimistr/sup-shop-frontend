@@ -1,5 +1,5 @@
 import { Link, NavLink, Outlet } from 'react-router-dom';
-import { Package, ShoppingBag, Tag, Users } from 'lucide-react';
+import { FolderTree, Package, ShoppingBag, Tag, Users } from 'lucide-react';
 import Logo from './Logo';
 import Container from './Container';
 import { useAuth } from '../context/auth';
@@ -7,6 +7,7 @@ import { useAuth } from '../context/auth';
 const SECTIONS = [
     { to: 'orders', label: 'Orders', icon: ShoppingBag },
     { to: 'products', label: 'Products', icon: Package },
+    { to: 'categories', label: 'Categories', icon: FolderTree },
     { to: 'brands', label: 'Brands', icon: Tag },
     { to: 'users', label: 'Users', icon: Users },
 ];

@@ -37,7 +37,7 @@ function ProductCard({ product }) {
                     <Heart size={17} strokeWidth={1.8} />
                 </button>
 
-                <Link to={`/products/${product.id}`} className="flex h-full w-full items-center justify-center p-6">
+                <Link to={`/products/${product.slug}`} className="flex h-full w-full items-center justify-center p-6">
                     {image ? (
                         <img
                             src={image.imageUrl}
@@ -56,7 +56,7 @@ function ProductCard({ product }) {
                 </p>
 
                 <h3 className="mb-2.5 text-base font-bold leading-[1.35] text-ink-900">
-                    <Link to={`/products/${product.id}`} className="hover:text-brand-600">
+                    <Link to={`/products/${product.slug}`} className="hover:text-brand-600">
                         {product.name}
                     </Link>
                 </h3>
@@ -76,7 +76,7 @@ function ProductCard({ product }) {
 
                 {isSoldOut ? (
                     <Link
-                        to={`/products/${product.id}`}
+                        to={`/products/${product.slug}`}
                         className="flex items-center justify-center rounded-full border-[1.5px] border-ink-900 bg-white px-[18px] py-3 text-[15px] font-bold text-ink-900 hover:bg-surface-50"
                     >
                         Notify me

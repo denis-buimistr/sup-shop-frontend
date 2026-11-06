@@ -11,7 +11,7 @@ import { useAuth } from '../context/auth';
 import { useCart } from '../context/cart';
 import { formatPrice, formatOrderNumber, formatDate } from '../utils/format';
 import { getErrorMessage } from '../utils/forms';
-import { getOrderStatus } from '../utils/orders';
+import { formatDelivery, getOrderStatus } from '../utils/orders';
 
 // Из макета оставили только то, что есть на бэкенде: заказы и профиль.
 // Избранное, адреса и сохранённые карты появятся вместе с эндпоинтами под них
@@ -83,8 +83,8 @@ function OrderCard({ order, onBuyAgain }) {
                     </div>
                 ))}
 
-                {order.shippingAddress && (
-                    <p className="mt-2 text-[13px] leading-[1.6] text-ink-400">{order.shippingAddress}</p>
+                {formatDelivery(order) && (
+                    <p className="mt-2 text-[13px] leading-[1.6] text-ink-400">{formatDelivery(order)}</p>
                 )}
 
                 <div className="mt-4 flex flex-wrap gap-3">

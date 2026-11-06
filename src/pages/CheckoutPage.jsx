@@ -14,20 +14,22 @@ import { useToast } from '../context/toast';
 import { formatPrice, formatOrderNumber } from '../utils/format';
 import { SHOWROOM } from '../data/contacts';
 import { getErrorMessage } from '../utils/forms';
+import { DELIVERY_LABELS, PAYMENT_LABELS } from '../utils/orders';
 
 const CITIES = ['Chișinău', 'Bălți', 'Cahul', 'Orhei', 'Other locality'];
 
+
 const SHIPPING = [
-    { id: 'courier-chisinau', title: 'Courier in Chișinău', body: 'Next working day, 2-hour window', price: 0 },
-    { id: 'courier-md', title: 'Courier across Moldova', body: '1–3 working days, call before delivery', price: 0 },
-    { id: 'pickup', title: 'Pick up at the showroom', body: `${SHOWROOM} — ready in 2 hours`, price: 0 },
-    { id: 'locker', title: 'Parcel locker', body: 'Small items only, up to 10 kg', price: 45 },
+    { id: 'COURIER_CHISINAU', title: DELIVERY_LABELS.COURIER_CHISINAU, body: 'Next working day, 2-hour window', price: 0 },
+    { id: 'COURIER_MOLDOVA', title: DELIVERY_LABELS.COURIER_MOLDOVA, body: '1–3 working days, call before delivery', price: 0 },
+    { id: 'PICKUP', title: DELIVERY_LABELS.PICKUP, body: `${SHOWROOM} — ready in 2 hours`, price: 0 },
+    { id: 'PARCEL_LOCKER', title: DELIVERY_LABELS.PARCEL_LOCKER, body: 'Small items only, up to 10 kg', price: 45 },
 ];
 
 // Онлайн-оплаты на бэкенде пока нет, поэтому карта и рассрочка видны, но выбрать их нельзя
 const PAYMENTS = [
-    { id: 'cod', title: 'Cash or card on delivery', body: 'Pay the courier when the order arrives', marks: ['CASH'], cta: 'Place the order' },
-    { id: 'transfer', title: 'Bank transfer', body: 'For companies — invoice with VAT', marks: ['B2B'], cta: 'Get the invoice' },
+    { id: 'CASH_ON_DELIVERY', title: PAYMENT_LABELS.CASH_ON_DELIVERY, body: 'Pay the courier when the order arrives', marks: ['CASH'], cta: 'Place the order' },
+    { id: 'BANK_TRANSFER', title: PAYMENT_LABELS.BANK_TRANSFER, body: 'For companies — invoice with VAT', marks: ['B2B'], cta: 'Get the invoice' },
     { id: 'card', title: 'Card online', body: 'Visa, Mastercard, MIA — 3-D Secure', marks: ['VISA', 'MC'], soon: true },
     { id: 'instal', title: 'Instalments 0%', body: 'Through the partner bank, up to 12 months', marks: ['MAIB'], soon: true },
 ];
@@ -49,26 +51,25 @@ function validate(form) {
     if (!form.lastName.trim()) errors.lastName = 'Enter your last name';
     if (form.phone.replace(/\D/g, '').length < 8) errors.phone = 'Enter the phone as +373 69 000 000';
     if (!EMAIL_RE.test(form.email.trim())) errors.email = 'Enter the email as name@mail.com';
-    if (form.shipping !== 'pickup' && !form.street.trim()) errors.street = 'Enter the street and number';
+    if (form.shipping !== 'PICKUP' && !form.street.trim()) errors.street = 'Enter the street and number';
     return errors;
 }
 
-// У заказа на бэкенде одно текстовое поле shipping_address (до 500 символов), складываем в него всё, что нужно курьеру
-function buildShippingAddress(form) {
-    const shipping = SHIPPING.find(s => s.id === form.shipping);
-    const payment = PAYMENTS.find(p => p.id === form.payment);
-    const address = form.shipping === 'pickup'
-        ? SHOWROOM
-        : [form.city, form.street.trim(), form.flat.trim() && `flat ${form.flat.trim()}`].filter(Boolean).join(', ');
+function buildCheckoutRequest(form) {
+    const needsAddress = form.shipping !== 'PICKUP';
+    const flat = form.flat.trim();
 
-    return [
-        `${form.firstName.trim()} ${form.lastName.trim()}`,
-        form.phone.trim(),
-        form.email.trim(),
-        `${shipping.title}: ${address}`,
-        `Payment: ${payment.title}`,
-        form.note.trim() && `Note: ${form.note.trim()}`,
-    ].filter(Boolean).join(' | ').slice(0, 500);
+    return {
+        firstName: form.firstName.trim(),
+        lastName: form.lastName.trim(),
+        phone: form.phone.trim(),
+        email: form.email.trim(),
+        deliveryMethod: form.shipping,
+        city: needsAddress ? form.city : null,
+        shippingAddress: needsAddress ? [form.street.trim(), flat && `flat ${flat}`].filter(Boolean).join(', ') : null,
+        paymentMethod: form.payment,
+        comment: form.note.trim() || null,
+    };
 }
 
 function Field({ id, label, optional, hint, error, children }) {
@@ -132,12 +133,12 @@ function CheckoutPage() {
         lastName: '',
         phone: '',
         email: '',
-        shipping: 'courier-chisinau',
+        shipping: 'COURIER_CHISINAU',
         city: CITIES[0],
         street: '',
         flat: '',
         note: '',
-        payment: 'cod',
+        payment: 'CASH_ON_DELIVERY',
     });
     const [errors, setErrors] = useState({});
     const [submitError, setSubmitError] = useState(null);
@@ -197,7 +198,7 @@ function CheckoutPage() {
             await api.post('/cart/items', null, { params: { productId: item.id, quantity: item.qty } });
         }
 
-        const { data: order } = await api.post('/orders/checkout', { shippingAddress: buildShippingAddress(form) });
+        const { data: order } = await api.post('/orders/checkout', buildCheckoutRequest(form));
         return order;
     }
 
@@ -215,11 +216,13 @@ function CheckoutPage() {
         setLoading(true);
         placeOrder()
             .then(order => {
-                setPlaced({ id: order?.id, total, phone: form.phone.trim() });
+                // сумму берём из ответа сервера: это то, что он реально записал в заказ
+                const toPay = order?.totalPrice ?? total;
+                setPlaced({ id: order?.id, total: toPay, phone: form.phone.trim() });
                 clearCart();
                 showToast({
                     title: order?.id ? `Order ${formatOrderNumber(order.id)} placed` : 'Order placed',
-                    body: `To pay: ${formatPrice(total)}`,
+                    body: `To pay: ${formatPrice(toPay)}`,
                     link: { to: '/profile', label: 'View my orders' },
                 });
                 window.scrollTo(0, 0);
@@ -321,7 +324,7 @@ function CheckoutPage() {
                                         ))}
                                     </div>
 
-                                    {form.shipping === 'pickup' ? (
+                                    {form.shipping === 'PICKUP' ? (
                                         <p className="text-sm leading-[1.6] text-ink-600">
                                             We will call when the order is ready. Showroom: <span className="font-semibold text-ink-900">{SHOWROOM}</span>.
                                         </p>

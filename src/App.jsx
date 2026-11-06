@@ -14,6 +14,7 @@ import AdminProductsPage from './pages/admin/AdminProductsPage';
 import AdminProductFormPage from './pages/admin/AdminProductFormPage';
 import AdminUsersPage from './pages/admin/AdminUsersPage';
 import AdminBrandsPage from './pages/admin/AdminBrandsPage';
+import AdminCategoriesPage from './pages/admin/AdminCategoriesPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import HomePage from './pages/HomePage';
@@ -25,7 +26,7 @@ function App() {
                 <Route path="/" element={<Layout />}>
                     <Route index element={<HomePage />} />
                     <Route path="catalog" element={<CatalogPage />} />
-                    <Route path="products/:id" element={<ProductPage />} />
+                    <Route path="products/:slug" element={<ProductPage />} />
                     <Route path="contacts" element={<ContactsPage />} />
                 </Route>
 
@@ -44,6 +45,7 @@ function App() {
                         <Route path="products" element={<AdminProductsPage />} />
                         <Route path="products/new" element={<AdminProductFormPage />} />
                         <Route path="products/:id" element={<AdminProductFormPage />} />
+                        <Route path="categories" element={<AdminCategoriesPage />} />
                         <Route path="brands" element={<AdminBrandsPage />} />
                         <Route path="users" element={<AdminUsersPage />} />
                     </Route>
