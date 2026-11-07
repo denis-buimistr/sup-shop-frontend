@@ -3,8 +3,10 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Heart, CircleCheck, Truck, ShieldCheck, RotateCcw, Store, Minus, Plus } from 'lucide-react';
 import api from '../api/client';
 import Container from '../components/Container';
-import { BoardPlaceholder } from '../components/ProductCard';
+import ProductCard, { BoardPlaceholder } from '../components/ProductCard';
 import { useAddToCart, FREE_DELIVERY_FROM } from '../context/cart';
+import { useCategories } from '../hooks/useCatalogData';
+import { getPath } from '../utils/categories';
 import { formatPrice, formatBoardType, getStock } from '../utils/format';
 
 const ASSURANCES = [
@@ -23,6 +25,7 @@ function ProductPage() {
 function ProductView({ slug }) {
     const navigate = useNavigate();
     const addToCart = useAddToCart();
+    const categories = useCategories();
     const [product, setProduct] = useState(null);
     const [related, setRelated] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -45,14 +48,34 @@ function ProductView({ slug }) {
                 setLoading(false);
             })
             .catch(() => setLoading(false));
-
-        api.get('/products', { params: { size: 20 } })
-            .then(response => setRelated(response.data.content.filter(p => p.slug !== slug).slice(0, 4)))
-            .catch(() => setRelated([]));
     }, [slug, navigate]);
 
-    if (loading) return <Container className="py-10 text-ink-400">Загрузка...</Container>;
-    if (!product) return <Container className="py-10">Товар не найден</Container>;
+    // похожие беру из той же категории; если там пусто — просто другие товары
+    const categoryPath = categories && product?.categoryName
+        ? getPath(categories, categories.find(c => c.name === product.categoryName)?.slug)
+        : [];
+    const categorySlug = categoryPath[categoryPath.length - 1]?.slug;
+
+    useEffect(() => {
+        if (!product) return;
+        const params = { size: 5, ...(categorySlug ? { category: categorySlug } : {}) };
+        api.get('/products', { params })
+            .then(({ data }) => setRelated(data.content.filter(p => p.slug !== product.slug).slice(0, 4)))
+            .catch(() => setRelated([]));
+    }, [product, categorySlug]);
+
+    if (loading) return <Container className="py-16 text-ink-400">Loading the product…</Container>;
+    if (!product) {
+        return (
+            <Container className="py-20 text-center">
+                <h1 className="mb-3 text-[32px] font-extrabold tracking-[-0.02em] text-ink-900">Product not found</h1>
+                <p className="mb-6 text-base text-ink-600">It may have been sold out or the link is old.</p>
+                <Link to="/catalog" className="inline-flex rounded-full bg-brand-600 px-7 py-[15px] text-[15px] font-bold text-white hover:bg-brand-700">
+                    Back to the catalog
+                </Link>
+            </Container>
+        );
+    }
 
     const images = product.images ?? [];
     const image = images[imageIndex];
@@ -75,9 +98,17 @@ function ProductView({ slug }) {
         setImageIndex(current => (current + step + images.length) % images.length);
     }
 
+    const discount = product.compareAtPrice ? Math.round((1 - product.price / product.compareAtPrice) * 100) : null;
+
     function handleAdd() {
         addToCart({ ...product, image: images[0]?.imageUrl }, qty);
         setAdded(true);
+    }
+
+    // «купить сейчас» — кладу в корзину и сразу веду на оформление
+    function handleBuyNow() {
+        addToCart({ ...product, image: images[0]?.imageUrl }, qty);
+        navigate('/checkout');
     }
 
     return (
@@ -87,12 +118,12 @@ function ProductView({ slug }) {
                     <Link to="/" className="hover:text-ink-900">Home</Link>
                     <span className="mx-2">/</span>
                     <Link to="/catalog" className="hover:text-ink-900">Catalog</Link>
-                    {product.categoryName && (
-                        <>
+                    {categoryPath.map(category => (
+                        <span key={category.id}>
                             <span className="mx-2">/</span>
-                            <Link to="/catalog" className="hover:text-ink-900">{product.categoryName}</Link>
-                        </>
-                    )}
+                            <Link to={`/catalog/${category.slug}`} className="hover:text-ink-900">{category.name}</Link>
+                        </span>
+                    ))}
                     <span className="mx-2">/</span>
                     <span className="font-semibold text-ink-900">{product.name}</span>
                 </nav>
@@ -102,7 +133,7 @@ function ProductView({ slug }) {
                 <div className="flex flex-wrap items-start gap-12">
                     {/* галерея */}
                     <div className="min-w-0 flex-[999_1_460px]">
-                        <div className="relative flex h-[440px] items-center justify-center rounded-[22px] bg-surface-100">
+                        <div className="relative flex h-[280px] items-center sm:h-[440px] justify-center rounded-[22px] bg-surface-100">
                             {image ? (
                                 <img src={image.imageUrl} alt={product.name} className="max-h-full max-w-full object-contain p-10" />
                             ) : (
@@ -158,6 +189,9 @@ function ProductView({ slug }) {
                                     {product.brandName}
                                 </span>
                             )}
+                            {discount && (
+                                <span className="rounded-full bg-alert px-[11px] py-[5px] text-[11px] font-bold text-white">Sale</span>
+                            )}
                             {boardType && (
                                 <span className="rounded-full bg-badge-info-bg px-[11px] py-[5px] text-[11px] font-bold text-badge-info-ink">
                                     {boardType}
@@ -165,12 +199,20 @@ function ProductView({ slug }) {
                             )}
                         </div>
 
-                        <h1 className="mb-5 text-[38px] font-extrabold leading-[1.12] tracking-[-0.025em] text-ink-900">
+                        <h1 className="mb-5 text-[30px] font-extrabold sm:text-[38px] leading-[1.12] tracking-[-0.025em] text-ink-900">
                             {product.name}
                         </h1>
 
-                        <p className="mb-1.5 text-[38px] font-extrabold tracking-[-0.02em] tabular-nums text-ink-900">
-                            {formatPrice(product.price)}
+                        <p className="mb-1.5 flex flex-wrap items-baseline gap-x-3.5 gap-y-1">
+                            <span className={`text-[38px] font-extrabold tracking-[-0.02em] tabular-nums ${discount ? 'text-alert' : 'text-ink-900'}`}>
+                                {formatPrice(product.price)}
+                            </span>
+                            {discount && (
+                                <>
+                                    <s className="text-lg tabular-nums text-ink-400">{formatPrice(product.compareAtPrice)}</s>
+                                    <span className="rounded-full bg-badge-warm-bg px-[11px] py-[5px] text-[13px] font-bold text-badge-warm-ink">−{discount}%</span>
+                                </>
+                            )}
                         </p>
                         <p className="mb-[22px] text-[13px] text-ink-400">
                             VAT included · Free delivery for orders over {formatPrice(FREE_DELIVERY_FROM)}
@@ -219,13 +261,23 @@ function ProductView({ slug }) {
                             </button>
                         </div>
 
-                        {added && (
-                            <Link
-                                to="/cart"
-                                className="mb-5 flex items-center justify-center rounded-full border-[1.5px] border-ink-900 bg-white px-7 py-[15px] text-base font-bold text-ink-900 hover:bg-surface-50"
-                            >
-                                Added — go to cart
-                            </Link>
+                        {!isSoldOut && (
+                            added ? (
+                                <Link
+                                    to="/cart"
+                                    className="mb-5 flex items-center justify-center rounded-full border-[1.5px] border-ink-900 bg-white px-7 py-[15px] text-base font-bold text-ink-900 hover:bg-surface-50"
+                                >
+                                    Added — go to cart
+                                </Link>
+                            ) : (
+                                <button
+                                    type="button"
+                                    onClick={handleBuyNow}
+                                    className="mb-5 flex w-full items-center justify-center rounded-full border-[1.5px] border-ink-900 bg-white px-7 py-[15px] text-base font-bold text-ink-900 hover:bg-surface-50"
+                                >
+                                    Buy now
+                                </button>
+                            )
                         )}
 
                         <p className={`mb-6 flex items-center gap-2 text-[15px] font-semibold ${stock.className}`}>
@@ -321,47 +373,15 @@ function ProductView({ slug }) {
 
             {related.length > 0 && (
                 <Container as="section" className="pb-16 pt-14">
-                    <h2 className="mb-6 text-[30px] font-extrabold tracking-[-0.02em]">Often bought together</h2>
+                    <h2 className="mb-6 text-[30px] font-extrabold tracking-[-0.02em]">
+                        {categoryPath.length ? `More in ${categoryPath[categoryPath.length - 1].name}` : 'You may also like'}
+                    </h2>
                     <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                        {related.map(item => (
-                            <RelatedCard key={item.id} product={item} />
-                        ))}
+                        {related.map(item => <ProductCard key={item.id} product={item} />)}
                     </div>
                 </Container>
             )}
         </>
-    );
-}
-
-function RelatedCard({ product }) {
-    const addToCart = useAddToCart();
-    const image = product.images?.[0];
-
-    return (
-        <article className="flex flex-col overflow-hidden rounded-[22px] border border-line bg-white">
-            <Link to={`/products/${product.slug}`} className="flex h-40 items-center justify-center bg-surface-100 p-5">
-                {image ? (
-                    <img src={image.imageUrl} alt={product.name} className="max-h-full max-w-full object-contain" />
-                ) : (
-                    <BoardPlaceholder width={150} />
-                )}
-            </Link>
-            <div className="flex flex-grow flex-col p-4">
-                <p className="mb-1.5 text-[11px] font-bold uppercase tracking-[0.08em] text-ink-400">{product.brandName ?? '—'}</p>
-                <h3 className="mb-2.5 text-[15px] font-bold leading-[1.35]">
-                    <Link to={`/products/${product.slug}`} className="text-ink-900 hover:text-brand-600">{product.name}</Link>
-                </h3>
-                <p className="mb-3 mt-auto text-[19px] font-extrabold tabular-nums">{formatPrice(product.price)}</p>
-                <button
-                    type="button"
-                    disabled={product.quantity === 0}
-                    onClick={() => addToCart({ ...product, image: image?.imageUrl })}
-                    className="rounded-full bg-brand-600 p-3 text-sm font-bold text-white hover:bg-brand-700 disabled:bg-surface-100 disabled:text-ink-400"
-                >
-                    {product.quantity === 0 ? 'Sold out' : 'Add to cart'}
-                </button>
-            </div>
-        </article>
     );
 }
 

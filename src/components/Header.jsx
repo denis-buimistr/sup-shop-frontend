@@ -1,19 +1,34 @@
+import { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Heart, ShoppingCart } from 'lucide-react';
+import { Search, Heart, ShoppingCart, Menu } from 'lucide-react';
 import Logo from './Logo';
 import AccountMenu from './AccountMenu';
+import MobileMenu from './MobileMenu';
 import { useCart } from '../context/cart';
 
 function Header() {
     const { count } = useCart();
+    const [menuOpen, setMenuOpen] = useState(false);
+    // useCallback, чтобы эффект внутри меню не перезапускался на каждый рендер шапки
+    const closeMenu = useCallback(() => setMenuOpen(false), []);
 
     return (
         <header className="border-b border-line bg-white">
-            <div className="mx-auto flex max-w-[1320px] flex-wrap items-center gap-6 px-6 py-4">
+            <div className="mx-auto flex max-w-[1320px] flex-wrap items-center gap-x-4 gap-y-3 px-4 py-3 sm:px-6 lg:gap-6 lg:py-4">
+                <button
+                    type="button"
+                    onClick={() => setMenuOpen(true)}
+                    aria-label="Open menu"
+                    className="flex h-10 w-10 flex-none items-center justify-center rounded-full bg-surface-50 lg:hidden"
+                >
+                    <Menu size={20} strokeWidth={2} />
+                </button>
+
                 <Logo />
 
+                {/* на телефоне поиск уходит отдельной строкой под логотип */}
                 <form
-                    className="relative flex min-w-0 flex-[999_1_380px]"
+                    className="relative order-last flex w-full min-w-0 lg:order-none lg:w-auto lg:flex-[999_1_380px]"
                     onSubmit={e => e.preventDefault()}
                 >
                     <label htmlFor="site-search" className="sr-only">
@@ -31,10 +46,10 @@ function Header() {
                     />
                 </form>
 
-                <div className="flex items-center gap-[22px] text-sm font-semibold">
+                <div className="ml-auto flex items-center gap-[18px] text-sm font-semibold lg:ml-0 lg:gap-[22px]">
                     <AccountMenu />
 
-                    <Link to="/wishlist" className="flex items-center gap-2 hover:text-brand-600">
+                    <Link to="/wishlist" className="hidden items-center gap-2 hover:text-brand-600 sm:flex">
                         <Heart size={22} strokeWidth={1.8} />
                         <span className="hidden md:inline">Wishlist</span>
                         <span className="rounded-full bg-surface-100 px-[7px] py-0.5 text-[11px] font-bold">
@@ -51,6 +66,7 @@ function Header() {
                     </Link>
                 </div>
             </div>
+            {menuOpen && <MobileMenu onClose={closeMenu} />}
         </header>
     );
 }

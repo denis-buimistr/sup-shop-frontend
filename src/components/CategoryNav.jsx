@@ -42,7 +42,7 @@ function CategoryNav() {
     const close = () => setOpenId(null);
 
     return (
-        <nav ref={navRef} aria-label="Product categories" className="relative border-b border-line bg-white">
+        <nav ref={navRef} aria-label="Product categories" className="relative hidden border-b border-line bg-white lg:block">
             <div className="mx-auto flex max-w-[1320px] flex-wrap items-center gap-x-[26px] gap-y-1 px-6">
                 {roots.map(root => {
                     const isOpen = openId === root.id;

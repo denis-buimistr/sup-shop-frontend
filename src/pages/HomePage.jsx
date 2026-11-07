@@ -33,7 +33,7 @@ function HomePage() {
                             </span>
                             <span>
                                 <span className="block text-sm font-bold text-ink-900">{title}</span>
-                                <span className="mt-px block text-[13px] text-ink-400">{body}</span>
+                                <span className="mt-px hidden text-[13px] text-ink-400 sm:block">{body}</span>
                             </span>
                         </div>
                     ))}
