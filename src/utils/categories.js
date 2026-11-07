@@ -21,6 +21,25 @@ export function flattenTree(categories) {
     return result;
 }
 
+// Разделы верхнего уровня в порядке создания (SUP первым), а не по алфавиту
+export function getRoots(categories) {
+    return categories.filter(c => c.parentId == null).sort((a, b) => a.id - b.id);
+}
+
+export function getChildren(categories, parentId) {
+    return categories.filter(c => c.parentId === parentId).sort((a, b) => a.name.localeCompare(b.name));
+}
+
+// Цепочка от корня до категории — для хлебных крошек: SUP / Inflatable Boards
+export function getPath(categories, slug) {
+    const byId = new Map(categories.map(c => [c.id, c]));
+    const path = [];
+    for (let current = categories.find(c => c.slug === slug); current; current = byId.get(current.parentId)) {
+        path.unshift(current);
+    }
+    return path;
+}
+
 // id самой категории и всех её потомков — их нельзя выбрать родителем, получится цикл
 export function selfAndDescendantIds(categories, id) {
     const ids = new Set([id]);

@@ -4,6 +4,7 @@ import { FormError } from '../../components/AuthShell';
 import RowActions from '../../components/RowActions';
 import { useToast } from '../../context/toast';
 import { getErrorMessage } from '../../utils/forms';
+import { invalidateCatalogCache } from '../../hooks/useCatalogData';
 import { flattenTree, selfAndDescendantIds } from '../../utils/categories';
 
 const fieldClass =
@@ -68,6 +69,7 @@ function AdminCategoriesPage() {
         request
             .then(({ data }) => {
                 setCategories(current => [...current.filter(c => c.id !== data.id), data]);
+                invalidateCatalogCache();
                 showToast({ title: editingId ? 'Category updated' : 'Category added', body: data.name });
                 resetForm();
             })
@@ -83,6 +85,7 @@ function AdminCategoriesPage() {
             .then(() => {
                 setCategories(current => current.filter(c => c.id !== category.id));
                 if (editingId === category.id) resetForm();
+                invalidateCatalogCache();
                 showToast({ title: 'Category deleted', body: category.name });
             })
             .catch(err => setDeleteError(getErrorMessage(err, 'Could not delete the category.')));

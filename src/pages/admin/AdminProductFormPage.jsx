@@ -5,6 +5,7 @@ import api from '../../api/client';
 import { FormError } from '../../components/AuthShell';
 import { useToast } from '../../context/toast';
 import { getErrorMessage } from '../../utils/forms';
+import { flattenTree } from '../../utils/categories';
 
 // Значения enum Product.BoardType на бэкенде; пусто — не доска (весло, гидрокостюм, насос…)
 const BOARD_TYPES = [
@@ -13,7 +14,7 @@ const BOARD_TYPES = [
     { id: 'HARDBOARD', label: 'Hardboard' },
 ];
 
-const EMPTY = { name: '', description: '', price: '', quantity: '', brandId: '', categoryId: '', boardType: '' };
+const EMPTY = { name: '', description: '', price: '', compareAtPrice: '', quantity: '', brandId: '', categoryId: '', boardType: '' };
 
 const fieldClass =
     'w-full rounded-lg border border-line-input bg-white px-3.5 text-[15px] text-ink-900 outline-none focus:border-[1.5px] focus:border-brand-600 disabled:bg-surface-50 disabled:text-ink-400';
@@ -207,6 +208,7 @@ function AdminProductFormPage() {
                         name: product.name ?? '',
                         description: product.description ?? '',
                         price: product.price ?? '',
+                        compareAtPrice: product.compareAtPrice ?? '',
                         quantity: product.quantity ?? '',
                         brandId: brandList?.find(b => b.name === product.brandName)?.id ?? '',
                         categoryId: categoryList.find(c => c.name === product.categoryName)?.id ?? '',
@@ -233,6 +235,7 @@ function AdminProductFormPage() {
             name: form.name.trim(),
             description: form.description.trim() || null,
             price: Number(form.price),
+            compareAtPrice: form.compareAtPrice === '' ? null : Number(form.compareAtPrice),
             quantity: Number(form.quantity),
             brandId: form.brandId ? Number(form.brandId) : null,
             categoryId: form.categoryId ? Number(form.categoryId) : null,
@@ -290,13 +293,18 @@ function AdminProductFormPage() {
                             <Field id="p-price" label="Price, MDL">
                                 <input id="p-price" type="number" required min="0" step="0.01" inputMode="decimal" value={form.price} onChange={update('price')} className={`${fieldClass} h-12`} />
                             </Field>
+                            <Field id="p-compare" label="Old price, MDL" hint="Fill in only for a discount: the shop shows it crossed out.">
+                                <input id="p-compare" type="number" min="0" step="0.01" inputMode="decimal" value={form.compareAtPrice} onChange={update('compareAtPrice')} className={`${fieldClass} h-12`} />
+                            </Field>
                             <Field id="p-quantity" label="In stock, pcs">
                                 <input id="p-quantity" type="number" required min="0" step="1" inputMode="numeric" value={form.quantity} onChange={update('quantity')} className={`${fieldClass} h-12`} />
                             </Field>
                             <Field id="p-category" label="Category">
                                 <select id="p-category" value={form.categoryId} onChange={update('categoryId')} className={`${fieldClass} h-12 cursor-pointer px-3`}>
                                     <option value="">No category</option>
-                                    {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                                    {flattenTree(categories).map(c => (
+                                        <option key={c.id} value={c.id}>{'\u00A0\u00A0'.repeat(c.depth)}{c.name}</option>
+                                    ))}
                                 </select>
                             </Field>
                             <Field

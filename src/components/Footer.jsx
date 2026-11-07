@@ -21,12 +21,12 @@ const COLUMNS = [
     {
         title: 'SHOP',
         links: [
-            { label: 'SUP boards', to: '/catalog' },
-            { label: 'Paddles', to: '/catalog' },
-            { label: 'Wing foiling', to: '/catalog' },
-            { label: 'Wetsuits', to: '/catalog' },
-            { label: 'Accessories', to: '/catalog' },
-            { label: 'Sale', to: '/catalog' },
+            { label: 'SUP boards', to: '/catalog/sup' },
+            { label: 'Paddles', to: '/catalog/paddles' },
+            { label: 'Wing foiling', to: '/catalog/foil-wing' },
+            { label: 'Wetsuits', to: '/catalog/wetsuits' },
+            { label: 'Accessories', to: '/catalog/accessories' },
+            { label: 'Sale', to: '/catalog?onSale=true' },
         ],
     },
     {
@@ -35,7 +35,7 @@ const COLUMNS = [
             { label: 'Delivery & payment', to: '/contacts' },
             { label: 'Returns in 14 days', to: '/contacts' },
             { label: 'Warranty & service', to: '/contacts' },
-            { label: 'How to choose a SUP', to: '/catalog' },
+            { label: 'How to choose a SUP', to: '/catalog/sup' },
             { label: 'FAQ', to: '/contacts' },
         ],
     },

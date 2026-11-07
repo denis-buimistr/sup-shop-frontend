@@ -3,9 +3,13 @@ import { Heart } from 'lucide-react';
 import { formatPrice, getPrimaryImage, getStock, formatBoardType } from '../utils/format';
 import { useAddToCart } from '../context/cart';
 
-// Бейдж в углу фото: распродано, мало осталось или тип доски
+// Бейдж в углу фото: распродано, скидка, мало осталось или тип доски
 function getBadge(product) {
     if (product.quantity === 0) return { label: 'Sold out', className: 'bg-surface-100 text-ink-600' };
+    if (product.compareAtPrice) {
+        const percent = Math.round((1 - product.price / product.compareAtPrice) * 100);
+        return { label: `−${percent}%`, className: 'bg-alert text-white' };
+    }
     if (product.quantity <= 2) return { label: 'Limited stock', className: 'bg-badge-warm-bg text-badge-warm-ink' };
     const type = formatBoardType(product.boardType);
     if (type) return { label: type, className: 'bg-badge-info-bg text-badge-info-ink' };
@@ -69,8 +73,13 @@ function ProductCard({ product }) {
                     </ul>
                 )}
 
-                <p className="mb-1.5 mt-auto text-[21px] font-extrabold tabular-nums text-ink-900">
-                    {formatPrice(product.price)}
+                <p className="mb-1.5 mt-auto flex flex-wrap items-baseline gap-x-2.5">
+                    <span className={`text-[21px] font-extrabold tabular-nums ${product.compareAtPrice ? 'text-alert' : 'text-ink-900'}`}>
+                        {formatPrice(product.price)}
+                    </span>
+                    {product.compareAtPrice && (
+                        <s className="text-sm tabular-nums text-ink-400">{formatPrice(product.compareAtPrice)}</s>
+                    )}
                 </p>
                 <p className={`mb-3.5 text-[13px] font-semibold ${stock.className}`}>{stock.label}</p>
 

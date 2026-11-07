@@ -4,6 +4,7 @@ import { FormError } from '../../components/AuthShell';
 import RowActions from '../../components/RowActions';
 import { useToast } from '../../context/toast';
 import { getErrorMessage } from '../../utils/forms';
+import { invalidateCatalogCache } from '../../hooks/useCatalogData';
 
 const fieldClass =
     'w-full rounded-lg border border-line-input bg-white px-3.5 text-[15px] text-ink-900 outline-none focus:border-[1.5px] focus:border-brand-600';
@@ -54,6 +55,7 @@ function AdminBrandsPage() {
             .then(({ data }) => {
                 // держим тот же порядок, что отдаёт бэкенд: по алфавиту
                 setBrands(current => [...current.filter(b => b.id !== data.id), data].sort(byName));
+                invalidateCatalogCache();
                 showToast({ title: editingId ? 'Brand updated' : 'Brand added', body: data.name });
                 resetForm();
             })
@@ -69,6 +71,7 @@ function AdminBrandsPage() {
             .then(() => {
                 setBrands(current => current.filter(b => b.id !== brand.id));
                 if (editingId === brand.id) resetForm();
+                invalidateCatalogCache();
                 showToast({ title: 'Brand deleted', body: brand.name });
             })
             .catch(err => setDeleteError(getErrorMessage(err, 'Could not delete the brand.')));
