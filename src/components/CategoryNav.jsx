@@ -7,7 +7,8 @@ import { getChildren, getRoots } from '../utils/categories';
 import { findCategoryPhoto } from '../data/categoryPhotos';
 import { useTranslation } from 'react-i18next';
 
-const topClass = 'flex items-center gap-1.5 py-4 text-[13px] font-bold uppercase tracking-[0.05em] transition-colors';
+// на 1024–1279 сжимаю шрифт и промежутки, иначе длинные русские и румынские названия не влезают в одну строку
+const topClass = 'flex items-center gap-1 py-4 text-[12px] font-bold uppercase tracking-[0.02em] transition-colors xl:gap-1.5 xl:text-[13px] xl:tracking-[0.05em]';
 const linkClass = 'flex items-baseline justify-between gap-2.5 py-2 text-[15px] font-medium text-ink-900 hover:text-brand-600';
 
 // Меню строится из категорий в БД: верхний уровень — разделы, в выпадающем блоке — подкатегории и бренды
@@ -69,7 +70,7 @@ function CategoryNav() {
             onPointerEnter={() => clearTimeout(hoverTimer.current)}
             className="relative hidden border-b border-line bg-white lg:block"
         >
-            <div className="mx-auto flex max-w-[1320px] flex-wrap items-center gap-x-[26px] gap-y-1 px-6">
+            <div className="mx-auto flex max-w-[1320px] flex-wrap items-center gap-x-3.5 gap-y-1 px-6 xl:gap-x-[26px]">
                 {roots.map(root => {
                     const isOpen = openId === root.id;
                     return (

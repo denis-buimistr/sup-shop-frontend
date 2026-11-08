@@ -28,5 +28,6 @@ export function LanguageRoute() {
 
     // /xyz — это не язык и не страница, отправляю на главную
     if (!valid) return <RouterNavigate to="/" replace />;
-    return <Outlet />;
+    // key по языку: при переключении страница монтируется заново и заново грузит товары уже на новом языке
+    return <Outlet key={current} />;
 }
