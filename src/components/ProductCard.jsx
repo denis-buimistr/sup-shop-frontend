@@ -1,18 +1,19 @@
 import { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../i18n/routing';
 import { ChevronLeft, ChevronRight, Heart } from 'lucide-react';
 import { formatPrice, getStock, formatBoardType, sortImages } from '../utils/format';
 import { useAddToCart } from '../context/cart';
 import { useWishlist } from '../context/wishlist';
+import { useTranslation } from 'react-i18next';
 
 // Бейдж в углу фото: распродано, скидка, мало осталось или тип доски
-function getBadge(product) {
-    if (product.quantity === 0) return { label: 'Sold out', className: 'bg-surface-100 text-ink-600' };
+function getBadge(product, t) {
+    if (product.quantity === 0) return { label: t('card.soldOut'), className: 'bg-surface-100 text-ink-600' };
     if (product.compareAtPrice) {
         const percent = Math.round((1 - product.price / product.compareAtPrice) * 100);
         return { label: `−${percent}%`, className: 'bg-alert text-white' };
     }
-    if (product.quantity <= 2) return { label: 'Limited stock', className: 'bg-badge-warm-bg text-badge-warm-ink' };
+    if (product.quantity <= 2) return { label: t('card.limited'), className: 'bg-badge-warm-bg text-badge-warm-ink' };
     const type = formatBoardType(product.boardType);
     if (type) return { label: type, className: 'bg-badge-info-bg text-badge-info-ink' };
     return null;
@@ -22,6 +23,7 @@ function getBadge(product) {
 const SWIPE_PX = 40;
 
 function ProductCard({ product }) {
+    const { t } = useTranslation();
     const addToCart = useAddToCart();
     const wishlist = useWishlist();
     const saved = wishlist.has(product.id);
@@ -32,7 +34,7 @@ function ProductCard({ product }) {
     const isSoldOut = product.quantity === 0;
     const specs = product.attributes?.slice(0, 3) ?? [];
     const stock = getStock(product.quantity);
-    const badge = getBadge(product);
+    const badge = getBadge(product, t);
 
     function showImage(step) {
         setIndex(current => (current + step + images.length) % images.length);
@@ -60,7 +62,7 @@ function ProductCard({ product }) {
 
                 <button
                     type="button"
-                    aria-label={saved ? 'Remove from wishlist' : 'Add to wishlist'}
+                    aria-label={saved ? t('card.removeFromWishlist') : t('card.addToWishlist')}
                     aria-pressed={saved}
                     onClick={() => wishlist.toggle(product)}
                     className={`absolute right-2.5 top-2.5 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-line bg-white transition-colors hover:text-alert ${saved ? 'text-alert' : 'text-ink-600'}`}
@@ -84,8 +86,8 @@ function ProductCard({ product }) {
                     <>
                         {/* на десктопе стрелки появляются при наведении, на телефоне без мышки видны всегда */}
                         {[
-                            { step: -1, label: 'Previous photo', Icon: ChevronLeft, side: 'left-2' },
-                            { step: 1, label: 'Next photo', Icon: ChevronRight, side: 'right-2' },
+                            { step: -1, label: t('card.prevPhoto'), Icon: ChevronLeft, side: 'left-2' },
+                            { step: 1, label: t('card.nextPhoto'), Icon: ChevronRight, side: 'right-2' },
                         ].map(({ step, label, Icon, side }) => (
                             <button
                                 key={step}
@@ -141,7 +143,7 @@ function ProductCard({ product }) {
                         to={`/products/${product.slug}`}
                         className="flex items-center justify-center rounded-full border-[1.5px] border-ink-900 bg-white px-[18px] py-3 text-[15px] font-bold text-ink-900 hover:bg-surface-50"
                     >
-                        Notify me
+                        {t('card.notifyMe')}
                     </Link>
                 ) : (
                     <button
@@ -149,7 +151,7 @@ function ProductCard({ product }) {
                         onClick={() => addToCart({ ...product, image: images[0]?.imageUrl })}
                         className="flex items-center justify-center gap-2 rounded-full bg-brand-600 px-[18px] py-[13px] text-[15px] font-bold text-white transition-colors hover:bg-brand-700"
                     >
-                        Add to cart →
+                        {t('card.addToCart')}
                     </button>
                 )}
             </div>

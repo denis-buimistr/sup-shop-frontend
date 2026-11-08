@@ -1,0 +1,726 @@
+{
+  "topbar": {
+    "freeDelivery": "Free delivery in Moldova for orders over 2,000 MDL",
+    "expert": "Expert advice from real paddlers",
+    "showroom": "Visit our showroom in Chișinău",
+    "contact": "Contact us",
+    "language": "Language"
+  },
+  "header": {
+    "home": "SUP Shop Moldova — home",
+    "openMenu": "Open menu",
+    "wishlist": "Wishlist",
+    "cart": "Cart",
+    "signIn": "Sign in"
+  },
+  "account": {
+    "myOrders": "My orders",
+    "settings": "Settings",
+    "adminPanel": "Admin panel",
+    "signOut": "Sign out",
+    "ordersAndSettings": "Orders and settings",
+    "orCreate": "Or create an account"
+  },
+  "menu": {
+    "title": "Menu",
+    "close": "Close menu",
+    "call": "Call",
+    "categories": "Categories",
+    "seeAllIn": "See everything in {{name}} →",
+    "sale": "Sale",
+    "contacts": "Contacts"
+  },
+  "footer": {
+    "usp": {
+      "delivery": {
+        "title": "Free delivery",
+        "body": "On orders over 2,000 MDL"
+      },
+      "warranty": {
+        "title": "2-year warranty",
+        "body": "Official dealer, local service"
+      },
+      "returns": {
+        "title": "14-day returns",
+        "body": "Unused gear, no questions"
+      },
+      "showroom": {
+        "title": "Showroom",
+        "body": "Test before you buy, Chișinău"
+      }
+    },
+    "columns": {
+      "shop": "SHOP",
+      "help": "HELP",
+      "account": "ACCOUNT",
+      "company": "COMPANY"
+    },
+    "links": {
+      "supBoards": "SUP boards",
+      "paddles": "Paddles",
+      "wingFoiling": "Wing foiling",
+      "wetsuits": "Wetsuits",
+      "accessories": "Accessories",
+      "sale": "Sale",
+      "delivery": "Delivery & payment",
+      "returns": "Returns in 14 days",
+      "warranty": "Warranty & service",
+      "howToChoose": "How to choose a SUP",
+      "faq": "FAQ",
+      "signIn": "Sign in",
+      "createAccount": "Create account",
+      "wishlist": "Wishlist",
+      "cart": "Cart",
+      "about": "About us",
+      "showroom": "Showroom",
+      "contacts": "Contacts",
+      "terms": "Terms of sale",
+      "privacy": "Privacy policy"
+    },
+    "about": "Paddleboards, paddles and watersports gear for Moldova. Showroom and test centre in Chișinău.",
+    "city": "Chișinău, Moldova",
+    "newsletter": "NEWSLETTER",
+    "newsletterText": "New arrivals and race dates, once a month.",
+    "email": "Email address",
+    "subscribe": "Subscribe",
+    "copyright": "© {{year}} SUP Shop Moldova · Chișinău",
+    "weAccept": "We accept"
+  },
+  "auth": {
+    "show": "Show",
+    "hide": "Hide"
+  },
+  "toast": {
+    "close": "Close notification",
+    "addedToCart": "Added to cart",
+    "goToCart": "Go to cart",
+    "addedToWishlist": "Added to wishlist",
+    "openWishlist": "Open wishlist",
+    "wishlistFailed": "Could not update the wishlist",
+    "tryAgain": "Please try again."
+  },
+  "steps": {
+    "cart": "Cart",
+    "delivery": "Delivery",
+    "payment": "Payment",
+    "done": "Done"
+  },
+  "nav": {
+    "label": "Product categories",
+    "brands": "Brands",
+    "shopAll": "Shop all {{name}} ({{count}}) →",
+    "seeDeals": "See the deals"
+  },
+  "search": {
+    "label": "Search the shop",
+    "placeholder": "Search for paddleboards, paddles, accessories…",
+    "clear": "Clear search",
+    "searching": "Searching…",
+    "nothingFound": "Nothing found for <b>“{{term}}”</b>. Try a brand or a board type.",
+    "seeAll_one": "See {{count}} result for “{{term}}” →",
+    "seeAll_few": "See all {{count}} results for “{{term}}” →",
+    "seeAll_many": "See all {{count}} results for “{{term}}” →",
+    "seeAll_other": "See all {{count}} results for “{{term}}” →"
+  },
+  "card": {
+    "soldOut": "Sold out",
+    "limited": "Limited stock",
+    "addToWishlist": "Add to wishlist",
+    "removeFromWishlist": "Remove from wishlist",
+    "prevPhoto": "Previous photo",
+    "nextPhoto": "Next photo",
+    "notifyMe": "Notify me",
+    "addToCart": "Add to cart →"
+  },
+  "stock": {
+    "in": "In stock",
+    "out": "Out of stock",
+    "few_one": "Only {{count}} left",
+    "few_few": "Only {{count}} left",
+    "few_many": "Only {{count}} left",
+    "few_other": "Only {{count}} left"
+  },
+  "boardType": {
+    "INFLATABLE": "Inflatable",
+    "HARD": "Composite / hard",
+    "COMPOSITE": "Composite / hard",
+    "HARDBOARD": "Hardboard"
+  },
+  "hero": {
+    "label": "Featured collections",
+    "prev": "Previous slide",
+    "next": "Next slide",
+    "show": "Show slide {{n}}: {{name}}",
+    "race": {
+      "eyebrow": "RACE & TOURING",
+      "title": "Built for distance, tuned for speed",
+      "body": "Race and touring boards from Starboard, Red Paddle Co and Fanatic — in stock in Chișinău.",
+      "cta": "Shop race boards",
+      "cta2": "How to choose",
+      "alt": "Two paddlers turning Starboard race boards on open water"
+    },
+    "inflatable": {
+      "eyebrow": "INFLATABLE BOARDS",
+      "title": "Packs into a bag, rides like a board",
+      "body": "Inflatables from Red Paddle Co, Fanatic and Starboard — stiff decks, light weight, easy to carry.",
+      "cta": "Shop inflatables",
+      "cta2": "Compare by price",
+      "alt": "Three paddlers on Starboard inflatable boards on a turquoise lake"
+    },
+    "foil": {
+      "eyebrow": "FOIL & WING",
+      "title": "Lift off the water this season",
+      "body": "Wings, foils and foil boards from Starboard and SIC Maui. We help you pick sizes before you buy.",
+      "cta": "Shop foil & wing",
+      "cta2": "Ask an expert",
+      "alt": "A rider flying a wing foil above the water"
+    },
+    "robes": {
+      "eyebrow": "CHANGING ROBES & LAYERS",
+      "title": "The season lasts as long as you stay warm",
+      "body": "Waterproof changing robes, ponchos and quick dry tops for cold mornings on the water.",
+      "cta": "Shop changing robes",
+      "cta2": "All clothing",
+      "alt": "Two friends in changing robes sharing a snack next to a kayak by a lake"
+    }
+  },
+  "common": {
+    "viewAll": "View all {{count}} →",
+    "vatIncluded": "VAT included",
+    "addToCart": "Add to cart",
+    "home": "Home",
+    "catalog": "Catalog",
+    "breadcrumb": "Breadcrumb",
+    "loading": "Loading…"
+  },
+  "featured": {
+    "badge": "Board of the month",
+    "illustration": "Illustration of {{name}}",
+    "fullDetails": "Full details"
+  },
+  "tiles": {
+    "paddles": "Paddles",
+    "sup": "Paddleboards",
+    "foil-wing": "Foil & Wing",
+    "surf": "Surf",
+    "clothing": "Clothing",
+    "accessories": "Accessories",
+    "shopNow": "Shop now"
+  },
+  "home": {
+    "services": {
+      "cod": {
+        "title": "Pay on delivery",
+        "body": "Cash or card to the courier"
+      },
+      "delivery": {
+        "title": "Free delivery",
+        "body": "Orders over 2,000 MDL"
+      },
+      "advice": {
+        "title": "Advice that helps",
+        "body": "Mon–Sat, we answer in an hour"
+      },
+      "showroom": {
+        "title": "Showroom",
+        "body": "Try the board in Chișinău"
+      }
+    },
+    "dealer": "OFFICIAL DEALER",
+    "allProducts": "All products →",
+    "categories": {
+      "eyebrow": "EVERYTHING FOR THE WATER",
+      "title": "Shop by category",
+      "link": "View the full catalog →"
+    },
+    "race": {
+      "eyebrow": "FOR DISTANCE AND SPEED",
+      "title": "Race & touring boards"
+    },
+    "inflatable": {
+      "eyebrow": "PACK IT, PUMP IT, PADDLE IT",
+      "title": "Inflatable & allround"
+    },
+    "showroom": {
+      "eyebrow": "TRY BEFORE YOU BUY",
+      "title": "Paddle a few boards before you pick one",
+      "body": "Come to the showroom in Chișinău, tell us where you paddle, and we'll show you the shapes that make sense for you.",
+      "visit": "Visit the showroom",
+      "browse": "Browse SUP boards",
+      "alt": "A paddler with an inflatable board, pump and backpack on the beach"
+    },
+    "finder": {
+      "eyebrow": "BOARD FINDER",
+      "title": "Three questions, three boards that fit",
+      "link": "Ask for a shortlist →",
+      "goal": {
+        "title": "Your goal",
+        "body": "Cruise, explore, or race"
+      },
+      "water": {
+        "title": "Your water",
+        "body": "Lake, river, or ocean"
+      },
+      "fit": {
+        "title": "Your fit",
+        "body": "Stability, speed, or balance"
+      },
+      "cta": "Find your board"
+    },
+    "newsletter": {
+      "title": "New arrivals, race dates, honest advice",
+      "body": "One email a month. No spam, unsubscribe in a click."
+    }
+  },
+  "catalog": {
+    "sort": {
+      "featured": "Featured",
+      "priceAsc": "Price: low to high",
+      "priceDesc": "Price: high to low",
+      "newest": "Newest first"
+    },
+    "sortBy": "Sort by",
+    "errors": {
+      "notFound": "This category does not exist.",
+      "loadFailed": "Could not load products."
+    },
+    "categoryNotFound": "Category not found",
+    "resultsFor": "Results for “{{term}}”",
+    "sale": "Sale",
+    "all": "All products",
+    "description": "SUP boards, paddles and water sports gear — stocked in Chișinău, delivered across Moldova.",
+    "brandFallback": "Brand {{id}}",
+    "chips": {
+      "from": "From {{price}}",
+      "to": "To {{price}}",
+      "search": "Search: {{term}}"
+    },
+    "filters": "Filters",
+    "clearAll": "Clear all",
+    "closeFilters": "Close filters",
+    "brand": "Brand",
+    "inStockOnly": "In stock only",
+    "onSale": "On sale",
+    "help": {
+      "title": "Need help choosing?",
+      "body": "Tell us your weight and where you paddle — we'll shortlist three options.",
+      "cta": "Ask an expert"
+    },
+    "show_one": "Show {{count}} product",
+    "show_few": "Show {{count}} products",
+    "show_many": "Show {{count}} products",
+    "show_other": "Show {{count}} products",
+    "showProducts": "Show products",
+    "count_one": "<b>{{count}}</b> product",
+    "count_few": "<b>{{count}}</b> products",
+    "count_many": "<b>{{count}}</b> products",
+    "count_other": "<b>{{count}}</b> products",
+    "loading": "Loading products…",
+    "empty": "Nothing matches these filters",
+    "clearFilters": "Clear all filters",
+    "price": {
+      "title": "Price, MDL",
+      "min": "Minimum price",
+      "max": "Maximum price",
+      "from": "From",
+      "to": "To",
+      "apply": "Apply price"
+    },
+    "pagination": {
+      "prev": "Previous",
+      "next": "Next"
+    }
+  },
+  "product": {
+    "assurances": {
+      "delivery": {
+        "title": "Free delivery",
+        "body": "Across Moldova on orders over {{price}}, 1–3 days"
+      },
+      "warranty": {
+        "title": "2-year warranty",
+        "body": "Official dealer, service in Chișinău"
+      },
+      "returns": {
+        "title": "14-day returns",
+        "body": "Unused gear in original packaging"
+      },
+      "test": {
+        "title": "Test before you buy",
+        "body": "Come to the showroom and try the board"
+      }
+    },
+    "loading": "Loading the product…",
+    "notFound": {
+      "title": "Product not found",
+      "body": "It may have been sold out or the link is old.",
+      "back": "Back to the catalog"
+    },
+    "boardType": "Board type",
+    "tabs": {
+      "specs": "Specifications",
+      "description": "Description"
+    },
+    "breadcrumb": "Breadcrumb",
+    "prevImage": "Previous image",
+    "nextImage": "Next image",
+    "photo": "Product photo {{n}}",
+    "sale": "Sale",
+    "vatAndDelivery": "VAT included · Free delivery for orders over {{price}}",
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity",
+    "added": "Added — go to cart",
+    "buyNow": "Buy now",
+    "help": {
+      "title": "Not sure it's the right board?",
+      "body": "Send us your weight and home water and we'll confirm the size before you buy."
+    },
+    "moreIn": "More in {{name}}",
+    "youMayLike": "You may also like"
+  },
+  "wishlist": {
+    "title": "Wishlist",
+    "signedIn": "Boards and gear you saved. They stay in your account on any device.",
+    "guest": "Saved in this browser. Sign in to keep your wishlist on any device.",
+    "empty": {
+      "title": "Nothing saved yet",
+      "body": "Tap the heart on any product to keep it here for later.",
+      "cta": "Browse the catalog"
+    }
+  },
+  "cart": {
+    "guarantees": {
+      "cod": "Pay cash or card to the courier on delivery",
+      "returns": "14 days to return unused gear",
+      "warranty": "2-year official warranty, service in Chișinău"
+    },
+    "continue": "Continue shopping",
+    "title": "Your cart",
+    "items_one": "{{count}} item",
+    "items_few": "{{count}} items",
+    "items_many": "{{count}} items",
+    "items_other": "{{count}} items",
+    "freeReached": "Your order qualifies for free delivery across Moldova",
+    "freeLeft": "Add {{price}} more for free delivery",
+    "remove": "Remove",
+    "decreaseOf": "Decrease quantity of {{name}}",
+    "increaseOf": "Increase quantity of {{name}}",
+    "empty": {
+      "title": "Your cart is empty",
+      "body": "Nothing here yet — the boards are waiting."
+    },
+    "summary": {
+      "title": "Order summary",
+      "subtotal_one": "Subtotal ({{count}} item)",
+      "subtotal_few": "Subtotal ({{count}} items)",
+      "subtotal_many": "Subtotal ({{count}} items)",
+      "subtotal_other": "Subtotal ({{count}} items)",
+      "delivery": "Delivery across Moldova",
+      "free": "Free",
+      "atCheckout": "Calculated at checkout",
+      "arrival": "Estimated arrival",
+      "days": "1–3 working days",
+      "total": "Total"
+    },
+    "checkout": "Proceed to checkout",
+    "addOns": {
+      "title": "Add to your order",
+      "add": "Add {{name}} to cart"
+    }
+  },
+  "cities": {
+    "chisinau": "Chișinău",
+    "balti": "Bălți",
+    "cahul": "Cahul",
+    "orhei": "Orhei",
+    "other": "Other locality"
+  },
+  "delivery": {
+    "COURIER_CHISINAU": "Courier in Chișinău",
+    "COURIER_MOLDOVA": "Courier across Moldova",
+    "PICKUP": "Pick up at the showroom",
+    "PARCEL_LOCKER": "Parcel locker"
+  },
+  "payment": {
+    "CASH_ON_DELIVERY": "Cash or card on delivery",
+    "BANK_TRANSFER": "Bank transfer",
+    "card": "Card online",
+    "instal": "Instalments 0%"
+  },
+  "orders": {
+    "status": {
+      "NEW": "Processing",
+      "PAID": "Paid",
+      "SHIPPED": "In delivery",
+      "COMPLETED": "Delivered",
+      "CANCELLED": "Cancelled"
+    }
+  },
+  "errors": {
+    "serverDown": "The server is unavailable. Please try again later.",
+    "checkout": "Could not place the order. Please try again.",
+    "login": "Could not sign in. Check your username and password.",
+    "register": "Could not create the account. Please try again.",
+    "saveProfile": "Could not save the changes.",
+    "changePassword": "Could not change the password.",
+    "loadOrders": "Could not load your orders.",
+    "buyAgain": "Could not add the items to the cart."
+  },
+  "checkout": {
+    "shipping": {
+      "COURIER_CHISINAU": "Next working day, 2-hour window",
+      "COURIER_MOLDOVA": "1–3 working days, call before delivery",
+      "PICKUP": "{{address}} — ready in 2 hours",
+      "PARCEL_LOCKER": "Small items only, up to 10 kg"
+    },
+    "payment": {
+      "CASH_ON_DELIVERY": {
+        "body": "Pay the courier when the order arrives",
+        "cta": "Place the order"
+      },
+      "BANK_TRANSFER": {
+        "body": "For companies — invoice with VAT",
+        "cta": "Get the invoice"
+      },
+      "card": {
+        "body": "Visa, Mastercard, MIA — 3-D Secure"
+      },
+      "instal": {
+        "body": "Through the partner bank, up to 12 months"
+      }
+    },
+    "comingSoon": "{{text}} · coming soon",
+    "guarantees": {
+      "call": "The courier calls before delivery"
+    },
+    "errors": {
+      "firstName": "Enter your first name",
+      "lastName": "Enter your last name",
+      "phone": "Enter the phone as +373 69 000 000",
+      "email": "Enter the email as name@mail.com",
+      "street": "Enter the street and number"
+    },
+    "optional": "(optional)",
+    "secure": "Secure checkout",
+    "toast": {
+      "placedNumber": "Order {{number}} placed",
+      "placed": "Order placed",
+      "toPay": "To pay: {{price}}"
+    },
+    "viewOrders": "View my orders",
+    "done": {
+      "titleNumber": "Order {{number}} is placed",
+      "title": "Your order is placed",
+      "call": "Thank you! We will call you at <b>{{phone}}</b> to confirm the delivery.",
+      "toPay": "To pay: <b>{{price}}</b>"
+    },
+    "title": "Checkout",
+    "details": "1 · Your details",
+    "signedInAs": "Signed in as <b>{{name}}</b>.",
+    "fields": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "phone": "Phone",
+      "phoneHint": "The courier will call before delivery.",
+      "email": "Email",
+      "city": "City",
+      "street": "Street and number",
+      "flat": "Flat / office",
+      "note": "Note for the courier",
+      "notePlaceholder": "Entrance code, best time to call…"
+    },
+    "delivery": "2 · Delivery",
+    "paymentStep": "3 · Payment",
+    "free": "Free",
+    "yourOrder": "Your order",
+    "subtotal": "Subtotal",
+    "deliveryRow": "Delivery",
+    "toPay": "To pay",
+    "placing": "Placing the order…",
+    "terms": "By placing the order you accept our <terms>terms of sale</terms> and <privacy>privacy policy</privacy>.",
+    "backToCart": "Back to cart",
+    "pickupNote": "We will call when the order is ready. Showroom: <b>{{address}}</b>."
+  },
+  "login": {
+    "perks": {
+      "track": "Track every order from payment to your door",
+      "wishlist": "Save boards to a wishlist and get told when they are back",
+      "faster": "Checkout faster with saved addresses",
+      "demo": "Members-only demo days and early access to new arrivals"
+    },
+    "asideEyebrow": "MEMBERS GET MORE",
+    "asideTitle": "Keep your gear, orders and wishlist together",
+    "title": "Sign in",
+    "subtitle": "Your orders, wishlist and saved addresses, all in one place.",
+    "username": "Username",
+    "password": "Password",
+    "keepSignedIn": "Keep me signed in",
+    "submitting": "Signing in…",
+    "submit": "Sign in",
+    "newHere": "New here? <link>Create an account</link> — it takes a minute.",
+    "terms": "By signing in you accept our <terms>terms of sale</terms> and <privacy>privacy policy</privacy>.",
+    "createAccount": "Create account"
+  },
+  "register": {
+    "perks": {
+      "warranty": {
+        "title": "Warranty without paperwork",
+        "body": "Every purchase is on file — no receipt hunting two years later."
+      },
+      "faster": {
+        "title": "Faster checkout",
+        "body": "Saved addresses, nothing retyped."
+      },
+      "stock": {
+        "title": "Back-in-stock alerts",
+        "body": "Save a board and we tell you the day it lands."
+      },
+      "demo": {
+        "title": "Demo days first",
+        "body": "Members get the invite before the slots go public."
+      }
+    },
+    "strength": {
+      "0": "too short",
+      "1": "weak",
+      "2": "fair",
+      "3": "good",
+      "4": "strong"
+    },
+    "strengthLine": "Strength: <b>{{label}}</b> — at least 8 characters, one number.",
+    "errors": {
+      "mismatch": "Passwords do not match",
+      "terms": "Accept the terms of sale and the privacy policy"
+    },
+    "signIn": "Sign in",
+    "asideEyebrow": "WHY REGISTER",
+    "asideTitle": "Built for people who buy once and paddle for years",
+    "privacy": "Your data stays with us and the courier. We never sell it.",
+    "title": "Create an account",
+    "subtitle": "One minute now, faster checkout for every order after.",
+    "fullName": "Full name",
+    "fullNameHint": "Optional — for the courier and invoices.",
+    "emailHint": "We'll send the order confirmations here.",
+    "repeatPassword": "Repeat password",
+    "accept": "I accept the <terms>terms of sale</terms> and the <privacy>privacy policy</privacy>.",
+    "submitting": "Creating…",
+    "submit": "Create my account",
+    "haveAccount": "Already have an account? <link>Sign in</link>"
+  },
+  "profile": {
+    "order": "Order",
+    "placed": "Placed",
+    "total": "Total",
+    "buyAgain": "Buy again",
+    "orderHelp": "Need help with this order?",
+    "loadingOrders": "Loading your orders…",
+    "noOrders": {
+      "title": "No orders yet",
+      "body": "When you place an order, it shows up here with its status."
+    },
+    "details": "Personal details",
+    "fullName": "Full name",
+    "email": "Email",
+    "saving": "Saving…",
+    "saveChanges": "Save changes",
+    "saved": "Saved",
+    "changePassword": "Change password",
+    "passwordChanged": "Password changed",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "repeatNewPassword": "Repeat new password",
+    "passwordRule": "At least 8 characters.",
+    "updatePassword": "Update password",
+    "hello": "Hello, {{name}}",
+    "memberSince": " · member since {{date}}",
+    "kpi": {
+      "placed": "Orders placed",
+      "inDelivery": "In delivery",
+      "delivered": "Delivered"
+    },
+    "sections": "Profile sections",
+    "needHand": {
+      "title": "Need a hand?",
+      "body": "Questions about an order, warranty or service — we answer within an hour.",
+      "cta": "Contact support"
+    }
+  },
+  "contacts": {
+    "topics": {
+      "choose": "Help me choose a board",
+      "order": "Question about an order",
+      "delivery": "Delivery and payment",
+      "warranty": "Warranty or repair",
+      "rental": "Rental and demo days",
+      "wholesale": "Wholesale and clubs"
+    },
+    "faq": {
+      "delivery": {
+        "q": "How long does delivery take?",
+        "a": "Chișinău — next working day. Across Moldova — 1 to 3 working days with the courier. Free over 2,000 MDL."
+      },
+      "cod": {
+        "q": "Can I pay on delivery?",
+        "a": "Yes. Cash or card to the courier on delivery, or a bank transfer for companies."
+      },
+      "test": {
+        "q": "Can I test a board before buying?",
+        "a": "Yes — book a slot at the showroom or join a demo day on Lake Ghidighici from May to September."
+      },
+      "returns": {
+        "q": "What if the board does not suit me?",
+        "a": "14 days to return unused gear in its original packaging. Warranty claims are handled locally, no shipping abroad."
+      }
+    },
+    "legal": {
+      "name": "Legal name",
+      "idno": "IDNO",
+      "vat": "VAT code",
+      "address": "Legal address",
+      "bank": "Bank"
+    },
+    "status": {
+      "open": "Open now · closes {{hour}}:00",
+      "closed": "Closed now"
+    },
+    "emails": {
+      "general": "General and orders",
+      "service": "Service and warranty",
+      "b2b": "Wholesale and clubs"
+    },
+    "title": "Talk to real paddlers",
+    "subtitle": "Call, write or come to the showroom. We answer within one working hour, Monday to Saturday.",
+    "call": {
+      "title": "Call us",
+      "hours": "Mon–Sat 10:00–19:00, Sun closed.<br/>Also on WhatsApp, Viber and Telegram."
+    },
+    "write": {
+      "title": "Write to us",
+      "reply": "We reply within one working hour."
+    },
+    "showroom": {
+      "title": "Showroom",
+      "hours": "Mon–Fri 10:00–19:00<br/>Sat 10:00–16:00 · Sun closed<br/>Free parking at the entrance.",
+      "directions": "Get directions"
+    },
+    "map": {
+      "title": "SUP Shop showroom on the map",
+      "label": "SUP Shop showroom"
+    },
+    "form": {
+      "title": "Send us a message",
+      "intro": "Tell us your weight, your home water and what you want to do on the board — we'll come back with two or three options.",
+      "name": "Your name",
+      "phone": "Phone",
+      "email": "Email",
+      "topic": "What is it about?",
+      "message": "Message",
+      "messagePlaceholder": "I weigh 82 kg and paddle mostly on the Nistru…",
+      "consent": "I agree to the processing of my personal data under the <link>privacy policy</link>.",
+      "send": "Send message",
+      "sent": "Your email app should open with the message ready. If it didn't, write to <link>{{email}}</link>."
+    },
+    "faqTitle": "Quick answers",
+    "legalTitle": "Company details"
+  }
+}

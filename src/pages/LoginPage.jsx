@@ -1,20 +1,20 @@
 import { useState } from 'react';
-import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import { Link, Navigate } from '../i18n/routing';
+import { useNavigate } from '../i18n/hooks';
 import { CircleCheck } from 'lucide-react';
 import api from '../api/client';
 import AuthShell, { HeaderButton, Field, PasswordInput, FormError, SubmitButton } from '../components/AuthShell';
 import { inputClass, getErrorMessage } from '../utils/forms';
 import { BoardPlaceholder } from '../components/ProductCard';
 import { useAuth } from '../context/auth';
+import { Trans, useTranslation } from 'react-i18next';
 
-const PERKS = [
-    'Track every order from payment to your door',
-    'Save boards to a wishlist and get told when they are back',
-    'Checkout faster with saved addresses',
-    'Members-only demo days and early access to new arrivals',
-];
+// тексты в login.perks.<key>
+const PERKS = ['track', 'wishlist', 'faster', 'demo'];
 
 function LoginPage() {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const location = useLocation();
     const { user, login } = useAuth();
@@ -39,25 +39,25 @@ function LoginPage() {
                 navigate(redirectTo, { replace: true });
             })
             .catch(err => {
-                setError(getErrorMessage(err, 'Не удалось войти. Проверьте имя пользователя и пароль.'));
+                setError(getErrorMessage(err, t('errors.login')));
                 setLoading(false);
             });
     }
 
     return (
         <AuthShell
-            headerAction={<HeaderButton to="/register">Create account</HeaderButton>}
+            headerAction={<HeaderButton to="/register">{t('login.createAccount')}</HeaderButton>}
             aside={
                 <aside className="flex min-w-0 flex-[1_1_420px] items-center bg-deep-900 px-10 py-14 text-deep-text">
                     <div className="max-w-[420px]">
-                        <p className="mb-3.5 text-xs font-bold tracking-[0.18em] text-sun">MEMBERS GET MORE</p>
+                        <p className="mb-3.5 text-xs font-bold tracking-[0.18em] text-sun">{t('login.asideEyebrow')}</p>
                         <h2 className="mb-5 text-[34px] font-extrabold leading-[1.15] tracking-[-0.02em] text-white">
-                            Keep your gear, orders and wishlist together
+                            {t('login.asideTitle')}
                         </h2>
                         {PERKS.map(perk => (
                             <p key={perk} className="mb-4 flex items-start gap-3 text-base leading-[1.55]">
                                 <CircleCheck size={20} strokeWidth={1.8} className="mt-0.5 flex-none text-deep-accent" />
-                                {perk}
+                                {t(`login.perks.${perk}`)}
                             </p>
                         ))}
                         <div className="mt-8 flex flex-col items-center gap-3 rounded-[20px] bg-deep-800 p-6">
@@ -69,13 +69,13 @@ function LoginPage() {
             }
         >
             <form onSubmit={handleSubmit} className="w-full max-w-[440px]">
-                <h1 className="mb-2.5 text-[38px] font-extrabold tracking-[-0.025em]">Sign in</h1>
+                <h1 className="mb-2.5 text-[38px] font-extrabold tracking-[-0.025em]">{t('login.title')}</h1>
                 <p className="mb-[30px] text-base leading-[1.6] text-ink-600">
-                    Your orders, wishlist and saved addresses, all in one place.
+                    {t('login.subtitle')}
                 </p>
 
                 <div className="flex flex-col gap-[18px]">
-                    <Field id="l-username" label="Username">
+                    <Field id="l-username" label={t('login.username')}>
                         <input
                             id="l-username"
                             autoComplete="username"
@@ -86,7 +86,7 @@ function LoginPage() {
                         />
                     </Field>
 
-                    <Field id="l-password" label="Password">
+                    <Field id="l-password" label={t('login.password')}>
                         <PasswordInput
                             id="l-password"
                             autoComplete="current-password"
@@ -99,18 +99,17 @@ function LoginPage() {
 
                     <label className="flex cursor-pointer items-center gap-2.5 text-sm text-ink-600">
                         <input type="checkbox" defaultChecked className="h-[18px] w-[18px] cursor-pointer accent-brand-600" />
-                        <span>Keep me signed in</span>
+                        <span>{t('login.keepSignedIn')}</span>
                     </label>
 
-                    <SubmitButton loading={loading}>{loading ? 'Signing in…' : 'Sign in'}</SubmitButton>
+                    <SubmitButton loading={loading}>{loading ? t('login.submitting') : t('login.submit')}</SubmitButton>
                 </div>
 
                 <p className="mt-7 text-[15px] text-ink-600">
-                    New here? <Link to="/register" className="font-bold text-brand-600 hover:text-brand-700">Create an account</Link> — it takes a minute.
+                    <Trans i18nKey="login.newHere" components={{ link: <Link to="/register" className="font-bold text-brand-600 hover:text-brand-700" /> }} />
                 </p>
                 <p className="mt-[18px] text-[13px] leading-[1.6] text-ink-400">
-                    By signing in you accept our <Link to="/contacts" className="text-brand-600">terms of sale</Link> and{' '}
-                    <Link to="/contacts" className="text-brand-600">privacy policy</Link>.
+                    <Trans i18nKey="login.terms" components={{ terms: <Link to="/contacts" className="text-brand-600" />, privacy: <Link to="/contacts" className="text-brand-600" /> }} />
                 </p>
             </form>
         </AuthShell>

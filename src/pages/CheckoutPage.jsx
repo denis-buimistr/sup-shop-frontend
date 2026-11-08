@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate } from '../i18n/routing';
 import { CircleAlert, CircleCheck, Lock } from 'lucide-react';
 import api from '../api/client';
 import SimpleHeader from '../components/SimpleHeader';
@@ -14,31 +14,35 @@ import { useToast } from '../context/toast';
 import { formatPrice, formatOrderNumber } from '../utils/format';
 import { SHOWROOM } from '../data/contacts';
 import { getErrorMessage } from '../utils/forms';
-import { DELIVERY_LABELS, PAYMENT_LABELS } from '../utils/orders';
+import { Trans, useTranslation } from 'react-i18next';
 
-const CITIES = ['Chișinău', 'Bălți', 'Cahul', 'Orhei', 'Other locality'];
+// value уходит на бэкенд как есть, на экране показываю перевод из cities.<key>
+const CITIES = [
+    { value: 'Chișinău', key: 'chisinau' },
+    { value: 'Bălți', key: 'balti' },
+    { value: 'Cahul', key: 'cahul' },
+    { value: 'Orhei', key: 'orhei' },
+    { value: 'Other locality', key: 'other' },
+];
 
-
+// названия в delivery.<id>, пояснения в checkout.shipping.<id>
 const SHIPPING = [
-    { id: 'COURIER_CHISINAU', title: DELIVERY_LABELS.COURIER_CHISINAU, body: 'Next working day, 2-hour window', price: 0 },
-    { id: 'COURIER_MOLDOVA', title: DELIVERY_LABELS.COURIER_MOLDOVA, body: '1–3 working days, call before delivery', price: 0 },
-    { id: 'PICKUP', title: DELIVERY_LABELS.PICKUP, body: `${SHOWROOM} — ready in 2 hours`, price: 0 },
-    { id: 'PARCEL_LOCKER', title: DELIVERY_LABELS.PARCEL_LOCKER, body: 'Small items only, up to 10 kg', price: 45 },
+    { id: 'COURIER_CHISINAU', price: 0 },
+    { id: 'COURIER_MOLDOVA', price: 0 },
+    { id: 'PICKUP', price: 0 },
+    { id: 'PARCEL_LOCKER', price: 45 },
 ];
 
 // Онлайн-оплаты на бэкенде пока нет, поэтому карта и рассрочка видны, но выбрать их нельзя
+// названия в payment.<id>, пояснения и текст кнопки в checkout.payment.<id>
 const PAYMENTS = [
-    { id: 'CASH_ON_DELIVERY', title: PAYMENT_LABELS.CASH_ON_DELIVERY, body: 'Pay the courier when the order arrives', marks: ['CASH'], cta: 'Place the order' },
-    { id: 'BANK_TRANSFER', title: PAYMENT_LABELS.BANK_TRANSFER, body: 'For companies — invoice with VAT', marks: ['B2B'], cta: 'Get the invoice' },
-    { id: 'card', title: 'Card online', body: 'Visa, Mastercard, MIA — 3-D Secure', marks: ['VISA', 'MC'], soon: true },
-    { id: 'instal', title: 'Instalments 0%', body: 'Through the partner bank, up to 12 months', marks: ['MAIB'], soon: true },
+    { id: 'CASH_ON_DELIVERY', marks: ['CASH'] },
+    { id: 'BANK_TRANSFER', marks: ['B2B'] },
+    { id: 'card', marks: ['VISA', 'MC'], soon: true },
+    { id: 'instal', marks: ['MAIB'], soon: true },
 ];
 
-const GUARANTEES = [
-    'The courier calls before delivery',
-    '14 days to return unused gear',
-    '2-year official warranty, service in Chișinău',
-];
+const GUARANTEES = ['checkout.guarantees.call', 'cart.guarantees.returns', 'cart.guarantees.warranty'];
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -47,11 +51,12 @@ const fieldClass =
 
 function validate(form) {
     const errors = {};
-    if (!form.firstName.trim()) errors.firstName = 'Enter your first name';
-    if (!form.lastName.trim()) errors.lastName = 'Enter your last name';
-    if (form.phone.replace(/\D/g, '').length < 8) errors.phone = 'Enter the phone as +373 69 000 000';
-    if (!EMAIL_RE.test(form.email.trim())) errors.email = 'Enter the email as name@mail.com';
-    if (form.shipping !== 'PICKUP' && !form.street.trim()) errors.street = 'Enter the street and number';
+    // кладу ключи переводов, сам текст беру при рендере, чтобы он менялся вместе с языком
+    if (!form.firstName.trim()) errors.firstName = 'checkout.errors.firstName';
+    if (!form.lastName.trim()) errors.lastName = 'checkout.errors.lastName';
+    if (form.phone.replace(/\D/g, '').length < 8) errors.phone = 'checkout.errors.phone';
+    if (!EMAIL_RE.test(form.email.trim())) errors.email = 'checkout.errors.email';
+    if (form.shipping !== 'PICKUP' && !form.street.trim()) errors.street = 'checkout.errors.street';
     return errors;
 }
 
@@ -73,16 +78,17 @@ function buildCheckoutRequest(form) {
 }
 
 function Field({ id, label, optional, hint, error, children }) {
+    const { t } = useTranslation();
     return (
         <p className="flex min-w-0 flex-col gap-[7px]">
             <label htmlFor={id} className="text-sm font-semibold">
-                {label} {optional && <span className="font-normal text-ink-400">(optional)</span>}
+                {label} {optional && <span className="font-normal text-ink-400">{t('checkout.optional')}</span>}
             </label>
             {children}
             {error ? (
                 <span id={`${id}-err`} className="flex items-center gap-1.5 text-[13px] font-semibold text-danger">
                     <CircleAlert size={14} strokeWidth={2} className="flex-none" />
-                    {error}
+                    {t(error)}
                 </span>
             ) : (
                 hint && <span className="text-[13px] text-ink-400">{hint}</span>
@@ -125,6 +131,7 @@ function Fieldset({ legend, children }) {
 }
 
 function CheckoutPage() {
+    const { t } = useTranslation();
     const { user } = useAuth();
     const { items, subtotal, clearCart } = useCart();
     const { showToast } = useToast();
@@ -134,7 +141,7 @@ function CheckoutPage() {
         phone: '',
         email: '',
         shipping: 'COURIER_CHISINAU',
-        city: CITIES[0],
+        city: CITIES[0].value,
         street: '',
         flat: '',
         note: '',
@@ -224,14 +231,14 @@ function CheckoutPage() {
                 setPlaced({ id: order?.id, total: toPay, phone: form.phone.trim() });
                 clearCart();
                 showToast({
-                    title: order?.id ? `Order ${formatOrderNumber(order.id)} placed` : 'Order placed',
-                    body: `To pay: ${formatPrice(toPay)}`,
-                    link: { to: '/profile', label: 'View my orders' },
+                    title: order?.id ? t('checkout.toast.placedNumber', { number: formatOrderNumber(order.id) }) : t('checkout.toast.placed'),
+                    body: t('checkout.toast.toPay', { price: formatPrice(toPay) }),
+                    link: { to: '/profile', label: t('checkout.viewOrders') },
                 });
                 window.scrollTo(0, 0);
             })
             .catch(err => {
-                setSubmitError(getErrorMessage(err, 'Не удалось оформить заказ. Попробуйте ещё раз.'));
+                setSubmitError(getErrorMessage(err, t('errors.checkout')));
                 setLoading(false);
             });
     }
@@ -242,7 +249,7 @@ function CheckoutPage() {
                 action={
                     <p className="flex items-center gap-2.5 text-sm font-semibold text-brand-600">
                         <Lock size={18} strokeWidth={1.8} />
-                        Secure checkout
+                        {t('checkout.secure')}
                     </p>
                 }
             />
@@ -254,32 +261,32 @@ function CheckoutPage() {
                     <section className="mx-auto max-w-[640px] rounded-[22px] border border-line bg-surface-50 px-8 py-12 text-center">
                         <CircleCheck size={48} strokeWidth={1.6} className="mx-auto mb-5 text-brand-600" />
                         <h1 className="mb-3 text-[34px] font-extrabold tracking-[-0.025em]">
-                            {placed.id ? `Order ${formatOrderNumber(placed.id)} is placed` : 'Your order is placed'}
+                            {placed.id ? t('checkout.done.titleNumber', { number: formatOrderNumber(placed.id) }) : t('checkout.done.title')}
                         </h1>
                         <p className="mb-2 text-base leading-[1.6] text-ink-600">
-                            Thank you! We will call you at <span className="font-semibold text-ink-900">{placed.phone}</span> to confirm the delivery.
+                            <Trans i18nKey="checkout.done.call" values={{ phone: placed.phone }} components={{ b: <span className="font-semibold text-ink-900" /> }} />
                         </p>
                         <p className="mb-8 text-base text-ink-600">
-                            To pay: <span className="font-bold tabular-nums text-ink-900">{formatPrice(placed.total)}</span>
+                            <Trans i18nKey="checkout.done.toPay" values={{ price: formatPrice(placed.total) }} components={{ b: <span className="font-bold tabular-nums text-ink-900" /> }} />
                         </p>
                         <div className="flex flex-wrap justify-center gap-3">
                             <Link
                                 to="/profile"
                                 className="inline-flex rounded-full bg-brand-600 px-[26px] py-3.5 text-[15px] font-bold text-white hover:bg-brand-700"
                             >
-                                View my orders
+                                {t('checkout.viewOrders')}
                             </Link>
                             <Link
                                 to="/catalog"
                                 className="inline-flex rounded-full border-[1.5px] border-ink-900 bg-white px-[26px] py-3.5 text-[15px] font-bold text-ink-900 hover:bg-surface-50"
                             >
-                                Continue shopping
+                                {t('cart.continue')}
                             </Link>
                         </div>
                     </section>
                 ) : (
                     <>
-                        <h1 className="mb-7 text-[38px] font-extrabold tracking-[-0.025em] text-ink-900">Checkout</h1>
+                        <h1 className="mb-7 text-[38px] font-extrabold tracking-[-0.025em] text-ink-900">{t('checkout.title')}</h1>
 
                         <div className="flex flex-wrap items-start gap-7">
                             <form
@@ -288,28 +295,28 @@ function CheckoutPage() {
                                 onSubmit={handleSubmit}
                                 className="flex min-w-0 flex-[999_1_560px] flex-col gap-5"
                             >
-                                <Fieldset legend="1 · Your details">
+                                <Fieldset legend={t('checkout.details')}>
                                     <p className="mb-5 text-sm text-ink-400">
-                                        Signed in as <span className="font-semibold text-ink-900">{user.username}</span>.
+                                        <Trans i18nKey="checkout.signedInAs" values={{ name: user.username }} components={{ b: <span className="font-semibold text-ink-900" /> }} />
                                     </p>
 
                                     <div className="grid gap-4 sm:grid-cols-2">
-                                        <Field id="co-firstName" label="First name" error={errors.firstName}>
+                                        <Field id="co-firstName" label={t('checkout.fields.firstName')} error={errors.firstName}>
                                             <input type="text" autoComplete="given-name" {...inputProps('firstName')} />
                                         </Field>
-                                        <Field id="co-lastName" label="Last name" error={errors.lastName}>
+                                        <Field id="co-lastName" label={t('checkout.fields.lastName')} error={errors.lastName}>
                                             <input type="text" autoComplete="family-name" {...inputProps('lastName')} />
                                         </Field>
-                                        <Field id="co-phone" label="Phone" hint="The courier will call before delivery." error={errors.phone}>
+                                        <Field id="co-phone" label={t('checkout.fields.phone')} hint={t('checkout.fields.phoneHint')} error={errors.phone}>
                                             <input type="tel" autoComplete="tel" placeholder="+373 69 000 000" {...inputProps('phone')} />
                                         </Field>
-                                        <Field id="co-email" label="Email" error={errors.email}>
+                                        <Field id="co-email" label={t('checkout.fields.email')} error={errors.email}>
                                             <input type="email" autoComplete="email" {...inputProps('email')} />
                                         </Field>
                                     </div>
                                 </Fieldset>
 
-                                <Fieldset legend="2 · Delivery">
+                                <Fieldset legend={t('checkout.delivery')}>
                                     <div className="mb-5 flex flex-col gap-3">
                                         {SHIPPING.map(s => (
                                             <ChoiceCard
@@ -317,11 +324,11 @@ function CheckoutPage() {
                                                 name="shipping"
                                                 checked={form.shipping === s.id}
                                                 onChange={() => setForm(current => ({ ...current, shipping: s.id }))}
-                                                title={s.title}
-                                                body={s.body}
+                                                title={t(`delivery.${s.id}`)}
+                                                body={t(`checkout.shipping.${s.id}`, { address: SHOWROOM })}
                                             >
                                                 <span className={`flex-none text-[15px] font-bold ${s.price && !freeDelivery ? 'text-ink-900' : 'text-brand-600'}`}>
-                                                    {s.price && !freeDelivery ? formatPrice(s.price) : 'Free'}
+                                                    {s.price && !freeDelivery ? formatPrice(s.price) : t('checkout.free')}
                                                 </span>
                                             </ChoiceCard>
                                         ))}
@@ -329,29 +336,29 @@ function CheckoutPage() {
 
                                     {form.shipping === 'PICKUP' ? (
                                         <p className="text-sm leading-[1.6] text-ink-600">
-                                            We will call when the order is ready. Showroom: <span className="font-semibold text-ink-900">{SHOWROOM}</span>.
+                                            <Trans i18nKey="checkout.pickupNote" values={{ address: SHOWROOM }} components={{ b: <span className="font-semibold text-ink-900" /> }} />
                                         </p>
                                     ) : (
                                         <div className="grid gap-4 sm:grid-cols-[1fr_1.3fr]">
-                                            <Field id="co-city" label="City">
+                                            <Field id="co-city" label={t('checkout.fields.city')}>
                                                 <select {...inputProps('city')} className={`${fieldClass} cursor-pointer border-line-input bg-white px-3`}>
-                                                    {CITIES.map(city => <option key={city}>{city}</option>)}
+                                                    {CITIES.map(city => <option key={city.value} value={city.value}>{t(`cities.${city.key}`)}</option>)}
                                                 </select>
                                             </Field>
-                                            <Field id="co-street" label="Street and number" error={errors.street}>
+                                            <Field id="co-street" label={t('checkout.fields.street')} error={errors.street}>
                                                 <input type="text" autoComplete="address-line1" placeholder="str. Albișoara 4" {...inputProps('street')} />
                                             </Field>
-                                            <Field id="co-flat" label="Flat / office">
+                                            <Field id="co-flat" label={t('checkout.fields.flat')}>
                                                 <input type="text" autoComplete="address-line2" placeholder="12" {...inputProps('flat')} />
                                             </Field>
-                                            <Field id="co-note" label="Note for the courier" optional>
-                                                <input type="text" placeholder="Entrance code, best time to call…" {...inputProps('note')} />
+                                            <Field id="co-note" label={t('checkout.fields.note')} optional>
+                                                <input type="text" placeholder={t('checkout.fields.notePlaceholder')} {...inputProps('note')} />
                                             </Field>
                                         </div>
                                     )}
                                 </Fieldset>
 
-                                <Fieldset legend="3 · Payment">
+                                <Fieldset legend={t('checkout.paymentStep')}>
                                     <div className="flex flex-col gap-3">
                                         {PAYMENTS.map(m => (
                                             <ChoiceCard
@@ -360,8 +367,8 @@ function CheckoutPage() {
                                                 checked={form.payment === m.id}
                                                 disabled={m.soon}
                                                 onChange={() => setForm(current => ({ ...current, payment: m.id }))}
-                                                title={m.title}
-                                                body={m.soon ? `${m.body} · coming soon` : m.body}
+                                                title={t(`payment.${m.id}`)}
+                                                body={m.soon ? t('checkout.comingSoon', { text: t(`checkout.payment.${m.id}.body`) }) : t(`checkout.payment.${m.id}.body`)}
                                             >
                                                 <span className="flex flex-none gap-1.5">
                                                     {m.marks.map(mark => (
@@ -379,9 +386,9 @@ function CheckoutPage() {
                                 </Fieldset>
                             </form>
 
-                            <aside aria-label="Order summary" className="min-w-0 flex-[1_1_360px]">
+                            <aside aria-label={t('cart.summary.title')} className="min-w-0 flex-[1_1_360px]">
                                 <div className="rounded-[22px] border border-line bg-surface-50 p-[26px]">
-                                    <h2 className="mb-[18px] text-[22px] font-extrabold tracking-[-0.02em]">Your order</h2>
+                                    <h2 className="mb-[18px] text-[22px] font-extrabold tracking-[-0.02em]">{t('checkout.yourOrder')}</h2>
 
                                     {items.map(item => (
                                         <div key={item.id} className="flex gap-3.5 border-b border-line py-3">
@@ -405,20 +412,20 @@ function CheckoutPage() {
 
                                     <div className="pt-4">
                                         <p className="mb-[11px] flex justify-between gap-4 text-[15px] text-ink-600">
-                                            <span>Subtotal</span>
+                                            <span>{t('checkout.subtotal')}</span>
                                             <span className="font-semibold tabular-nums">{formatPrice(subtotal)}</span>
                                         </p>
                                         <p className="mb-[11px] flex justify-between gap-4 text-[15px] text-ink-600">
-                                            <span>Delivery</span>
-                                            <span className="font-semibold tabular-nums">{deliveryPrice ? formatPrice(deliveryPrice) : 'Free'}</span>
+                                            <span>{t('checkout.deliveryRow')}</span>
+                                            <span className="font-semibold tabular-nums">{deliveryPrice ? formatPrice(deliveryPrice) : t('checkout.free')}</span>
                                         </p>
                                     </div>
 
                                     <p className="mb-1 mt-4 flex items-baseline justify-between gap-4 border-t border-line-divider pt-4">
-                                        <span className="text-lg font-bold">To pay</span>
+                                        <span className="text-lg font-bold">{t('checkout.toPay')}</span>
                                         <span className="text-[28px] font-extrabold tabular-nums">{formatPrice(total)}</span>
                                     </p>
-                                    <p className="mb-5 text-right text-[13px] text-ink-400">VAT included</p>
+                                    <p className="mb-5 text-right text-[13px] text-ink-400">{t('common.vatIncluded')}</p>
 
                                     {submitError && (
                                         <div className="mb-4">
@@ -432,26 +439,31 @@ function CheckoutPage() {
                                         disabled={loading}
                                         className="mb-3.5 w-full rounded-full bg-brand-600 p-[17px] text-[17px] font-bold text-white hover:bg-brand-700 disabled:opacity-60"
                                     >
-                                        {loading ? 'Placing the order…' : payment.cta}
+                                        {loading ? t('checkout.placing') : t(`checkout.payment.${payment.id}.cta`)}
                                     </button>
 
                                     <p className="mb-[18px] text-center text-[13px] leading-[1.6] text-ink-400">
-                                        By placing the order you accept our <Link to="/contacts" className="text-brand-600">terms of sale</Link> and{' '}
-                                        <Link to="/contacts" className="text-brand-600">privacy policy</Link>.
+                                        <Trans
+                                            i18nKey="checkout.terms"
+                                            components={{
+                                                terms: <Link to="/contacts" className="text-brand-600" />,
+                                                privacy: <Link to="/contacts" className="text-brand-600" />,
+                                            }}
+                                        />
                                     </p>
 
                                     <Link
                                         to="/cart"
                                         className="flex items-center justify-center rounded-full border-[1.5px] border-ink-900 bg-white p-[13px] text-[15px] font-bold text-ink-900 hover:bg-surface-50"
                                     >
-                                        Back to cart
+                                        {t('checkout.backToCart')}
                                     </Link>
 
                                     <div className="mt-[22px] border-t border-line-divider pt-5">
-                                        {GUARANTEES.map(text => (
-                                            <p key={text} className="mb-2.5 flex items-start gap-2.5 text-sm leading-[1.5] text-ink-600">
+                                        {GUARANTEES.map(key => (
+                                            <p key={key} className="mb-2.5 flex items-start gap-2.5 text-sm leading-[1.5] text-ink-600">
                                                 <CircleCheck size={17} strokeWidth={1.8} className="mt-0.5 flex-none text-brand-600" />
-                                                {text}
+                                                {t(key)}
                                             </p>
                                         ))}
                                     </div>

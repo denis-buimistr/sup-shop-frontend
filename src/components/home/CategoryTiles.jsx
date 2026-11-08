@@ -1,21 +1,16 @@
-import { Link } from 'react-router-dom';
+import { Link } from '../../i18n/routing';
 import { ArrowRight } from 'lucide-react';
 import { CATEGORY_PHOTOS } from '../../data/categoryPhotos';
+import { useTranslation } from 'react-i18next';
 
-// подпись делаю текстом, а не беру с картинки — так её видят поисковики и потом можно перевести
-const TILES = [
-    { slug: 'paddles', title: 'Paddles' },
-    { slug: 'sup', title: 'Paddleboards' },
-    { slug: 'foil-wing', title: 'Foil & Wing' },
-    { slug: 'surf', title: 'Surf' },
-    { slug: 'clothing', title: 'Clothing' },
-    { slug: 'accessories', title: 'Accessories' },
-];
+// подпись делаю текстом, а не беру с картинки — так её видят поисковики. сами подписи в tiles.<slug>
+const TILES = ['paddles', 'sup', 'foil-wing', 'surf', 'clothing', 'accessories'];
 
 function CategoryTiles() {
+    const { t } = useTranslation();
     return (
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {TILES.map(({ slug, title }) => (
+            {TILES.map(slug => (
                 <Link
                     key={slug}
                     to={`/catalog/${slug}`}
@@ -37,10 +32,10 @@ function CategoryTiles() {
 
                     <span className="absolute inset-x-0 bottom-0 flex flex-col items-center px-4 pb-6">
                         <span className="mb-3 text-center text-[30px] font-extrabold uppercase italic leading-none tracking-[-0.01em] text-white drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)] sm:text-[34px]">
-                            {title}
+                            {t(`tiles.${slug}`)}
                         </span>
                         <span className="inline-flex items-center gap-2 rounded-full border-2 border-deep-accent px-6 py-2.5 text-sm font-bold uppercase tracking-[0.04em] text-white transition-colors group-hover:bg-deep-accent group-hover:text-ink-900">
-                            Shop now <ArrowRight size={16} strokeWidth={2.4} />
+                            {t('tiles.shopNow')} <ArrowRight size={16} strokeWidth={2.4} />
                         </span>
                     </span>
                 </Link>

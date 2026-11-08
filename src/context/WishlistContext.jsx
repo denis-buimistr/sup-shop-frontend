@@ -3,6 +3,7 @@ import api from '../api/client';
 import { useAuth } from './auth';
 import { useToast } from './toast';
 import { WishlistContext } from './wishlist';
+import i18n from '../i18n/config';
 
 const STORAGE_KEY = 'sup-shop-wishlist';
 // один и тот же пустой массив, чтобы ids не менялся на каждом рендере
@@ -67,7 +68,7 @@ export function WishlistProvider({ children }) {
         const next = isSaved ? ids.filter(id => id !== product.id) : [product.id, ...ids];
 
         if (!isSaved) {
-            showToast({ title: 'Added to wishlist', body: product.name, link: { to: '/wishlist', label: 'Open wishlist' } });
+            showToast({ title: i18n.t('toast.addedToWishlist'), body: product.name, link: { to: '/wishlist', label: i18n.t('toast.openWishlist') } });
         }
 
         if (!username) {
@@ -81,7 +82,7 @@ export function WishlistProvider({ children }) {
         const request = isSaved ? api.delete(`/wishlist/${product.id}`) : api.put(`/wishlist/${product.id}`);
         request.catch(() => {
             setServer({ username, ids });
-            showToast({ title: 'Could not update the wishlist', body: 'Please try again.' });
+            showToast({ title: i18n.t('toast.wishlistFailed'), body: i18n.t('toast.tryAgain') });
         });
     }, [ids, username, showToast]);
 

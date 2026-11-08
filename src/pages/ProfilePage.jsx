@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Link, Navigate, useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
+import { Link, Navigate } from '../i18n/routing';
+import { useNavigate } from '../i18n/hooks';
 import { CircleCheck } from 'lucide-react';
 import api from '../api/client';
 import SimpleHeader from '../components/SimpleHeader';
@@ -12,12 +14,15 @@ import { useCart } from '../context/cart';
 import { formatPrice, formatOrderNumber, formatDate } from '../utils/format';
 import { getErrorMessage } from '../utils/forms';
 import { formatDelivery, getOrderStatus } from '../utils/orders';
+import { useTranslation } from 'react-i18next';
+import i18n, { localeOf } from '../i18n/config';
 
 // Из макета оставили только то, что есть на бэкенде: заказы и профиль.
 // Избранное, адреса и сохранённые карты появятся вместе с эндпоинтами под них
+// подписи в account.myOrders и account.settings
 const SECTIONS = [
-    { id: 'orders', label: 'My orders' },
-    { id: 'settings', label: 'Settings' },
+    { id: 'orders', key: 'account.myOrders' },
+    { id: 'settings', key: 'account.settings' },
 ];
 
 
@@ -40,6 +45,7 @@ function Kpi({ value, label }) {
 }
 
 function OrderCard({ order, onBuyAgain }) {
+    const { t } = useTranslation();
     const status = getOrderStatus(order.status);
     const items = order.items ?? [];
     // productId есть, только если бэкенд отдаёт его в позиции заказа — без него повторить заказ нельзя
@@ -49,15 +55,15 @@ function OrderCard({ order, onBuyAgain }) {
         <article className="mb-4 overflow-hidden rounded-[20px] border border-line">
             <div className="flex flex-wrap items-center gap-x-6 gap-y-4 border-b border-line bg-surface-50 px-[22px] py-[18px]">
                 <span>
-                    <span className="block text-xs text-ink-400">Order</span>
+                    <span className="block text-xs text-ink-400">{t('profile.order')}</span>
                     <span className="block text-[15px] font-bold">{formatOrderNumber(order.id)}</span>
                 </span>
                 <span>
-                    <span className="block text-xs text-ink-400">Placed</span>
+                    <span className="block text-xs text-ink-400">{t('profile.placed')}</span>
                     <span className="block text-[15px] font-semibold">{formatDate(order.createdAt)}</span>
                 </span>
                 <span>
-                    <span className="block text-xs text-ink-400">Total</span>
+                    <span className="block text-xs text-ink-400">{t('profile.total')}</span>
                     <span className="block text-[15px] font-bold tabular-nums">{formatPrice(order.totalPrice)}</span>
                 </span>
                 <span className={`ml-auto inline-flex items-center gap-[7px] rounded-full px-3.5 py-[7px] text-[13px] font-bold ${status.className}`}>
@@ -94,11 +100,11 @@ function OrderCard({ order, onBuyAgain }) {
                             onClick={() => onBuyAgain(order)}
                             className="inline-flex rounded-full border-[1.5px] border-line-divider bg-white px-5 py-[11px] text-sm font-bold text-brand-600 hover:border-brand-600"
                         >
-                            Buy again
+                            {t('profile.buyAgain')}
                         </button>
                     )}
                     <Link to="/contacts" className="inline-flex items-center px-1 py-[11px] text-sm font-semibold text-ink-400 hover:text-brand-600">
-                        Need help with this order?
+                        {t('profile.orderHelp')}
                     </Link>
                 </div>
             </div>
@@ -107,16 +113,17 @@ function OrderCard({ order, onBuyAgain }) {
 }
 
 function OrdersSection({ orders, error, onBuyAgain }) {
+    const { t } = useTranslation();
     if (error) return <FormError message={error} />;
-    if (!orders) return <p className="text-[15px] text-ink-400">Loading your orders…</p>;
+    if (!orders) return <p className="text-[15px] text-ink-400">{t('profile.loadingOrders')}</p>;
 
     if (orders.length === 0) {
         return (
             <div className="rounded-[20px] border border-line px-6 py-14 text-center">
-                <p className="mb-2.5 text-xl font-bold">No orders yet</p>
-                <p className="mb-[22px] text-[15px] text-ink-400">When you place an order, it shows up here with its status.</p>
+                <p className="mb-2.5 text-xl font-bold">{t('profile.noOrders.title')}</p>
+                <p className="mb-[22px] text-[15px] text-ink-400">{t('profile.noOrders.body')}</p>
                 <Link to="/catalog" className="inline-flex rounded-full bg-brand-600 px-[26px] py-3.5 text-[15px] font-bold text-white hover:bg-brand-700">
-                    Browse the catalog
+                    {t('wishlist.empty.cta')}
                 </Link>
             </div>
         );
@@ -126,6 +133,7 @@ function OrdersSection({ orders, error, onBuyAgain }) {
 }
 
 function SettingsSection({ profile, onSaved }) {
+    const { t } = useTranslation();
     const [details, setDetails] = useState({ fullName: profile.fullName ?? '', email: profile.email ?? '' });
     const [detailsState, setDetailsState] = useState({ loading: false, error: null, saved: false });
 
@@ -143,7 +151,7 @@ function SettingsSection({ profile, onSaved }) {
                 setDetailsState({ loading: false, error: null, saved: true });
             })
             .catch(err => {
-                setDetailsState({ loading: false, error: getErrorMessage(err, 'Не удалось сохранить изменения.'), saved: false });
+                setDetailsState({ loading: false, error: getErrorMessage(err, t('errors.saveProfile')), saved: false });
             });
     }
 
@@ -151,7 +159,7 @@ function SettingsSection({ profile, onSaved }) {
         e.preventDefault();
 
         if (passwords.newPassword !== passwords.confirm) {
-            setPasswordState({ loading: false, error: 'Пароли не совпадают', saved: false });
+            setPasswordState({ loading: false, error: t('register.errors.mismatch'), saved: false });
             return;
         }
 
@@ -163,7 +171,7 @@ function SettingsSection({ profile, onSaved }) {
                 setShowPassword(false);
             })
             .catch(err => {
-                setPasswordState({ loading: false, error: getErrorMessage(err, 'Не удалось сменить пароль.'), saved: false });
+                setPasswordState({ loading: false, error: getErrorMessage(err, t('errors.changePassword')), saved: false });
             });
     }
 
@@ -175,10 +183,10 @@ function SettingsSection({ profile, onSaved }) {
         <>
             <form onSubmit={handleDetails} className="mb-[18px]">
                 <fieldset className="m-0 mb-[18px] min-w-0 rounded-[20px] border border-line p-6">
-                    <legend className="px-2.5 text-[17px] font-bold">Personal details</legend>
+                    <legend className="px-2.5 text-[17px] font-bold">{t('profile.details')}</legend>
                     <div className="grid gap-4 sm:grid-cols-2">
                         <p className="flex min-w-0 flex-col gap-[7px]">
-                            <label htmlFor="s-name" className="text-sm font-semibold">Full name</label>
+                            <label htmlFor="s-name" className="text-sm font-semibold">{t('profile.fullName')}</label>
                             <input
                                 id="s-name"
                                 type="text"
@@ -190,7 +198,7 @@ function SettingsSection({ profile, onSaved }) {
                             />
                         </p>
                         <p className="flex min-w-0 flex-col gap-[7px]">
-                            <label htmlFor="s-email" className="text-sm font-semibold">Email</label>
+                            <label htmlFor="s-email" className="text-sm font-semibold">{t('profile.email')}</label>
                             <input
                                 id="s-email"
                                 type="email"
@@ -213,7 +221,7 @@ function SettingsSection({ profile, onSaved }) {
                         disabled={detailsState.loading}
                         className="rounded-full bg-brand-600 px-[30px] py-[15px] text-[15px] font-bold text-white hover:bg-brand-700 disabled:opacity-60"
                     >
-                        {detailsState.loading ? 'Saving…' : 'Save changes'}
+                        {detailsState.loading ? t('profile.saving') : t('profile.saveChanges')}
                     </button>
                     <button
                         type="button"
@@ -221,11 +229,11 @@ function SettingsSection({ profile, onSaved }) {
                         onClick={() => setShowPassword(open => !open)}
                         className="rounded-full border-[1.5px] border-line-divider bg-white px-7 py-3.5 text-[15px] font-bold text-ink-900 hover:border-ink-900"
                     >
-                        Change password
+                        {t('profile.changePassword')}
                     </button>
                     {detailsState.saved && (
                         <span role="status" className="flex items-center gap-1.5 text-sm font-semibold text-success">
-                            <CircleCheck size={16} strokeWidth={2} /> Saved
+                            <CircleCheck size={16} strokeWidth={2} /> {t('profile.saved')}
                         </span>
                     )}
                 </div>
@@ -234,36 +242,36 @@ function SettingsSection({ profile, onSaved }) {
 
             {passwordState.saved && (
                 <p role="status" className="mb-[18px] flex items-center gap-1.5 text-sm font-semibold text-success">
-                    <CircleCheck size={16} strokeWidth={2} /> Password changed
+                    <CircleCheck size={16} strokeWidth={2} /> {t('profile.passwordChanged')}
                 </p>
             )}
 
             {showPassword && (
                 <form onSubmit={handlePassword}>
                     <fieldset className="m-0 min-w-0 rounded-[20px] border border-line p-6">
-                        <legend className="px-2.5 text-[17px] font-bold">Change password</legend>
+                        <legend className="px-2.5 text-[17px] font-bold">{t('profile.changePassword')}</legend>
                         <div className="grid gap-4 sm:grid-cols-3">
                             <p className="flex min-w-0 flex-col gap-[7px]">
-                                <label htmlFor="s-old" className="text-sm font-semibold">Current password</label>
+                                <label htmlFor="s-old" className="text-sm font-semibold">{t('profile.currentPassword')}</label>
                                 <input id="s-old" type="password" required autoComplete="current-password" value={passwords.oldPassword} onChange={updatePassword('oldPassword')} className={fieldClass} />
                             </p>
                             <p className="flex min-w-0 flex-col gap-[7px]">
-                                <label htmlFor="s-new" className="text-sm font-semibold">New password</label>
+                                <label htmlFor="s-new" className="text-sm font-semibold">{t('profile.newPassword')}</label>
                                 <input id="s-new" type="password" required minLength={8} autoComplete="new-password" value={passwords.newPassword} onChange={updatePassword('newPassword')} className={fieldClass} />
                             </p>
                             <p className="flex min-w-0 flex-col gap-[7px]">
-                                <label htmlFor="s-confirm" className="text-sm font-semibold">Repeat new password</label>
+                                <label htmlFor="s-confirm" className="text-sm font-semibold">{t('profile.repeatNewPassword')}</label>
                                 <input id="s-confirm" type="password" required minLength={8} autoComplete="new-password" value={passwords.confirm} onChange={updatePassword('confirm')} className={fieldClass} />
                             </p>
                         </div>
-                        <p className="mt-3 text-[13px] text-ink-400">At least 8 characters.</p>
+                        <p className="mt-3 text-[13px] text-ink-400">{t('profile.passwordRule')}</p>
                         {passwordState.error && <div className="mt-3"><FormError message={passwordState.error} /></div>}
                         <button
                             type="submit"
                             disabled={passwordState.loading}
                             className="mt-5 rounded-full bg-brand-600 px-[30px] py-[15px] text-[15px] font-bold text-white hover:bg-brand-700 disabled:opacity-60"
                         >
-                            {passwordState.loading ? 'Saving…' : 'Update password'}
+                            {passwordState.loading ? t('profile.saving') : t('profile.updatePassword')}
                         </button>
                     </fieldset>
                 </form>
@@ -273,6 +281,7 @@ function SettingsSection({ profile, onSaved }) {
 }
 
 function ProfilePage() {
+    const { t } = useTranslation();
     const { user, logout } = useAuth();
     const { count, addItem } = useCart();
     const navigate = useNavigate();
@@ -292,7 +301,7 @@ function ProfilePage() {
 
         api.get('/orders/my')
             .then(({ data }) => setOrders(data))
-            .catch(err => setOrdersError(getErrorMessage(err, 'Не удалось загрузить заказы.')));
+            .catch(err => setOrdersError(getErrorMessage(err, i18n.t('errors.loadOrders'))));
     }, [user]);
 
     if (!user) return <Navigate to="/login" state={{ from: '/profile' }} replace />;
@@ -315,7 +324,7 @@ function ProfilePage() {
                 });
                 navigate('/cart');
             })
-            .catch(err => setOrdersError(getErrorMessage(err, 'Не удалось добавить товары в корзину.')));
+            .catch(err => setOrdersError(getErrorMessage(err, t('errors.buyAgain'))));
     }
 
     return (
@@ -323,9 +332,9 @@ function ProfilePage() {
             <SimpleHeader
                 action={
                     <>
-                        <Link to="/catalog" className="text-sm font-semibold text-ink-900 hover:text-brand-600">Catalog</Link>
+                        <Link to="/catalog" className="text-sm font-semibold text-ink-900 hover:text-brand-600">{t('common.catalog')}</Link>
                         <Link to="/cart" className="flex items-center gap-2 text-sm font-semibold text-ink-900 hover:text-brand-600">
-                            Cart
+                            {t('header.cart')}
                             {count > 0 && (
                                 <span className="rounded-full bg-alert px-[7px] py-0.5 text-[11px] font-bold text-white">{count}</span>
                             )}
@@ -340,23 +349,23 @@ function ProfilePage() {
                         {getInitials(profile, user.username)}
                     </span>
                     <div className="min-w-0 flex-[999_1_260px]">
-                        <h1 className="mb-1.5 text-[32px] font-extrabold tracking-[-0.025em]">Hello, {firstName}</h1>
+                        <h1 className="mb-1.5 text-[32px] font-extrabold tracking-[-0.025em]">{t('profile.hello', { name: firstName })}</h1>
                         <p className="text-[15px] text-ink-600">
                             {profile?.email ?? user.username}
-                            {profile?.createdAt && ` · member since ${new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric' }).format(new Date(profile.createdAt))}`}
+                            {profile?.createdAt && t('profile.memberSince', { date: new Intl.DateTimeFormat(localeOf(i18n.language), { month: 'long', year: 'numeric' }).format(new Date(profile.createdAt)) })}
                         </p>
                     </div>
                     <div className="grid min-w-0 flex-[1_1_360px] grid-cols-3 gap-3">
-                        <Kpi value={orders?.length ?? '—'} label="Orders placed" />
-                        <Kpi value={orders ? inDelivery : '—'} label="In delivery" />
-                        <Kpi value={orders ? delivered : '—'} label="Delivered" />
+                        <Kpi value={orders?.length ?? '—'} label={t('profile.kpi.placed')} />
+                        <Kpi value={orders ? inDelivery : '—'} label={t('profile.kpi.inDelivery')} />
+                        <Kpi value={orders ? delivered : '—'} label={t('profile.kpi.delivered')} />
                     </div>
                 </Container>
             </section>
 
             <Container as="main" className="flex-grow pt-8">
                 <div className="flex flex-wrap items-start gap-8">
-                    <nav aria-label="Profile sections" className="min-w-0 flex-[1_1_260px] md:max-w-[300px]">
+                    <nav aria-label={t('profile.sections')} className="min-w-0 flex-[1_1_260px] md:max-w-[300px]">
                         <div className="rounded-[20px] border border-line p-2.5">
                             {SECTIONS.map(s => {
                                 const current = s.id === section;
@@ -370,7 +379,7 @@ function ProfilePage() {
                                             current ? 'bg-tint-100 font-bold text-tint-900' : 'font-medium text-ink-900 hover:bg-surface-50'
                                         }`}
                                     >
-                                        <span>{s.label}</span>
+                                        <span>{t(s.key)}</span>
                                         {s.id === 'orders' && orders?.length > 0 && (
                                             <span className="rounded-full bg-surface-100 px-[9px] py-0.5 text-xs font-bold text-ink-900">{orders.length}</span>
                                         )}
@@ -382,24 +391,24 @@ function ProfilePage() {
                                 onClick={handleLogout}
                                 className="mt-1.5 block w-full border-t border-surface-100 px-4 py-[13px] text-left text-[15px] font-semibold text-danger"
                             >
-                                Sign out
+                                {t('account.signOut')}
                             </button>
                         </div>
 
                         <div className="mt-4 rounded-[20px] bg-surface-100 p-[22px]">
-                            <p className="mb-2 text-base font-bold">Need a hand?</p>
+                            <p className="mb-2 text-base font-bold">{t('profile.needHand.title')}</p>
                             <p className="mb-4 text-sm leading-[1.55] text-ink-600">
-                                Questions about an order, warranty or service — we answer within an hour.
+                                {t('profile.needHand.body')}
                             </p>
                             <Link to="/contacts" className="inline-flex rounded-full bg-brand-600 px-5 py-3 text-sm font-bold text-white hover:bg-brand-700">
-                                Contact support
+                                {t('profile.needHand.cta')}
                             </Link>
                         </div>
                     </nav>
 
                     <div className="min-w-0 flex-[999_1_560px]">
                         <h2 className="mb-5 text-[26px] font-extrabold tracking-[-0.02em]">
-                            {SECTIONS.find(s => s.id === section).label}
+                            {t(SECTIONS.find(s => s.id === section).key)}
                         </h2>
 
                         {section === 'orders' && <OrdersSection orders={orders} error={ordersError} onBuyAgain={handleBuyAgain} />}
@@ -407,7 +416,7 @@ function ProfilePage() {
                         {section === 'settings' && (profile ? (
                             <SettingsSection profile={profile} onSaved={setProfile} />
                         ) : (
-                            <p className="text-[15px] text-ink-400">Loading…</p>
+                            <p className="text-[15px] text-ink-400">{t('common.loading')}</p>
                         ))}
                     </div>
                 </div>

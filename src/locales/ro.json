@@ -1,0 +1,726 @@
+{
+  "topbar": {
+    "freeDelivery": "Livrare gratuită în Moldova pentru comenzi de peste 2 000 MDL",
+    "expert": "Sfaturi de la oameni care practică SUP",
+    "showroom": "Vizitați showroom-ul nostru din Chișinău",
+    "contact": "Contactați-ne",
+    "language": "Limba"
+  },
+  "header": {
+    "home": "SUP Shop Moldova — pagina principală",
+    "openMenu": "Deschide meniul",
+    "wishlist": "Favorite",
+    "cart": "Coș",
+    "signIn": "Autentificare"
+  },
+  "account": {
+    "myOrders": "Comenzile mele",
+    "settings": "Setări",
+    "adminPanel": "Panou de administrare",
+    "signOut": "Ieșire",
+    "ordersAndSettings": "Comenzi și setări",
+    "orCreate": "Sau creați un cont"
+  },
+  "menu": {
+    "title": "Meniu",
+    "close": "Închide meniul",
+    "call": "Sunați",
+    "categories": "Categorii",
+    "seeAllIn": "Tot din {{name}} →",
+    "sale": "Reduceri",
+    "contacts": "Contacte"
+  },
+  "footer": {
+    "usp": {
+      "delivery": {
+        "title": "Livrare gratuită",
+        "body": "La comenzi de peste 2 000 MDL"
+      },
+      "warranty": {
+        "title": "Garanție 2 ani",
+        "body": "Dealer oficial, service local"
+      },
+      "returns": {
+        "title": "Retur în 14 zile",
+        "body": "Echipament nefolosit, fără întrebări"
+      },
+      "showroom": {
+        "title": "Showroom",
+        "body": "Testați înainte să cumpărați, Chișinău"
+      }
+    },
+    "columns": {
+      "shop": "MAGAZIN",
+      "help": "AJUTOR",
+      "account": "CONT",
+      "company": "COMPANIE"
+    },
+    "links": {
+      "supBoards": "Plăci SUP",
+      "paddles": "Vâsle",
+      "wingFoiling": "Wing foiling",
+      "wetsuits": "Costume de neopren",
+      "accessories": "Accesorii",
+      "sale": "Reduceri",
+      "delivery": "Livrare și plată",
+      "returns": "Retur în 14 zile",
+      "warranty": "Garanție și service",
+      "howToChoose": "Cum să alegeți o placă SUP",
+      "faq": "Întrebări frecvente",
+      "signIn": "Autentificare",
+      "createAccount": "Creați un cont",
+      "wishlist": "Favorite",
+      "cart": "Coș",
+      "about": "Despre noi",
+      "showroom": "Showroom",
+      "contacts": "Contacte",
+      "terms": "Condiții de vânzare",
+      "privacy": "Politica de confidențialitate"
+    },
+    "about": "Plăci SUP, vâsle și echipament pentru sporturi nautice în Moldova. Showroom și centru de testare în Chișinău.",
+    "city": "Chișinău, Moldova",
+    "newsletter": "NEWSLETTER",
+    "newsletterText": "Noutăți și date de competiții, o dată pe lună.",
+    "email": "Adresa de email",
+    "subscribe": "Abonați-vă",
+    "copyright": "© {{year}} SUP Shop Moldova · Chișinău",
+    "weAccept": "Acceptăm"
+  },
+  "auth": {
+    "show": "Arată",
+    "hide": "Ascunde"
+  },
+  "toast": {
+    "close": "Închide notificarea",
+    "addedToCart": "Adăugat în coș",
+    "goToCart": "Mergeți la coș",
+    "addedToWishlist": "Adăugat la favorite",
+    "openWishlist": "Deschide favoritele",
+    "wishlistFailed": "Nu am putut actualiza favoritele",
+    "tryAgain": "Încercați din nou."
+  },
+  "steps": {
+    "cart": "Coș",
+    "delivery": "Livrare",
+    "payment": "Plată",
+    "done": "Gata"
+  },
+  "nav": {
+    "label": "Categorii de produse",
+    "brands": "Branduri",
+    "shopAll": "Tot din {{name}} ({{count}}) →",
+    "seeDeals": "Vezi ofertele"
+  },
+  "search": {
+    "label": "Căutare în magazin",
+    "placeholder": "Căutați plăci SUP, vâsle, accesorii…",
+    "clear": "Șterge căutarea",
+    "searching": "Se caută…",
+    "nothingFound": "Nu am găsit nimic pentru <b>„{{term}}”</b>. Încercați un brand sau un tip de placă.",
+    "seeAll_one": "Vedeți {{count}} rezultat pentru „{{term}}” →",
+    "seeAll_few": "Vedeți toate cele {{count}} rezultate pentru „{{term}}” →",
+    "seeAll_many": "Vedeți toate cele {{count}} de rezultate pentru „{{term}}” →",
+    "seeAll_other": "Vedeți toate cele {{count}} de rezultate pentru „{{term}}” →"
+  },
+  "card": {
+    "soldOut": "Stoc epuizat",
+    "limited": "Stoc limitat",
+    "addToWishlist": "Adaugă la favorite",
+    "removeFromWishlist": "Elimină din favorite",
+    "prevPhoto": "Fotografia anterioară",
+    "nextPhoto": "Fotografia următoare",
+    "notifyMe": "Anunțați-mă",
+    "addToCart": "Adaugă în coș →"
+  },
+  "stock": {
+    "in": "În stoc",
+    "out": "Stoc epuizat",
+    "few_one": "A rămas doar {{count}}",
+    "few_few": "Au rămas doar {{count}}",
+    "few_many": "Au rămas doar {{count}}",
+    "few_other": "Au rămas doar {{count}}"
+  },
+  "boardType": {
+    "INFLATABLE": "Gonflabilă",
+    "HARD": "Compozit / rigidă",
+    "COMPOSITE": "Compozit / rigidă",
+    "HARDBOARD": "Rigidă"
+  },
+  "hero": {
+    "label": "Colecții recomandate",
+    "prev": "Slide-ul anterior",
+    "next": "Slide-ul următor",
+    "show": "Arată slide-ul {{n}}: {{name}}",
+    "race": {
+      "eyebrow": "CURSE ȘI TURISM",
+      "title": "Făcute pentru distanță, reglate pentru viteză",
+      "body": "Plăci de curse și turism de la Starboard, Red Paddle Co și Fanatic — în stoc în Chișinău.",
+      "cta": "Plăci de curse",
+      "cta2": "Cum să alegeți",
+      "alt": "Doi sportivi întorc plăci de curse Starboard pe apă deschisă"
+    },
+    "inflatable": {
+      "eyebrow": "PLĂCI GONFLABILE",
+      "title": "Încape într-un rucsac, merge ca o placă rigidă",
+      "body": "Plăci gonflabile de la Red Paddle Co, Fanatic și Starboard — rigide, ușoare și ușor de transportat.",
+      "cta": "Plăci gonflabile",
+      "cta2": "Comparați după preț",
+      "alt": "Trei sportivi pe plăci gonflabile Starboard pe un lac turcoaz"
+    },
+    "foil": {
+      "eyebrow": "FOIL ȘI WING",
+      "title": "Ridicați-vă deasupra apei în acest sezon",
+      "body": "Wing-uri, foil-uri și plăci foil de la Starboard și SIC Maui. Vă ajutăm să alegeți mărimea înainte de cumpărare.",
+      "cta": "Foil și wing",
+      "cta2": "Întrebați un expert",
+      "alt": "Un rider zboară cu wing foil deasupra apei"
+    },
+    "robes": {
+      "eyebrow": "PONCHO-URI ȘI STRATURI",
+      "title": "Sezonul durează cât timp vă e cald",
+      "body": "Poncho-uri impermeabile, halate de schimb și bluze cu uscare rapidă pentru diminețile reci pe apă.",
+      "cta": "Poncho-uri",
+      "cta2": "Toată îmbrăcămintea",
+      "alt": "Doi prieteni în poncho-uri împart o gustare lângă un caiac pe malul lacului"
+    }
+  },
+  "common": {
+    "viewAll": "Vezi toate ({{count}}) →",
+    "vatIncluded": "TVA inclus",
+    "addToCart": "Adaugă în coș",
+    "home": "Acasă",
+    "catalog": "Catalog",
+    "breadcrumb": "Navigare",
+    "loading": "Se încarcă…"
+  },
+  "featured": {
+    "badge": "Placa lunii",
+    "illustration": "Ilustrație: {{name}}",
+    "fullDetails": "Toate detaliile"
+  },
+  "tiles": {
+    "paddles": "Vâsle",
+    "sup": "Plăci SUP",
+    "foil-wing": "Foil și Wing",
+    "surf": "Surf",
+    "clothing": "Îmbrăcăminte",
+    "accessories": "Accesorii",
+    "shopNow": "Vezi produsele"
+  },
+  "home": {
+    "services": {
+      "cod": {
+        "title": "Plata la livrare",
+        "body": "Numerar sau card curierului"
+      },
+      "delivery": {
+        "title": "Livrare gratuită",
+        "body": "Comenzi de peste 2 000 MDL"
+      },
+      "advice": {
+        "title": "Sfaturi utile",
+        "body": "Lun–Sâm, răspundem într-o oră"
+      },
+      "showroom": {
+        "title": "Showroom",
+        "body": "Încercați placa în Chișinău"
+      }
+    },
+    "dealer": "DEALER OFICIAL",
+    "allProducts": "Toate produsele →",
+    "categories": {
+      "eyebrow": "TOTUL PENTRU APĂ",
+      "title": "Cumpărați după categorie",
+      "link": "Vedeți tot catalogul →"
+    },
+    "race": {
+      "eyebrow": "PENTRU DISTANȚĂ ȘI VITEZĂ",
+      "title": "Plăci de curse și turism"
+    },
+    "inflatable": {
+      "eyebrow": "STRÂNGEȚI, UMFLAȚI, VÂSLIȚI",
+      "title": "Gonflabile și universale"
+    },
+    "showroom": {
+      "eyebrow": "TESTAȚI ÎNAINTE DE CUMPĂRARE",
+      "title": "Încercați câteva plăci înainte să alegeți",
+      "body": "Veniți la showroom-ul din Chișinău, spuneți-ne unde vâsliți, iar noi vă arătăm formele potrivite pentru dvs.",
+      "visit": "Vizitați showroom-ul",
+      "browse": "Vedeți plăcile SUP",
+      "alt": "O sportivă cu o placă gonflabilă, pompă și rucsac pe plajă"
+    },
+    "finder": {
+      "eyebrow": "ALEGEȚI PLACA",
+      "title": "Trei întrebări, trei plăci potrivite",
+      "link": "Cereți o selecție →",
+      "goal": {
+        "title": "Scopul dvs.",
+        "body": "Plimbare, explorare sau curse"
+      },
+      "water": {
+        "title": "Apa dvs.",
+        "body": "Lac, râu sau mare"
+      },
+      "fit": {
+        "title": "Potrivirea",
+        "body": "Stabilitate, viteză sau echilibru"
+      },
+      "cta": "Găsiți placa"
+    },
+    "newsletter": {
+      "title": "Noutăți, date de competiții, sfaturi sincere",
+      "body": "Un email pe lună. Fără spam, dezabonare dintr-un clic."
+    }
+  },
+  "catalog": {
+    "sort": {
+      "featured": "Recomandate",
+      "priceAsc": "Preț: crescător",
+      "priceDesc": "Preț: descrescător",
+      "newest": "Cele mai noi"
+    },
+    "sortBy": "Sortare",
+    "errors": {
+      "notFound": "Această categorie nu există.",
+      "loadFailed": "Nu am putut încărca produsele."
+    },
+    "categoryNotFound": "Categoria nu a fost găsită",
+    "resultsFor": "Rezultate pentru „{{term}}”",
+    "sale": "Reduceri",
+    "all": "Toate produsele",
+    "description": "Plăci SUP, vâsle și echipament pentru sporturi nautice — în stoc în Chișinău, cu livrare în toată Moldova.",
+    "brandFallback": "Brand {{id}}",
+    "chips": {
+      "from": "De la {{price}}",
+      "to": "Până la {{price}}",
+      "search": "Căutare: {{term}}"
+    },
+    "filters": "Filtre",
+    "clearAll": "Resetează",
+    "closeFilters": "Închide filtrele",
+    "brand": "Brand",
+    "inStockOnly": "Doar în stoc",
+    "onSale": "Cu reducere",
+    "help": {
+      "title": "Aveți nevoie de ajutor?",
+      "body": "Spuneți-ne greutatea și unde vâsliți — vă propunem trei variante.",
+      "cta": "Întrebați un expert"
+    },
+    "show_one": "Arată {{count}} produs",
+    "show_few": "Arată {{count}} produse",
+    "show_many": "Arată {{count}} de produse",
+    "show_other": "Arată {{count}} de produse",
+    "showProducts": "Arată produsele",
+    "count_one": "<b>{{count}}</b> produs",
+    "count_few": "<b>{{count}}</b> produse",
+    "count_many": "<b>{{count}}</b> de produse",
+    "count_other": "<b>{{count}}</b> de produse",
+    "loading": "Se încarcă produsele…",
+    "empty": "Niciun produs nu corespunde filtrelor",
+    "clearFilters": "Resetează toate filtrele",
+    "price": {
+      "title": "Preț, MDL",
+      "min": "Preț minim",
+      "max": "Preț maxim",
+      "from": "De la",
+      "to": "Până la",
+      "apply": "Aplică prețul"
+    },
+    "pagination": {
+      "prev": "Înapoi",
+      "next": "Înainte"
+    }
+  },
+  "product": {
+    "assurances": {
+      "delivery": {
+        "title": "Livrare gratuită",
+        "body": "În toată Moldova la comenzi de peste {{price}}, 1–3 zile"
+      },
+      "warranty": {
+        "title": "Garanție 2 ani",
+        "body": "Dealer oficial, service în Chișinău"
+      },
+      "returns": {
+        "title": "Retur în 14 zile",
+        "body": "Echipament nefolosit, în ambalajul original"
+      },
+      "test": {
+        "title": "Testați înainte de cumpărare",
+        "body": "Veniți la showroom și încercați placa"
+      }
+    },
+    "loading": "Se încarcă produsul…",
+    "notFound": {
+      "title": "Produsul nu a fost găsit",
+      "body": "Poate s-a epuizat sau linkul este vechi.",
+      "back": "Înapoi la catalog"
+    },
+    "boardType": "Tipul plăcii",
+    "tabs": {
+      "specs": "Specificații",
+      "description": "Descriere"
+    },
+    "breadcrumb": "Navigare",
+    "prevImage": "Imaginea anterioară",
+    "nextImage": "Imaginea următoare",
+    "photo": "Fotografia {{n}}",
+    "sale": "Reducere",
+    "vatAndDelivery": "TVA inclus · Livrare gratuită pentru comenzi de peste {{price}}",
+    "decrease": "Scade cantitatea",
+    "increase": "Mărește cantitatea",
+    "added": "Adăugat — mergeți la coș",
+    "buyNow": "Cumpără acum",
+    "help": {
+      "title": "Nu sunteți sigur că e placa potrivită?",
+      "body": "Trimiteți-ne greutatea și unde vâsliți, iar noi confirmăm mărimea înainte de cumpărare."
+    },
+    "moreIn": "Mai multe din {{name}}",
+    "youMayLike": "V-ar putea plăcea și"
+  },
+  "wishlist": {
+    "title": "Favorite",
+    "signedIn": "Plăcile și echipamentul salvate. Rămân în contul dvs. pe orice dispozitiv.",
+    "guest": "Salvate în acest browser. Autentificați-vă ca să le vedeți pe orice dispozitiv.",
+    "empty": {
+      "title": "Nimic salvat încă",
+      "body": "Apăsați inima de pe orice produs ca să-l păstrați aici.",
+      "cta": "Vedeți catalogul"
+    }
+  },
+  "cart": {
+    "guarantees": {
+      "cod": "Plata cu numerar sau card curierului la livrare",
+      "returns": "14 zile pentru returul echipamentului nefolosit",
+      "warranty": "Garanție oficială 2 ani, service în Chișinău"
+    },
+    "continue": "Continuați cumpărăturile",
+    "title": "Coșul dvs.",
+    "items_one": "{{count}} produs",
+    "items_few": "{{count}} produse",
+    "items_many": "{{count}} de produse",
+    "items_other": "{{count}} de produse",
+    "freeReached": "Comanda dvs. beneficiază de livrare gratuită în toată Moldova",
+    "freeLeft": "Mai adăugați {{price}} pentru livrare gratuită",
+    "remove": "Elimină",
+    "decreaseOf": "Scade cantitatea pentru {{name}}",
+    "increaseOf": "Mărește cantitatea pentru {{name}}",
+    "empty": {
+      "title": "Coșul este gol",
+      "body": "Încă nimic aici — plăcile vă așteaptă."
+    },
+    "summary": {
+      "title": "Sumarul comenzii",
+      "subtotal_one": "Subtotal ({{count}} produs)",
+      "subtotal_few": "Subtotal ({{count}} produse)",
+      "subtotal_many": "Subtotal ({{count}} de produse)",
+      "subtotal_other": "Subtotal ({{count}} de produse)",
+      "delivery": "Livrare în Moldova",
+      "free": "Gratuită",
+      "atCheckout": "Se calculează la comandă",
+      "arrival": "Termen de livrare",
+      "days": "1–3 zile lucrătoare",
+      "total": "Total"
+    },
+    "checkout": "Treceți la comandă",
+    "addOns": {
+      "title": "Adăugați la comandă",
+      "add": "Adaugă {{name}} în coș"
+    }
+  },
+  "cities": {
+    "chisinau": "Chișinău",
+    "balti": "Bălți",
+    "cahul": "Cahul",
+    "orhei": "Orhei",
+    "other": "Altă localitate"
+  },
+  "delivery": {
+    "COURIER_CHISINAU": "Curier în Chișinău",
+    "COURIER_MOLDOVA": "Curier în toată Moldova",
+    "PICKUP": "Ridicare din showroom",
+    "PARCEL_LOCKER": "Terminal de colete"
+  },
+  "payment": {
+    "CASH_ON_DELIVERY": "Numerar sau card la livrare",
+    "BANK_TRANSFER": "Transfer bancar",
+    "card": "Card online",
+    "instal": "Rate 0%"
+  },
+  "orders": {
+    "status": {
+      "NEW": "În procesare",
+      "PAID": "Achitată",
+      "SHIPPED": "În livrare",
+      "COMPLETED": "Livrată",
+      "CANCELLED": "Anulată"
+    }
+  },
+  "errors": {
+    "serverDown": "Serverul nu este disponibil. Încercați mai târziu.",
+    "checkout": "Nu am putut plasa comanda. Încercați din nou.",
+    "login": "Autentificare eșuată. Verificați numele de utilizator și parola.",
+    "register": "Nu am putut crea contul. Încercați din nou.",
+    "saveProfile": "Nu am putut salva modificările.",
+    "changePassword": "Nu am putut schimba parola.",
+    "loadOrders": "Nu am putut încărca comenzile.",
+    "buyAgain": "Nu am putut adăuga produsele în coș."
+  },
+  "checkout": {
+    "shipping": {
+      "COURIER_CHISINAU": "Următoarea zi lucrătoare, interval de 2 ore",
+      "COURIER_MOLDOVA": "1–3 zile lucrătoare, cu apel înainte de livrare",
+      "PICKUP": "{{address}} — gata în 2 ore",
+      "PARCEL_LOCKER": "Doar colete mici, până la 10 kg"
+    },
+    "payment": {
+      "CASH_ON_DELIVERY": {
+        "body": "Achitați curierului la primirea comenzii",
+        "cta": "Plasează comanda"
+      },
+      "BANK_TRANSFER": {
+        "body": "Pentru companii — factură cu TVA",
+        "cta": "Primește factura"
+      },
+      "card": {
+        "body": "Visa, Mastercard, MIA — 3-D Secure"
+      },
+      "instal": {
+        "body": "Prin banca parteneră, până la 12 luni"
+      }
+    },
+    "comingSoon": "{{text}} · în curând",
+    "guarantees": {
+      "call": "Curierul sună înainte de livrare"
+    },
+    "errors": {
+      "firstName": "Introduceți prenumele",
+      "lastName": "Introduceți numele",
+      "phone": "Introduceți telefonul în formatul +373 69 000 000",
+      "email": "Introduceți emailul în formatul nume@mail.com",
+      "street": "Introduceți strada și numărul"
+    },
+    "optional": "(opțional)",
+    "secure": "Comandă securizată",
+    "toast": {
+      "placedNumber": "Comanda {{number}} a fost plasată",
+      "placed": "Comanda a fost plasată",
+      "toPay": "De plată: {{price}}"
+    },
+    "viewOrders": "Vedeți comenzile mele",
+    "done": {
+      "titleNumber": "Comanda {{number}} este plasată",
+      "title": "Comanda dvs. este plasată",
+      "call": "Vă mulțumim! Vă sunăm la <b>{{phone}}</b> pentru a confirma livrarea.",
+      "toPay": "De plată: <b>{{price}}</b>"
+    },
+    "title": "Plasarea comenzii",
+    "details": "1 · Datele dvs.",
+    "signedInAs": "Autentificat ca <b>{{name}}</b>.",
+    "fields": {
+      "firstName": "Prenume",
+      "lastName": "Nume",
+      "phone": "Telefon",
+      "phoneHint": "Curierul vă va suna înainte de livrare.",
+      "email": "Email",
+      "city": "Localitate",
+      "street": "Strada și numărul",
+      "flat": "Apartament / birou",
+      "note": "Mesaj pentru curier",
+      "notePlaceholder": "Codul interfonului, ora potrivită pentru apel…"
+    },
+    "delivery": "2 · Livrare",
+    "paymentStep": "3 · Plată",
+    "free": "Gratuit",
+    "yourOrder": "Comanda dvs.",
+    "subtotal": "Subtotal",
+    "deliveryRow": "Livrare",
+    "toPay": "De plată",
+    "placing": "Se plasează comanda…",
+    "terms": "Plasând comanda, acceptați <terms>condițiile de vânzare</terms> și <privacy>politica de confidențialitate</privacy>.",
+    "backToCart": "Înapoi la coș",
+    "pickupNote": "Vă sunăm când comanda este gata. Showroom: <b>{{address}}</b>."
+  },
+  "login": {
+    "perks": {
+      "track": "Urmăriți fiecare comandă, de la plată până la ușă",
+      "wishlist": "Salvați plăcile la favorite și aflați când revin în stoc",
+      "faster": "Comandați mai repede cu adresele salvate",
+      "demo": "Zile de test doar pentru membri și acces devreme la noutăți"
+    },
+    "asideEyebrow": "MEMBRII PRIMESC MAI MULT",
+    "asideTitle": "Echipamentul, comenzile și favoritele într-un singur loc",
+    "title": "Autentificare",
+    "subtitle": "Comenzile, favoritele și adresele salvate, toate într-un singur loc.",
+    "username": "Nume de utilizator",
+    "password": "Parolă",
+    "keepSignedIn": "Rămâneți autentificat",
+    "submitting": "Se autentifică…",
+    "submit": "Intră în cont",
+    "newHere": "Sunteți nou? <link>Creați un cont</link> — durează un minut.",
+    "terms": "Autentificându-vă, acceptați <terms>condițiile de vânzare</terms> și <privacy>politica de confidențialitate</privacy>.",
+    "createAccount": "Creați un cont"
+  },
+  "register": {
+    "perks": {
+      "warranty": {
+        "title": "Garanție fără hârtii",
+        "body": "Fiecare cumpărătură e salvată — nu căutați bonul peste doi ani."
+      },
+      "faster": {
+        "title": "Comandă mai rapidă",
+        "body": "Adrese salvate, nimic de reintrodus."
+      },
+      "stock": {
+        "title": "Alerte de revenire în stoc",
+        "body": "Salvați o placă și vă anunțăm când ajunge."
+      },
+      "demo": {
+        "title": "Primii la zilele de test",
+        "body": "Membrii primesc invitația înainte ca locurile să devină publice."
+      }
+    },
+    "strength": {
+      "0": "prea scurtă",
+      "1": "slabă",
+      "2": "medie",
+      "3": "bună",
+      "4": "puternică"
+    },
+    "strengthLine": "Siguranța: <b>{{label}}</b> — cel puțin 8 caractere și o cifră.",
+    "errors": {
+      "mismatch": "Parolele nu coincid",
+      "terms": "Acceptați condițiile de vânzare și politica de confidențialitate"
+    },
+    "signIn": "Autentificare",
+    "asideEyebrow": "DE CE SĂ VĂ ÎNREGISTRAȚI",
+    "asideTitle": "Pentru cei care cumpără o dată și vâslesc ani la rând",
+    "privacy": "Datele dvs. rămân la noi și la curier. Nu le vindem niciodată.",
+    "title": "Creați un cont",
+    "subtitle": "Un minut acum și comenzi mai rapide de fiecare dată.",
+    "fullName": "Nume complet",
+    "fullNameHint": "Opțional — pentru curier și facturi.",
+    "emailHint": "Aici trimitem confirmările comenzilor.",
+    "repeatPassword": "Repetați parola",
+    "accept": "Accept <terms>condițiile de vânzare</terms> și <privacy>politica de confidențialitate</privacy>.",
+    "submitting": "Se creează…",
+    "submit": "Creează contul",
+    "haveAccount": "Aveți deja un cont? <link>Autentificați-vă</link>"
+  },
+  "profile": {
+    "order": "Comanda",
+    "placed": "Plasată",
+    "total": "Total",
+    "buyAgain": "Cumpără din nou",
+    "orderHelp": "Aveți nevoie de ajutor cu această comandă?",
+    "loadingOrders": "Se încarcă comenzile…",
+    "noOrders": {
+      "title": "Încă nu aveți comenzi",
+      "body": "Când plasați o comandă, aceasta apare aici împreună cu statutul ei."
+    },
+    "details": "Date personale",
+    "fullName": "Nume complet",
+    "email": "Email",
+    "saving": "Se salvează…",
+    "saveChanges": "Salvează modificările",
+    "saved": "Salvat",
+    "changePassword": "Schimbă parola",
+    "passwordChanged": "Parola a fost schimbată",
+    "currentPassword": "Parola actuală",
+    "newPassword": "Parola nouă",
+    "repeatNewPassword": "Repetați parola nouă",
+    "passwordRule": "Cel puțin 8 caractere.",
+    "updatePassword": "Actualizează parola",
+    "hello": "Bună, {{name}}",
+    "memberSince": " · membru din {{date}}",
+    "kpi": {
+      "placed": "Comenzi plasate",
+      "inDelivery": "În livrare",
+      "delivered": "Livrate"
+    },
+    "sections": "Secțiunile profilului",
+    "needHand": {
+      "title": "Aveți nevoie de ajutor?",
+      "body": "Întrebări despre comandă, garanție sau service — răspundem într-o oră.",
+      "cta": "Contactați suportul"
+    }
+  },
+  "contacts": {
+    "topics": {
+      "choose": "Ajutați-mă să aleg o placă",
+      "order": "Întrebare despre o comandă",
+      "delivery": "Livrare și plată",
+      "warranty": "Garanție sau reparație",
+      "rental": "Închiriere și zile de test",
+      "wholesale": "En-gros și cluburi"
+    },
+    "faq": {
+      "delivery": {
+        "q": "Cât durează livrarea?",
+        "a": "Chișinău — următoarea zi lucrătoare. În Moldova — 1–3 zile lucrătoare cu curierul. Gratuit de la 2 000 MDL."
+      },
+      "cod": {
+        "q": "Pot plăti la livrare?",
+        "a": "Da. Numerar sau card curierului la livrare, sau transfer bancar pentru companii."
+      },
+      "test": {
+        "q": "Pot testa o placă înainte de cumpărare?",
+        "a": "Da — rezervați o oră la showroom sau veniți la o zi de test pe lacul Ghidighici, din mai până în septembrie."
+      },
+      "returns": {
+        "q": "Ce fac dacă placa nu mi se potrivește?",
+        "a": "14 zile pentru returul echipamentului nefolosit, în ambalajul original. Garanția se rezolvă local, fără expediere în străinătate."
+      }
+    },
+    "legal": {
+      "name": "Denumire juridică",
+      "idno": "IDNO",
+      "vat": "Cod TVA",
+      "address": "Adresă juridică",
+      "bank": "Bancă"
+    },
+    "status": {
+      "open": "Deschis acum · se închide la {{hour}}:00",
+      "closed": "Închis acum"
+    },
+    "emails": {
+      "general": "Întrebări generale și comenzi",
+      "service": "Service și garanție",
+      "b2b": "En-gros și cluburi"
+    },
+    "title": "Vorbiți cu oameni care practică SUP",
+    "subtitle": "Sunați, scrieți sau veniți la showroom. Răspundem într-o oră lucrătoare, de luni până sâmbătă.",
+    "call": {
+      "title": "Sunați-ne",
+      "hours": "Lun–Sâm 10:00–19:00, duminică închis.<br/>Și pe WhatsApp, Viber și Telegram."
+    },
+    "write": {
+      "title": "Scrieți-ne",
+      "reply": "Răspundem într-o oră lucrătoare."
+    },
+    "showroom": {
+      "title": "Showroom",
+      "hours": "Lun–Vin 10:00–19:00<br/>Sâm 10:00–16:00 · duminică închis<br/>Parcare gratuită la intrare.",
+      "directions": "Cum ajungeți"
+    },
+    "map": {
+      "title": "Showroom-ul SUP Shop pe hartă",
+      "label": "Showroom SUP Shop"
+    },
+    "form": {
+      "title": "Trimiteți-ne un mesaj",
+      "intro": "Spuneți-ne greutatea, unde vâsliți și ce vreți să faceți pe placă — revenim cu două-trei variante.",
+      "name": "Numele dvs.",
+      "phone": "Telefon",
+      "email": "Email",
+      "topic": "Despre ce este vorba?",
+      "message": "Mesaj",
+      "messagePlaceholder": "Am 82 kg și vâslesc mai ales pe Nistru…",
+      "consent": "Sunt de acord cu prelucrarea datelor personale conform <link>politicii de confidențialitate</link>.",
+      "send": "Trimite mesajul",
+      "sent": "Aplicația de email ar trebui să se deschidă cu mesajul gata. Dacă nu s-a deschis, scrieți la <link>{{email}}</link>."
+    },
+    "faqTitle": "Răspunsuri rapide",
+    "legalTitle": "Date despre companie"
+  }
+}

@@ -1,11 +1,13 @@
 import { Check } from 'lucide-react';
 import Container from './Container';
+import { useTranslation } from 'react-i18next';
 
-const STEPS = ['Cart', 'Delivery', 'Payment'];
+const STEPS = ['cart', 'delivery', 'payment'];
 
 // Полоса шагов корзина → доставка → оплата. В макете оформления доставка и оплата на одной странице,
 // поэтому активными могут быть сразу несколько шагов
 function CheckoutSteps({ done = [], active = [] }) {
+    const { t } = useTranslation();
     return (
         <div className="border-b border-line bg-surface-50">
             <Container as="ol" className="flex flex-wrap items-center gap-x-[18px] gap-y-2.5 py-[18px]">
@@ -20,10 +22,10 @@ function CheckoutSteps({ done = [], active = [] }) {
                     return (
                         <li key={step} className="flex items-center gap-2.5">
                             <span className={`flex h-7 w-7 items-center justify-center rounded-full border text-[13px] font-bold ${circle}`}>
-                                {isDone ? <Check size={15} strokeWidth={2.6} aria-label="Done" /> : i + 1}
+                                {isDone ? <Check size={15} strokeWidth={2.6} aria-label={t('steps.done')} /> : i + 1}
                             </span>
                             <span className={`text-[15px] ${isActive ? 'font-bold text-ink-900' : 'font-medium text-ink-400'}`}>
-                                {step}
+                                {t(`steps.${step}`)}
                             </span>
                             {i < STEPS.length - 1 && <span className="ml-2 h-px w-10 bg-line-divider" />}
                         </li>

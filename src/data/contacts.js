@@ -5,10 +5,11 @@ export const PHONE_HREF = 'tel:+37368820853';
 export const SHOWROOM = 'str. Albișoara 4, Chișinău';
 export const SHOWROOM_POSTCODE = 'MD-2005, Moldova';
 
+// подпись отдела в contacts.emails.<key>
 export const EMAILS = [
-    { dept: 'General and orders', address: 'hello@supshop.md' },
-    { dept: 'Service and warranty', address: 'service@supshop.md' },
-    { dept: 'Wholesale and clubs', address: 'b2b@supshop.md' },
+    { key: 'general', address: 'hello@supshop.md' },
+    { key: 'service', address: 'service@supshop.md' },
+    { key: 'b2b', address: 'b2b@supshop.md' },
 ];
 
 export const MESSENGERS = [
