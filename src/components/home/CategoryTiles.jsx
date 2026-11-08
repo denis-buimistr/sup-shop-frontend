@@ -1,33 +1,28 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import paddles from '../../assets/categories/paddles.jpg';
-import paddleboards from '../../assets/categories/sup.jpg';
-import foilWing from '../../assets/categories/foil-wing.jpg';
-import surf from '../../assets/categories/surf.jpg';
-import clothing from '../../assets/categories/clothing.jpg';
-import accessories from '../../assets/categories/accessories.jpg';
+import { CATEGORY_PHOTOS } from '../../data/categoryPhotos';
 
 // подпись делаю текстом, а не беру с картинки — так её видят поисковики и потом можно перевести
 const TILES = [
-    { slug: 'paddles', title: 'Paddles', photo: paddles },
-    { slug: 'sup', title: 'Paddleboards', photo: paddleboards },
-    { slug: 'foil-wing', title: 'Foil & Wing', photo: foilWing },
-    { slug: 'surf', title: 'Surf', photo: surf },
-    { slug: 'clothing', title: 'Clothing', photo: clothing },
-    { slug: 'accessories', title: 'Accessories', photo: accessories },
+    { slug: 'paddles', title: 'Paddles' },
+    { slug: 'sup', title: 'Paddleboards' },
+    { slug: 'foil-wing', title: 'Foil & Wing' },
+    { slug: 'surf', title: 'Surf' },
+    { slug: 'clothing', title: 'Clothing' },
+    { slug: 'accessories', title: 'Accessories' },
 ];
 
 function CategoryTiles() {
     return (
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {TILES.map(({ slug, title, photo }) => (
+            {TILES.map(({ slug, title }) => (
                 <Link
                     key={slug}
                     to={`/catalog/${slug}`}
                     className="group relative block aspect-[488/440] overflow-hidden rounded-3xl bg-deep-900"
                 >
                     <img
-                        src={photo}
+                        src={CATEGORY_PHOTOS[slug]}
                         alt=""
                         className="absolute inset-x-0 top-0 h-[74%] w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />

@@ -9,6 +9,7 @@ import { PHONE_HREF } from '../data/contacts';
 const LINKS = [
     { label: 'Contacts', to: '/contacts' },
     { label: 'My orders', to: '/profile' },
+    { label: 'Wishlist', to: '/wishlist' },
     { label: 'Cart', to: '/cart' },
 ];
 

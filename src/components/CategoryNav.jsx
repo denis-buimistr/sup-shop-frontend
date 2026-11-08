@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ChevronDown } from 'lucide-react';
 import { useBrands, useCategories } from '../hooks/useCatalogData';
 import { getChildren, getRoots } from '../utils/categories';
+import { findCategoryPhoto } from '../data/categoryPhotos';
 
 const topClass = 'flex items-center gap-1.5 py-4 text-[13px] font-bold uppercase tracking-[0.05em] transition-colors';
 const linkClass = 'flex items-baseline justify-between gap-2.5 py-2 text-[15px] font-medium text-ink-900 hover:text-brand-600';
@@ -53,6 +54,7 @@ function CategoryNav() {
 
     const roots = categories ? getRoots(categories) : [];
     const active = roots.find(root => root.id === openId);
+    const promoPhoto = active ? findCategoryPhoto([active]) : null;
     const subcategories = active ? getChildren(categories, active.id) : [];
     const close = () => setOpenId(null);
 
@@ -140,13 +142,20 @@ function CategoryNav() {
                         )}
 
                         {active.description && (
-                            <div className="min-w-0 flex-[1_1_260px] rounded-[20px] bg-surface-100 p-6">
-                                <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.12em] text-brand-600">{active.name}</p>
-                                <p className="mb-[18px] text-lg font-extrabold leading-[1.3] text-ink-900">{active.description}</p>
+                            <div className={`relative min-w-0 flex-[1_1_260px] overflow-hidden rounded-[20px] p-6 ${promoPhoto ? 'bg-deep-900' : 'bg-surface-100'}`}>
+                                {promoPhoto && (
+                                    <>
+                                        <img src={promoPhoto.src} alt="" className="absolute inset-0 h-full w-full object-cover" style={{ objectPosition: promoPhoto.position }} />
+                                        {/* темню слева, там текст и кнопка */}
+                                        <div className="absolute inset-0 bg-gradient-to-r from-deep-900/90 via-deep-900/60 to-deep-900/10" />
+                                    </>
+                                )}
+                                <p className={`relative mb-2 text-[11px] font-bold uppercase tracking-[0.12em] ${promoPhoto ? 'text-sun' : 'text-brand-600'}`}>{active.name}</p>
+                                <p className={`relative mb-[18px] max-w-[260px] text-lg font-extrabold leading-[1.3] ${promoPhoto ? 'text-white' : 'text-ink-900'}`}>{active.description}</p>
                                 <Link
                                     to={`/catalog/${active.slug}?onSale=true`}
                                     onClick={close}
-                                    className="inline-flex rounded-full bg-brand-600 px-[22px] py-3 text-sm font-bold text-white hover:bg-brand-700"
+                                    className="relative inline-flex rounded-full bg-brand-600 px-[22px] py-3 text-sm font-bold text-white hover:bg-brand-700"
                                 >
                                     See the deals
                                 </Link>

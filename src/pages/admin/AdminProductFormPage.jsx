@@ -64,11 +64,44 @@ function ImagesSection({ productId, images, onChange }) {
         }
     }
 
+    const sorted = [...images].sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
+    const [dragId, setDragId] = useState(null);
+    const [overId, setOverId] = useState(null);
+
     function handleDelete(image) {
         setError(null);
+        // после удаления бэкенд сам двигает номера и выбирает новое главное, поэтому беру список заново
         api.delete(`/products/${productId}/images/${image.id}`)
-            .then(() => onChange(images.filter(i => i.id !== image.id)))
+            .then(() => api.get(`/products/${productId}/images`))
+            .then(({ data }) => onChange(data))
             .catch(err => setError(getErrorMessage(err, 'Не удалось удалить фото.')));
+    }
+
+    // сразу показываю новый порядок, а если сервер откажет, возвращаю старый
+    function saveOrder(ids) {
+        const previous = images;
+        const byId = new Map(images.map(i => [i.id, i]));
+        onChange(ids.map((id, i) => ({ ...byId.get(id), sortOrder: i, primary: i === 0 })));
+        setError(null);
+        api.put(`/products/${productId}/images/order`, { imageIds: ids })
+            .then(({ data }) => onChange(data))
+            .catch(err => {
+                onChange(previous);
+                setError(getErrorMessage(err, 'Could not save the photo order.'));
+            });
+    }
+
+    // перетащенное фото встаёт на место того, на которое его бросили
+    function moveTo(movedId, targetId) {
+        if (movedId === targetId) return;
+        const ids = sorted.map(i => i.id).filter(id => id !== movedId);
+        ids.splice(sorted.findIndex(i => i.id === targetId), 0, movedId);
+        saveOrder(ids);
+    }
+
+    function stopDrag() {
+        setDragId(null);
+        setOverId(null);
     }
 
     return (
@@ -76,13 +109,42 @@ function ImagesSection({ productId, images, onChange }) {
             <legend className="px-2.5 text-[17px] font-bold">Photos</legend>
 
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                {[...images].sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0)).map(image => (
-                    <div key={image.id} className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl border border-line bg-surface-100">
-                        <img src={image.imageUrl} alt="" className="max-h-full max-w-full object-contain p-2" />
-                        {image.primary && (
+                {sorted.map(image => (
+                    <div
+                        key={image.id}
+                        draggable
+                        onDragStart={() => setDragId(image.id)}
+                        onDragOver={e => {
+                            // без preventDefault браузер не разрешит бросить сюда
+                            e.preventDefault();
+                            setOverId(image.id);
+                        }}
+                        onDragLeave={() => setOverId(id => (id === image.id ? null : id))}
+                        onDrop={e => {
+                            e.preventDefault();
+                            if (dragId != null) moveTo(dragId, image.id);
+                            stopDrag();
+                        }}
+                        onDragEnd={stopDrag}
+                        className={`relative flex aspect-[4/3] cursor-grab items-center justify-center overflow-hidden rounded-xl border-2 bg-white active:cursor-grabbing ${
+                            overId === image.id && dragId !== image.id ? 'border-brand-600' : 'border-line'
+                        } ${dragId === image.id ? 'opacity-40' : ''}`}
+                    >
+                        <img src={image.imageUrl} alt="" draggable={false} className="pointer-events-none max-h-full max-w-full object-contain p-2" />
+                        {image.primary ? (
                             <span className="absolute left-2 top-2 flex items-center gap-1 rounded-full bg-deep-900 px-2 py-0.5 text-[11px] font-bold text-white">
                                 <Star size={11} strokeWidth={2.4} /> Main
                             </span>
+                        ) : (
+                            <button
+                                type="button"
+                                aria-label="Make main photo"
+                                title="Make main"
+                                onClick={() => moveTo(image.id, sorted[0].id)}
+                                className="absolute left-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-white text-ink-600 shadow hover:text-brand-600"
+                            >
+                                <Star size={15} strokeWidth={2} />
+                            </button>
                         )}
                         <button
                             type="button"
@@ -107,7 +169,7 @@ function ImagesSection({ productId, images, onChange }) {
             </div>
 
             <input ref={inputRef} type="file" accept="image/*" multiple onChange={handleFiles} className="hidden" />
-            <p className="mt-3 text-[13px] text-ink-400">JPG, PNG or WebP up to 5 MB. The first photo becomes the main one in the catalog.</p>
+            <p className="mt-3 text-[13px] text-ink-400">JPG, PNG or WebP up to 5 MB. Drag photos to change the order, the first one is the main photo in the catalog.</p>
             {error && <div className="mt-3"><FormError message={error} /></div>}
         </fieldset>
     );

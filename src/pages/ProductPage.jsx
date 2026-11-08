@@ -5,9 +5,10 @@ import api from '../api/client';
 import Container from '../components/Container';
 import ProductCard, { BoardPlaceholder } from '../components/ProductCard';
 import { useAddToCart, FREE_DELIVERY_FROM } from '../context/cart';
+import { useWishlist } from '../context/wishlist';
 import { useCategories } from '../hooks/useCatalogData';
 import { getPath } from '../utils/categories';
-import { formatPrice, formatBoardType, getStock } from '../utils/format';
+import { formatPrice, formatBoardType, getStock, sortImages } from '../utils/format';
 
 const ASSURANCES = [
     { icon: Truck, title: 'Free delivery', body: `Across Moldova on orders over ${formatPrice(FREE_DELIVERY_FROM)}, 1–3 days` },
@@ -25,6 +26,7 @@ function ProductPage() {
 function ProductView({ slug }) {
     const navigate = useNavigate();
     const addToCart = useAddToCart();
+    const wishlist = useWishlist();
     const categories = useCategories();
     const [product, setProduct] = useState(null);
     const [related, setRelated] = useState([]);
@@ -77,7 +79,8 @@ function ProductView({ slug }) {
         );
     }
 
-    const images = [...(product.images ?? [])].sort((a, b) => (b.primary - a.primary) || ((a.sortOrder ?? 0) - (b.sortOrder ?? 0)));
+    const images = sortImages(product.images);
+    const saved = wishlist.has(product.id);
     const image = images[imageIndex];
     const stock = getStock(product.quantity);
     const isSoldOut = product.quantity === 0;
@@ -130,12 +133,12 @@ function ProductView({ slug }) {
             </Container>
 
             <Container className="pt-6">
-                <div className="flex flex-wrap items-start gap-12">
-                    {/* галерея */}
-                    <div className="min-w-0 flex-[999_1_460px]">
-                        <div className="relative flex h-[280px] items-center sm:h-[440px] justify-center rounded-[22px] bg-surface-100">
+                <div className="flex flex-wrap items-start gap-10">
+                    {/* галерея: на белом фоне фото крупнее и не сидит в серой коробке, миниатюры на десктопе столбиком слева */}
+                    <div className="flex min-w-0 flex-[999_1_520px] flex-col gap-3.5 lg:flex-row-reverse lg:gap-5">
+                        <div className="relative flex h-[340px] min-w-0 flex-grow items-center justify-center bg-white sm:h-[520px] lg:h-[620px]">
                             {image ? (
-                                <img src={image.imageUrl} alt={product.name} className="max-h-full max-w-full object-contain p-6 mix-blend-multiply" />
+                                <img src={image.imageUrl} alt={product.name} className="max-h-full max-w-full object-contain" />
                             ) : (
                                 <BoardPlaceholder width={320} />
                             )}
@@ -146,7 +149,7 @@ function ProductView({ slug }) {
                                         type="button"
                                         aria-label="Previous image"
                                         onClick={() => showImage(-1)}
-                                        className="absolute left-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-white"
+                                        className="absolute left-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-white/90 hover:bg-white"
                                     >
                                         <ChevronLeft size={18} />
                                     </button>
@@ -154,7 +157,7 @@ function ProductView({ slug }) {
                                         type="button"
                                         aria-label="Next image"
                                         onClick={() => showImage(1)}
-                                        className="absolute right-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-white"
+                                        className="absolute right-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-white/90 hover:bg-white"
                                     >
                                         <ChevronRight size={18} />
                                     </button>
@@ -163,18 +166,18 @@ function ProductView({ slug }) {
                         </div>
 
                         {images.length > 1 && (
-                            <div className="mt-3.5 grid grid-cols-4 gap-3">
+                            <div className="flex flex-none gap-2.5 overflow-x-auto lg:max-h-[620px] lg:flex-col lg:overflow-y-auto">
                                 {images.map((img, i) => (
                                     <button
                                         key={img.imageUrl}
                                         type="button"
                                         aria-label={`Product photo ${i + 1}`}
                                         onClick={() => setImageIndex(i)}
-                                        className={`flex h-[92px] items-center justify-center overflow-hidden rounded-[14px] border-2 bg-surface-100 ${
-                                            i === imageIndex ? 'border-brand-600' : 'border-transparent'
+                                        className={`flex h-[76px] w-[76px] flex-none items-center justify-center overflow-hidden rounded-xl border-2 bg-white ${
+                                            i === imageIndex ? 'border-brand-600' : 'border-line hover:border-ink-400'
                                         }`}
                                     >
-                                        <img src={img.imageUrl} alt="" className="max-h-full max-w-full object-contain p-2 mix-blend-multiply" />
+                                        <img src={img.imageUrl} alt="" className="max-h-full max-w-full object-contain p-1" />
                                     </button>
                                 ))}
                             </div>
@@ -182,7 +185,7 @@ function ProductView({ slug }) {
                     </div>
 
                     {/* блок покупки */}
-                    <div className="min-w-0 flex-[1_1_420px]">
+                    <div className="min-w-0 flex-[1_1_380px]">
                         <div className="mb-3.5 flex flex-wrap items-center gap-3">
                             {product.brandName && (
                                 <span className="text-[15px] font-extrabold uppercase tracking-[0.04em] text-ink-900">
@@ -254,10 +257,12 @@ function ProductView({ slug }) {
 
                             <button
                                 type="button"
-                                aria-label="Add to wishlist"
-                                className="flex h-14 w-14 items-center justify-center rounded-full border-[1.5px] border-ink-900 bg-white hover:text-alert"
+                                aria-label={saved ? 'Remove from wishlist' : 'Add to wishlist'}
+                                aria-pressed={saved}
+                                onClick={() => wishlist.toggle(product)}
+                                className={`flex h-14 w-14 flex-none items-center justify-center rounded-full border-[1.5px] border-ink-900 bg-white hover:text-alert ${saved ? 'text-alert' : ''}`}
                             >
-                                <Heart size={22} strokeWidth={1.8} />
+                                <Heart size={22} strokeWidth={1.8} fill={saved ? 'currentColor' : 'none'} />
                             </button>
                         </div>
 

@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
-import { X } from 'lucide-react';
+import { SlidersHorizontal, X } from 'lucide-react';
 import api from '../api/client';
 import ProductCard from '../components/ProductCard';
 import Container from '../components/Container';
 import { useBrands, useCategories } from '../hooks/useCatalogData';
 import { getChildren, getPath } from '../utils/categories';
 import { formatPrice } from '../utils/format';
+import { findCategoryPhoto } from '../data/categoryPhotos';
 
 const PAGE_SIZE = 12;
 
@@ -16,12 +17,6 @@ const SORTS = [
     { value: 'price,asc', label: 'Price: low to high' },
     { value: 'price,desc', label: 'Price: high to low' },
     { value: 'createdAt,desc', label: 'Newest first' },
-];
-
-const GUIDE = [
-    { title: 'Set your goal', body: 'Training, long-distance touring or competition decides shape and width.' },
-    { title: 'Know your water', body: 'Flat lake, open water or downwind — each rewards a different nose.' },
-    { title: 'Match your weight', body: 'Volume should be roughly twice your body weight in litres.' },
 ];
 
 const priceInputClass =
@@ -36,12 +31,24 @@ function CatalogPage() {
 
     const [result, setResult] = useState(null);
     const [error, setError] = useState(null);
+    const [filtersOpen, setFiltersOpen] = useState(false);
+
+    // пока панель фильтров открыта на телефоне, страница под ней не должна прокручиваться
+    useEffect(() => {
+        if (!filtersOpen) return;
+        const previous = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.body.style.overflow = previous;
+        };
+    }, [filtersOpen]);
 
     const selectedBrands = params.getAll('brand');
     const minPrice = params.get('minPrice') ?? '';
     const maxPrice = params.get('maxPrice') ?? '';
     const inStock = params.get('inStock') === 'true';
     const onSale = params.get('onSale') === 'true';
+    const searchTerm = params.get('q') ?? '';
     const sort = params.get('sort') ?? '';
     const page = Number(params.get('page') ?? 1);
 
@@ -98,13 +105,18 @@ function CatalogPage() {
 
     // пока категории грузятся, заголовок пустой — иначе на секунду мигнёт «All products»
     const categoryTitle = categories ? 'Category not found' : '\u00A0';
-    const title = slug ? (current?.name ?? categoryTitle) : (onSale ? 'Sale' : 'All products');
+    const title = searchTerm
+        ? `Results for “${searchTerm}”`
+        : slug ? (current?.name ?? categoryTitle) : (onSale ? 'Sale' : 'All products');
     const description = slug
         ? (current?.description ?? '')
         : 'SUP boards, paddles and water sports gear — stocked in Chișinău, delivered across Moldova.';
+    // в поиске фото не показываю: там результаты из разных разделов
+    const photo = searchTerm ? null : findCategoryPhoto(path);
+    const strong = photo ? 'text-white' : 'text-ink-900';
+    const linkHover = photo ? 'hover:text-white' : 'hover:text-ink-900';
     const total = result?.page?.totalElements ?? 0;
     const pageCount = result?.page?.totalPages ?? 0;
-    const showGuide = !slug || path[0]?.slug === 'sup';
 
     const brandName = id => brands?.find(b => String(b.id) === id)?.name ?? `Brand ${id}`;
     const chips = [
@@ -113,40 +125,63 @@ function CatalogPage() {
         ...(maxPrice ? [{ key: 'max', label: `To ${formatPrice(maxPrice)}`, remove: () => update({ maxPrice: '' }) }] : []),
         ...(inStock ? [{ key: 'stock', label: 'In stock only', remove: () => update({ inStock: false }) }] : []),
         ...(onSale ? [{ key: 'sale', label: 'On sale', remove: () => update({ onSale: false }) }] : []),
+        ...(searchTerm ? [{ key: 'q', label: `Search: ${searchTerm}`, remove: () => update({ q: '' }) }] : []),
     ];
 
     return (
         <>
-            <section className="border-b border-line bg-surface-100">
-                <Container className="pb-9 pt-7">
-                    <nav aria-label="Breadcrumb" className="mb-[18px] text-[13px] text-ink-400">
-                        <Link to="/" className="hover:text-ink-900">Home</Link>
+            <section className={`relative overflow-hidden border-b ${photo ? 'border-transparent bg-deep-900' : 'border-line bg-surface-100'}`}>
+                {photo && (
+                    <>
+                        <img src={photo.src} alt="" className="absolute inset-0 h-full w-full object-cover" style={{ objectPosition: photo.position }} />
+                        {/* слева темню сильнее, чтобы белый текст читался на любом фото */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-deep-900/90 via-deep-900/60 to-deep-900/10" />
+                    </>
+                )}
+                <Container className={`relative pb-9 pt-7 ${photo ? 'sm:pb-14 sm:pt-10' : ''}`}>
+                    <nav aria-label="Breadcrumb" className={`mb-[18px] text-[13px] ${photo ? 'text-white/70' : 'text-ink-400'}`}>
+                        <Link to="/" className={linkHover}>Home</Link>
                         <span className="mx-2">/</span>
-                        <Link to="/catalog" className={path.length ? 'hover:text-ink-900' : 'font-semibold text-ink-900'}>Catalog</Link>
+                        <Link to="/catalog" className={path.length ? linkHover : `font-semibold ${strong}`}>Catalog</Link>
                         {path.map((category, i) => (
                             <span key={category.id}>
                                 <span className="mx-2">/</span>
                                 {i === path.length - 1 ? (
-                                    <span className="font-semibold text-ink-900">{category.name}</span>
+                                    <span className={`font-semibold ${strong}`}>{category.name}</span>
                                 ) : (
-                                    <Link to={`/catalog/${category.slug}`} className="hover:text-ink-900">{category.name}</Link>
+                                    <Link to={`/catalog/${category.slug}`} className={linkHover}>{category.name}</Link>
                                 )}
                             </span>
                         ))}
                     </nav>
-                    <h1 className="mb-3 text-[48px] font-extrabold leading-[1.05] tracking-[-0.03em] text-ink-900">{title}</h1>
-                    <p className="max-w-[720px] text-[17px] leading-[1.6] text-ink-600">{description}</p>
+                    <h1 className={`mb-3 text-[48px] font-extrabold leading-[1.05] tracking-[-0.03em] ${strong}`}>{title}</h1>
+                    <p className={`max-w-[720px] text-[17px] leading-[1.6] ${photo ? 'text-white/85' : 'text-ink-600'}`}>{description}</p>
                 </Container>
             </section>
 
             <Container className="pt-7">
                 <div className="flex flex-wrap items-start gap-8">
-                    <aside aria-label="Filters" className="min-w-0 max-w-[320px] flex-[1_1_272px]">
-                        <div className="mb-[18px] flex items-center justify-between">
+                    {/* на телефоне фильтры прячу в панель на весь экран, иначе товары уезжают на пару экранов вниз */}
+                    <aside
+                        aria-label="Filters"
+                        className={`${filtersOpen ? 'fixed inset-0 z-50 flex flex-col bg-white' : 'hidden'} min-w-0 lg:static lg:z-auto lg:block lg:max-w-[300px] lg:flex-[0_0_272px]`}
+                    >
+                        <div className="flex-grow overflow-y-auto px-4 pt-4 lg:overflow-visible lg:p-0">
+                        <div className="mb-[18px] flex items-center justify-between gap-3">
                             <h2 className="text-xl font-extrabold text-ink-900">Filters</h2>
-                            <button type="button" onClick={clearAll} className="py-1 text-sm font-semibold text-brand-600 underline hover:text-brand-700">
-                                Clear all
-                            </button>
+                            <div className="flex items-center gap-3">
+                                <button type="button" onClick={clearAll} className="py-1 text-sm font-semibold text-brand-600 underline hover:text-brand-700">
+                                    Clear all
+                                </button>
+                                <button
+                                    type="button"
+                                    aria-label="Close filters"
+                                    onClick={() => setFiltersOpen(false)}
+                                    className="flex h-10 w-10 items-center justify-center rounded-full bg-surface-50 lg:hidden"
+                                >
+                                    <X size={18} strokeWidth={2} />
+                                </button>
+                            </div>
                         </div>
 
                         {navItems.length > 0 && (
@@ -220,15 +255,37 @@ function CatalogPage() {
                                 Ask an expert
                             </Link>
                         </div>
+                        </div>
+
+                        <div className="flex-none border-t border-line p-4 lg:hidden">
+                            <button
+                                type="button"
+                                onClick={() => setFiltersOpen(false)}
+                                className="w-full rounded-full bg-brand-600 px-6 py-[15px] text-base font-bold text-white hover:bg-brand-700"
+                            >
+                                {result ? `Show ${total} ${total === 1 ? 'product' : 'products'}` : 'Show products'}
+                            </button>
+                        </div>
                     </aside>
 
                     <div className="min-w-0 flex-[999_1_560px]">
-                        <div className="mb-[18px] flex flex-wrap items-center justify-between gap-4">
+                        <div className="mb-[18px] flex flex-wrap items-center justify-between gap-3">
                             <p className="text-[15px] text-ink-600">
                                 <strong className="text-[17px] text-ink-900">{total}</strong> products
                             </p>
-                            <div className="flex items-center gap-3.5">
-                                <label htmlFor="sort" className="text-sm text-ink-400">Sort by</label>
+                            <div className="flex items-center gap-2.5 sm:gap-3.5">
+                                <button
+                                    type="button"
+                                    onClick={() => setFiltersOpen(true)}
+                                    className="flex h-11 items-center gap-2 rounded-lg border border-line bg-white px-3.5 text-sm font-semibold text-ink-900 lg:hidden"
+                                >
+                                    <SlidersHorizontal size={16} strokeWidth={2} />
+                                    Filters
+                                    {chips.length > 0 && (
+                                        <span className="rounded-full bg-brand-600 px-[7px] py-0.5 text-[11px] font-bold text-white">{chips.length}</span>
+                                    )}
+                                </button>
+                                <label htmlFor="sort" className="hidden text-sm text-ink-400 sm:inline">Sort by</label>
                                 <select
                                     id="sort"
                                     value={sort}
@@ -278,31 +335,8 @@ function CatalogPage() {
                     </div>
                 </div>
             </Container>
-
-            {showGuide && (
-                <Container className="pb-16 pt-12">
-                    <div className="flex flex-wrap gap-10 rounded-[26px] border border-line bg-surface-50 p-6 sm:p-10">
-                        <div className="min-w-0 flex-[1_1_320px]">
-                            <h2 className="mb-3.5 text-[28px] font-extrabold leading-[1.2] tracking-[-0.02em] text-ink-900">
-                                Choosing the right paddleboard
-                            </h2>
-                            <p className="text-base leading-[1.7] text-ink-600">
-                                The best board is the one that matches your goals, conditions and experience. Narrower boards are faster
-                                but ask more of your balance; wider boards give stability in chop and suit heavier riders.
-                            </p>
-                        </div>
-                        <div className="grid min-w-0 flex-[999_1_420px] grid-cols-1 gap-4 sm:grid-cols-3">
-                            {GUIDE.map(item => (
-                                <div key={item.title} className="rounded-[18px] border border-line bg-white p-[22px]">
-                                    <p className="mb-2 text-base font-bold text-ink-900">{item.title}</p>
-                                    <p className="text-sm leading-[1.55] text-ink-400">{item.body}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </Container>
-            )}
-            {!showGuide && <div className="pb-16" />}
+            {/* отступ до футера нужен всегда, иначе пагинация прилипает к полосе free delivery */}
+            <div className="pb-16" />
         </>
     );
 }
@@ -312,13 +346,23 @@ function PriceFilter({ min, max, onApply }) {
     const [from, setFrom] = useState(min);
     const [to, setTo] = useState(max);
 
+    function commit() {
+        if (from.trim() !== min || to.trim() !== max) onApply({ minPrice: from.trim(), maxPrice: to.trim() });
+    }
+
     function apply(e) {
         e.preventDefault();
-        onApply({ minPrice: from.trim(), maxPrice: to.trim() });
+        commit();
+    }
+
+    // на телефоне Apply почти никто не жмёт, сразу тапают «Show products», поэтому применяю цену,
+    // когда фокус уходит из блока. переход From → To не считается, иначе поле To потеряет фокус
+    function handleBlur(e) {
+        if (!e.currentTarget.contains(e.relatedTarget)) commit();
     }
 
     return (
-        <form onSubmit={apply} className="border-t border-line py-[18px]">
+        <form onSubmit={apply} onBlur={handleBlur} className="border-t border-line py-[18px]">
             <p className="mb-3.5 text-[15px] font-bold text-ink-900">Price, MDL</p>
             <div className="flex items-center gap-2.5">
                 <label htmlFor="price-min" className="sr-only">Minimum price</label>

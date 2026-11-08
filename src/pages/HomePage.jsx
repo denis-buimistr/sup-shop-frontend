@@ -5,7 +5,7 @@ import HeroSlider from '../components/home/HeroSlider';
 import CategoryTiles from '../components/home/CategoryTiles';
 import { FeaturedProduct, ProductRow, SectionHead, WaveDivider } from '../components/home/HomeSections';
 import { useBrands } from '../hooks/useCatalogData';
-import showroomPhoto from '../assets/hero/showroom.webp';
+import showroomPhoto from '../assets/hero/showroom.jpg';
 import { BRAND_LOGOS } from '../data/brandLogos';
 import finderGoal from '../assets/finder/goal.jpg';
 import finderWater from '../assets/finder/water.jpg';

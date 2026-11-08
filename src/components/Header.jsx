@@ -1,13 +1,16 @@
 import { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Heart, ShoppingCart, Menu } from 'lucide-react';
+import { Heart, ShoppingCart, Menu } from 'lucide-react';
 import Logo from './Logo';
 import AccountMenu from './AccountMenu';
 import MobileMenu from './MobileMenu';
+import SearchBox from './SearchBox';
 import { useCart } from '../context/cart';
+import { useWishlist } from '../context/wishlist';
 
 function Header() {
     const { count } = useCart();
+    const wishlist = useWishlist();
     const [menuOpen, setMenuOpen] = useState(false);
     // useCallback, чтобы эффект внутри меню не перезапускался на каждый рендер шапки
     const closeMenu = useCallback(() => setMenuOpen(false), []);
@@ -27,34 +30,18 @@ function Header() {
                 <Logo />
 
                 {/* на телефоне поиск уходит отдельной строкой под логотип */}
-                <form
-                    className="relative order-last flex w-full min-w-0 lg:order-none lg:w-auto lg:flex-[999_1_380px]"
-                    onSubmit={e => e.preventDefault()}
-                >
-                    <label htmlFor="site-search" className="sr-only">
-                        Search the shop
-                    </label>
-                    <Search
-                        size={18}
-                        className="absolute left-[18px] top-1/2 -translate-y-1/2 text-ink-400"
-                    />
-                    <input
-                        id="site-search"
-                        type="search"
-                        placeholder="Search for paddleboards, paddles, accessories…"
-                        className="h-12 w-full rounded-full border border-line bg-surface-50 pl-[46px] pr-5 text-[15px] text-ink-900 outline-none focus:border-brand-600"
-                    />
-                </form>
+                <SearchBox />
 
-                <div className="ml-auto flex items-center gap-[18px] text-sm font-semibold lg:ml-0 lg:gap-[22px]">
+                <div className="ml-auto flex items-center gap-3 text-sm font-semibold sm:gap-[18px] lg:ml-0 lg:gap-[22px]">
                     <AccountMenu />
 
-                    <Link to="/wishlist" className="hidden items-center gap-2 hover:text-brand-600 sm:flex">
+                    <Link to="/wishlist" aria-label="Wishlist" className="flex items-center gap-2 hover:text-brand-600">
                         <Heart size={22} strokeWidth={1.8} />
                         <span className="hidden md:inline">Wishlist</span>
-                        <span className="rounded-full bg-surface-100 px-[7px] py-0.5 text-[11px] font-bold">
-              0
-            </span>
+                        {/* пустой счётчик на телефоне прячу, места в шапке мало */}
+                        <span className={`rounded-full px-[7px] py-0.5 text-[11px] font-bold ${wishlist.count ? 'bg-alert text-white' : 'hidden bg-surface-100 sm:inline'}`}>
+                            {wishlist.count}
+                        </span>
                     </Link>
 
                     <Link to="/cart" className="flex items-center gap-2 hover:text-brand-600">

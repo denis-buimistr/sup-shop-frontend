@@ -17,7 +17,15 @@ const GUARANTEES = [
 ];
 
 function CartPage() {
-    const { items, count, subtotal, setQty, removeItem } = useCart();
+    const { items, count, subtotal, setQty, removeItem, syncItems } = useCart();
+    // товары на момент открытия корзины: обновляю их один раз, а не на каждое изменение количества
+    const [idsOnOpen] = useState(() => items.map(item => item.id));
+
+    useEffect(() => {
+        if (idsOnOpen.length === 0) return;
+        Promise.allSettled(idsOnOpen.map(id => api.get(`/products/${id}`)))
+            .then(results => syncItems(results.filter(r => r.status === 'fulfilled').map(r => r.value.data)));
+    }, [idsOnOpen, syncItems]);
     const freeDelivery = subtotal >= FREE_DELIVERY_FROM;
     const progress = Math.min(100, (subtotal / FREE_DELIVERY_FROM) * 100);
 
