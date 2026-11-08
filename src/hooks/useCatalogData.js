@@ -4,9 +4,17 @@ import api from '../api/client';
 // Категории и бренды меняются редко: грузим один раз на всё приложение, и меню, и каталог берут их из одного кэша
 const cache = new Map();
 
+// если бэкенд на секунду недоступен (перезапуск), пробую ещё пару раз, иначе меню останется пустым до перезагрузки
+function getWithRetry(url, attemptsLeft = 4) {
+    return api.get(url).catch(error => {
+        if (attemptsLeft <= 1 || error.response) throw error;
+        return new Promise(resolve => setTimeout(resolve, 2000)).then(() => getWithRetry(url, attemptsLeft - 1));
+    });
+}
+
 function load(url) {
     if (!cache.has(url)) {
-        const request = api.get(url)
+        const request = getWithRetry(url)
             .then(response => response.data)
             .catch(error => {
                 cache.delete(url);

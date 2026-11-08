@@ -77,7 +77,7 @@ function ProductView({ slug }) {
         );
     }
 
-    const images = product.images ?? [];
+    const images = [...(product.images ?? [])].sort((a, b) => (b.primary - a.primary) || ((a.sortOrder ?? 0) - (b.sortOrder ?? 0)));
     const image = images[imageIndex];
     const stock = getStock(product.quantity);
     const isSoldOut = product.quantity === 0;
@@ -135,7 +135,7 @@ function ProductView({ slug }) {
                     <div className="min-w-0 flex-[999_1_460px]">
                         <div className="relative flex h-[280px] items-center sm:h-[440px] justify-center rounded-[22px] bg-surface-100">
                             {image ? (
-                                <img src={image.imageUrl} alt={product.name} className="max-h-full max-w-full object-contain p-10" />
+                                <img src={image.imageUrl} alt={product.name} className="max-h-full max-w-full object-contain p-6 mix-blend-multiply" />
                             ) : (
                                 <BoardPlaceholder width={320} />
                             )}
@@ -174,7 +174,7 @@ function ProductView({ slug }) {
                                             i === imageIndex ? 'border-brand-600' : 'border-transparent'
                                         }`}
                                     >
-                                        <img src={img.imageUrl} alt="" className="max-h-full max-w-full object-contain p-2" />
+                                        <img src={img.imageUrl} alt="" className="max-h-full max-w-full object-contain p-2 mix-blend-multiply" />
                                     </button>
                                 ))}
                             </div>

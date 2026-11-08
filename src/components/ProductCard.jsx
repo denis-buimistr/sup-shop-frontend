@@ -26,7 +26,7 @@ function ProductCard({ product }) {
 
     return (
         <article className="flex flex-col overflow-hidden rounded-[22px] border border-line bg-white">
-            <div className="relative flex h-[180px] items-center justify-center bg-surface-100">
+            <div className="relative flex h-[220px] items-center justify-center bg-surface-100">
                 {badge && (
                     <span className={`absolute left-3.5 top-3.5 z-10 rounded-full px-[11px] py-[5px] text-[11px] font-bold ${badge.className}`}>
                         {badge.label}
@@ -41,12 +41,12 @@ function ProductCard({ product }) {
                     <Heart size={17} strokeWidth={1.8} />
                 </button>
 
-                <Link to={`/products/${product.slug}`} className="flex h-full w-full items-center justify-center p-6">
+                <Link to={`/products/${product.slug}`} className="flex h-full w-full items-center justify-center px-6 py-4">
                     {image ? (
                         <img
                             src={image.imageUrl}
                             alt={product.name}
-                            className="max-h-full max-w-full object-contain"
+                            className="max-h-full max-w-full object-contain mix-blend-multiply transition-transform duration-300 hover:scale-[1.03]"
                         />
                     ) : (
                         <BoardPlaceholder />

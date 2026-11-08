@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ChevronDown } from 'lucide-react';
 import { useBrands, useCategories } from '../hooks/useCatalogData';
 import { getChildren, getRoots } from '../utils/categories';
@@ -11,8 +11,23 @@ const linkClass = 'flex items-baseline justify-between gap-2.5 py-2 text-[15px] 
 function CategoryNav() {
     const categories = useCategories();
     const brands = useBrands();
+    const navigate = useNavigate();
     const [openId, setOpenId] = useState(null);
     const navRef = useRef(null);
+    const hoverTimer = useRef(null);
+
+    // открываю по наведению с маленькой задержкой, чтобы меню не мигало, когда просто ведёшь мышь мимо
+    function hoverOpen(id) {
+        clearTimeout(hoverTimer.current);
+        hoverTimer.current = setTimeout(() => setOpenId(id), openId ? 0 : 120);
+    }
+
+    function hoverClose() {
+        clearTimeout(hoverTimer.current);
+        hoverTimer.current = setTimeout(() => setOpenId(null), 200);
+    }
+
+    useEffect(() => () => clearTimeout(hoverTimer.current), []);
 
     useEffect(() => {
         if (!openId) return;
@@ -42,7 +57,13 @@ function CategoryNav() {
     const close = () => setOpenId(null);
 
     return (
-        <nav ref={navRef} aria-label="Product categories" className="relative hidden border-b border-line bg-white lg:block">
+        <nav
+            ref={navRef}
+            aria-label="Product categories"
+            onPointerLeave={e => e.pointerType === 'mouse' && hoverClose()}
+            onPointerEnter={() => clearTimeout(hoverTimer.current)}
+            className="relative hidden border-b border-line bg-white lg:block"
+        >
             <div className="mx-auto flex max-w-[1320px] flex-wrap items-center gap-x-[26px] gap-y-1 px-6">
                 {roots.map(root => {
                     const isOpen = openId === root.id;
@@ -50,7 +71,17 @@ function CategoryNav() {
                         <button
                             key={root.id}
                             type="button"
-                            onClick={() => setOpenId(isOpen ? null : root.id)}
+                            onClick={e => {
+                                // мышью меню уже открыто наведением, поэтому клик ведёт в раздел; тап и Enter открывают меню
+                                if (e.nativeEvent.pointerType === 'mouse') {
+                                    setOpenId(null);
+                                    navigate(`/catalog/${root.slug}`);
+                                } else {
+                                    setOpenId(isOpen ? null : root.id);
+                                }
+                            }}
+                            // на планшете наведения нет — там меню открывается тапом через onClick
+                            onPointerEnter={e => e.pointerType === 'mouse' && hoverOpen(root.id)}
                             aria-expanded={isOpen}
                             className={`${topClass} ${
                                 isOpen ? 'text-brand-600 shadow-[inset_0_-3px_0_0_#0B7A91]' : 'text-ink-900 hover:text-brand-600'
@@ -61,7 +92,11 @@ function CategoryNav() {
                         </button>
                     );
                 })}
-                <Link to="/catalog?onSale=true" className={`${topClass} text-alert hover:text-ink-900`}>
+                <Link
+                    to="/catalog?onSale=true"
+                    onPointerEnter={e => e.pointerType === 'mouse' && hoverClose()}
+                    className={`${topClass} text-alert hover:text-ink-900`}
+                >
                     Sale
                 </Link>
             </div>

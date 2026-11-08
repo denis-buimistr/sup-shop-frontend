@@ -1,15 +1,17 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { CircleCheck, Minus, Plus, Truck } from 'lucide-react';
+import api from '../api/client';
 import SimpleHeader from '../components/SimpleHeader';
 import Container from '../components/Container';
 import CheckoutSteps from '../components/CheckoutSteps';
 import SimpleFooter from '../components/SimpleFooter';
 import { BoardPlaceholder } from '../components/ProductCard';
-import { useCart, FREE_DELIVERY_FROM } from '../context/cart';
+import { useCart, useAddToCart, FREE_DELIVERY_FROM } from '../context/cart';
 import { formatPrice, getStock } from '../utils/format';
 
 const GUARANTEES = [
-    'Secure card payment, 3-D Secure',
+    'Pay cash or card to the courier on delivery',
     '14 days to return unused gear',
     '2-year official warranty, service in Chișinău',
 ];
@@ -61,7 +63,7 @@ function CartPage() {
                                             className="flex h-[100px] w-[120px] flex-none items-center justify-center overflow-hidden rounded-[14px] bg-surface-100"
                                         >
                                             {item.image ? (
-                                                <img src={item.image} alt="" className="max-h-full max-w-full object-contain p-2" />
+                                                <img src={item.image} alt="" className="max-h-full max-w-full object-contain p-2 mix-blend-multiply" />
                                             ) : (
                                                 <BoardPlaceholder width={96} />
                                             )}
@@ -129,6 +131,8 @@ function CartPage() {
                                 </div>
                             )}
                         </div>
+
+                        {items.length > 0 && <AddOns cartIds={items.map(item => item.id)} />}
                     </div>
 
                     <aside aria-label="Order summary" className="min-w-0 flex-[1_1_360px]">
@@ -187,6 +191,53 @@ function CartPage() {
 
             <SimpleFooter />
         </div>
+    );
+}
+
+// «Add to your order»: пара недорогих аксессуаров, которых ещё нет в корзине
+function AddOns({ cartIds }) {
+    const addToCart = useAddToCart();
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        api.get('/products', { params: { category: 'accessories', inStock: true, sort: 'price,asc', size: 8 } })
+            .then(({ data }) => setProducts(data.content))
+            .catch(() => setProducts([]));
+    }, []);
+
+    const suggestions = products.filter(p => !cartIds.includes(p.id)).slice(0, 3);
+    if (suggestions.length === 0) return null;
+
+    return (
+        <section>
+            <h2 className="mb-4 mt-9 text-[22px] font-extrabold tracking-[-0.02em]">Add to your order</h2>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                {suggestions.map(product => (
+                    <div key={product.id} className="flex items-center gap-3.5 rounded-[18px] border border-line bg-white p-4">
+                        <Link
+                            to={`/products/${product.slug}`}
+                            className="flex h-12 w-14 flex-none items-center justify-center rounded-xl bg-surface-100"
+                        >
+                            <BoardPlaceholder width={42} />
+                        </Link>
+                        <span className="min-w-0 flex-grow">
+                            <Link to={`/products/${product.slug}`} className="block truncate text-sm font-semibold text-ink-900 hover:text-brand-600">
+                                {product.name}
+                            </Link>
+                            <span className="mt-[3px] block text-sm font-bold tabular-nums text-ink-900">{formatPrice(product.price)}</span>
+                        </span>
+                        <button
+                            type="button"
+                            onClick={() => addToCart(product)}
+                            aria-label={`Add ${product.name} to cart`}
+                            className="flex h-10 w-10 flex-none items-center justify-center rounded-full border-[1.5px] border-brand-600 bg-white text-brand-600 hover:bg-tint-100"
+                        >
+                            <Plus size={18} strokeWidth={2.2} />
+                        </button>
+                    </div>
+                ))}
+            </div>
+        </section>
     );
 }
 
