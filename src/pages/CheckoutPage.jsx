@@ -8,7 +8,7 @@ import CheckoutSteps from '../components/CheckoutSteps';
 import SimpleFooter from '../components/SimpleFooter';
 import { FormError } from '../components/AuthShell';
 import { BoardPlaceholder } from '../components/ProductCard';
-import { useCart } from '../context/cart';
+import { useCart, FREE_DELIVERY_FROM } from '../context/cart';
 import { useAuth } from '../context/auth';
 import { useToast } from '../context/toast';
 import { formatPrice, formatOrderNumber } from '../utils/format';
@@ -168,7 +168,10 @@ function CheckoutPage() {
 
     const shipping = SHIPPING.find(s => s.id === form.shipping);
     const payment = PAYMENTS.find(p => p.id === form.payment);
-    const total = subtotal + shipping.price;
+    // как на бэкенде: от FREE_DELIVERY_FROM доставка бесплатная при любом способе
+    const freeDelivery = subtotal >= FREE_DELIVERY_FROM;
+    const deliveryPrice = freeDelivery ? 0 : shipping.price;
+    const total = subtotal + deliveryPrice;
 
     function update(field) {
         return e => {
@@ -317,8 +320,8 @@ function CheckoutPage() {
                                                 title={s.title}
                                                 body={s.body}
                                             >
-                                                <span className={`flex-none text-[15px] font-bold ${s.price ? 'text-ink-900' : 'text-brand-600'}`}>
-                                                    {s.price ? formatPrice(s.price) : 'Free'}
+                                                <span className={`flex-none text-[15px] font-bold ${s.price && !freeDelivery ? 'text-ink-900' : 'text-brand-600'}`}>
+                                                    {s.price && !freeDelivery ? formatPrice(s.price) : 'Free'}
                                                 </span>
                                             </ChoiceCard>
                                         ))}
@@ -384,7 +387,7 @@ function CheckoutPage() {
                                         <div key={item.id} className="flex gap-3.5 border-b border-line py-3">
                                             <span className="relative flex h-[52px] w-[60px] flex-none items-center justify-center rounded-xl bg-white">
                                                 {item.image ? (
-                                                    <img src={item.image} alt="" className="max-h-full max-w-full object-contain p-1" />
+                                                    <img src={item.image} alt="" className="max-h-full max-w-full object-contain p-1 mix-blend-multiply" />
                                                 ) : (
                                                     <BoardPlaceholder width={44} />
                                                 )}
@@ -407,7 +410,7 @@ function CheckoutPage() {
                                         </p>
                                         <p className="mb-[11px] flex justify-between gap-4 text-[15px] text-ink-600">
                                             <span>Delivery</span>
-                                            <span className="font-semibold tabular-nums">{shipping.price ? formatPrice(shipping.price) : 'Free'}</span>
+                                            <span className="font-semibold tabular-nums">{deliveryPrice ? formatPrice(deliveryPrice) : 'Free'}</span>
                                         </p>
                                     </div>
 

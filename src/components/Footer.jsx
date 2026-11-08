@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { Truck, ShieldCheck, RotateCcw, Store, Phone, MapPin } from 'lucide-react';
 import Container from './Container';
 import PaymentBadges from './PaymentBadges';
+import Logo from './Logo';
 
 const USPS = [
     { icon: Truck, title: 'Free delivery', body: 'On orders over 2,000 MDL' },
@@ -21,12 +22,12 @@ const COLUMNS = [
     {
         title: 'SHOP',
         links: [
-            { label: 'SUP boards', to: '/catalog' },
-            { label: 'Paddles', to: '/catalog' },
-            { label: 'Wing foiling', to: '/catalog' },
-            { label: 'Wetsuits', to: '/catalog' },
-            { label: 'Accessories', to: '/catalog' },
-            { label: 'Sale', to: '/catalog' },
+            { label: 'SUP boards', to: '/catalog/sup' },
+            { label: 'Paddles', to: '/catalog/paddles' },
+            { label: 'Wing foiling', to: '/catalog/foil-wing' },
+            { label: 'Wetsuits', to: '/catalog/wetsuits' },
+            { label: 'Accessories', to: '/catalog/accessories' },
+            { label: 'Sale', to: '/catalog?onSale=true' },
         ],
     },
     {
@@ -35,7 +36,7 @@ const COLUMNS = [
             { label: 'Delivery & payment', to: '/contacts' },
             { label: 'Returns in 14 days', to: '/contacts' },
             { label: 'Warranty & service', to: '/contacts' },
-            { label: 'How to choose a SUP', to: '/catalog' },
+            { label: 'How to choose a SUP', to: '/catalog/sup' },
             { label: 'FAQ', to: '/contacts' },
         ],
     },
@@ -89,10 +90,10 @@ function Footer({ showUsps = true }) {
             <footer className="bg-deep-900 text-deep-text">
                 <Container className="flex flex-wrap gap-10 pb-9 pt-14">
                     <div className="min-w-0 flex-[1_1_300px]">
-                        <p className="mb-[18px] text-[22px] font-extrabold leading-none text-white">
-                            SUP <span className="text-deep-accent">SHOP</span>
-                            <span className="mt-[7px] block text-[9px] tracking-[0.26em] text-deep-muted">MOLDOVA</span>
-                        </p>
+                        {/* логотип тёмный на белом фоне, поэтому на тёмном футере кладу его на белую плашку */}
+                        <div className="mb-[18px] inline-flex rounded-2xl bg-white px-4 py-2.5">
+                            <Logo />
+                        </div>
                         <p className="mb-[22px] max-w-[310px] text-sm leading-[1.65] text-deep-muted">
                             Paddleboards, paddles and watersports gear for Moldova. Showroom and test centre in Chișinău.
                         </p>

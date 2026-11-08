@@ -11,8 +11,11 @@ function Layout() {
     return (
         <div className="flex min-h-screen flex-col bg-white">
             <TopBar />
-            <Header />
-            <CategoryNav />
+            {/* шапка с поиском и меню прилипает к верху при прокрутке, тёмная полоска над ней уезжает */}
+            <div className="sticky top-0 z-40">
+                <Header />
+                <CategoryNav />
+            </div>
 
             <main className="flex-grow">
                 <Outlet />

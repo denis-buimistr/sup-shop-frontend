@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import Toaster from './components/Toaster';
+import ScrollToTop from './components/ScrollToTop';
 import AdminRoute from './components/AdminRoute';
 import AdminLayout from './components/AdminLayout';
 import CatalogPage from './pages/CatalogPage';
@@ -18,16 +19,20 @@ import AdminCategoriesPage from './pages/admin/AdminCategoriesPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import HomePage from './pages/HomePage';
+import WishlistPage from './pages/WishlistPage';
 
 function App() {
     return (
         <BrowserRouter>
+            <ScrollToTop />
             <Routes>
                 <Route path="/" element={<Layout />}>
                     <Route index element={<HomePage />} />
                     <Route path="catalog" element={<CatalogPage />} />
+                    <Route path="catalog/:slug" element={<CatalogPage />} />
                     <Route path="products/:slug" element={<ProductPage />} />
                     <Route path="contacts" element={<ContactsPage />} />
+                    <Route path="wishlist" element={<WishlistPage />} />
                 </Route>
 
                 {/* в макете у корзины, оформления, профиля и входа своя короткая шапка без меню */}

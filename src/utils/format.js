@@ -3,6 +3,11 @@ export function formatPrice(value) {
     return new Intl.NumberFormat('en-US').format(Math.round(value)).replace(/,/g, ' ') + ' MDL';
 }
 
+// главное фото первым, дальше в порядке из админки. нужно для слайдеров в карточке и на странице товара
+export function sortImages(images) {
+    return [...(images ?? [])].sort((a, b) => (b.primary - a.primary) || ((a.sortOrder ?? 0) - (b.sortOrder ?? 0)));
+}
+
 export function getPrimaryImage(images) {
     if (!images || images.length === 0) return null;
     return images.find(img => img.primary) ?? images[0];

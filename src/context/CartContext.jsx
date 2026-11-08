@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { CartContext } from './cart';
+import { getPrimaryImage } from '../utils/format';
 
 const STORAGE_KEY = 'sup-shop-cart';
 
@@ -10,6 +11,19 @@ function loadCart() {
     } catch {
         return [];
     }
+}
+
+// что из товара храню в корзине; фото беру главное, чтобы не передавать его руками из каждой кнопки
+function toCartFields(product) {
+    return {
+        id: product.id,
+        slug: product.slug,
+        name: product.name,
+        brandName: product.brandName,
+        price: product.price,
+        stock: product.quantity,
+        image: product.image ?? getPrimaryImage(product.images)?.imageUrl ?? null,
+    };
 }
 
 export function CartProvider({ children }) {
@@ -28,27 +42,16 @@ export function CartProvider({ children }) {
             const existing = current.find(item => item.id === product.id);
             const max = product.quantity ?? Infinity;
 
+            // если товар уже в корзине — заодно обновляю его данные, вдруг с тех пор поменялись фото или цена
             if (existing) {
                 return current.map(item =>
                     item.id === product.id
-                        ? { ...item, qty: Math.min(max, item.qty + qty) }
+                        ? { ...item, ...toCartFields(product), qty: Math.min(max, item.qty + qty) }
                         : item
                 );
             }
 
-            return [
-                ...current,
-                {
-                    id: product.id,
-                    slug: product.slug,
-                    name: product.name,
-                    brandName: product.brandName,
-                    price: product.price,
-                    stock: product.quantity,
-                    image: product.image ?? null,
-                    qty: Math.min(max, qty),
-                },
-            ];
+            return [...current, { ...toCartFields(product), qty: Math.min(max, qty) }];
         });
     }
 
@@ -62,6 +65,17 @@ export function CartProvider({ children }) {
         );
     }
 
+    // свежие данные с сервера: корзина живёт в localStorage днями, а цену и фото могли поменять в админке
+    // useCallback — чтобы ссылка на функцию не менялась и эффект в корзине не запускался заново на каждый рендер
+    const syncItems = useCallback(products => {
+        setItems(current =>
+            current.map(item => {
+                const fresh = products.find(p => p.id === item.id);
+                return fresh ? { ...item, ...toCartFields(fresh), qty: Math.max(1, Math.min(item.qty, fresh.quantity || item.qty)) } : item;
+            })
+        );
+    }, []);
+
     function removeItem(id) {
         setItems(current => current.filter(item => item.id !== id));
     }
@@ -74,7 +88,7 @@ export function CartProvider({ children }) {
     const subtotal = items.reduce((sum, item) => sum + item.price * item.qty, 0);
 
     return (
-        <CartContext.Provider value={{ items, count, subtotal, addItem, setQty, removeItem, clearCart }}>
+        <CartContext.Provider value={{ items, count, subtotal, addItem, setQty, removeItem, clearCart, syncItems }}>
             {children}
         </CartContext.Provider>
     );

@@ -5,6 +5,7 @@ import api from '../../api/client';
 import { FormError } from '../../components/AuthShell';
 import { useToast } from '../../context/toast';
 import { getErrorMessage } from '../../utils/forms';
+import { flattenTree } from '../../utils/categories';
 
 // Значения enum Product.BoardType на бэкенде; пусто — не доска (весло, гидрокостюм, насос…)
 const BOARD_TYPES = [
@@ -13,7 +14,7 @@ const BOARD_TYPES = [
     { id: 'HARDBOARD', label: 'Hardboard' },
 ];
 
-const EMPTY = { name: '', description: '', price: '', quantity: '', brandId: '', categoryId: '', boardType: '' };
+const EMPTY = { name: '', description: '', price: '', compareAtPrice: '', quantity: '', brandId: '', categoryId: '', boardType: '' };
 
 const fieldClass =
     'w-full rounded-lg border border-line-input bg-white px-3.5 text-[15px] text-ink-900 outline-none focus:border-[1.5px] focus:border-brand-600 disabled:bg-surface-50 disabled:text-ink-400';
@@ -63,11 +64,44 @@ function ImagesSection({ productId, images, onChange }) {
         }
     }
 
+    const sorted = [...images].sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
+    const [dragId, setDragId] = useState(null);
+    const [overId, setOverId] = useState(null);
+
     function handleDelete(image) {
         setError(null);
+        // после удаления бэкенд сам двигает номера и выбирает новое главное, поэтому беру список заново
         api.delete(`/products/${productId}/images/${image.id}`)
-            .then(() => onChange(images.filter(i => i.id !== image.id)))
+            .then(() => api.get(`/products/${productId}/images`))
+            .then(({ data }) => onChange(data))
             .catch(err => setError(getErrorMessage(err, 'Не удалось удалить фото.')));
+    }
+
+    // сразу показываю новый порядок, а если сервер откажет, возвращаю старый
+    function saveOrder(ids) {
+        const previous = images;
+        const byId = new Map(images.map(i => [i.id, i]));
+        onChange(ids.map((id, i) => ({ ...byId.get(id), sortOrder: i, primary: i === 0 })));
+        setError(null);
+        api.put(`/products/${productId}/images/order`, { imageIds: ids })
+            .then(({ data }) => onChange(data))
+            .catch(err => {
+                onChange(previous);
+                setError(getErrorMessage(err, 'Could not save the photo order.'));
+            });
+    }
+
+    // перетащенное фото встаёт на место того, на которое его бросили
+    function moveTo(movedId, targetId) {
+        if (movedId === targetId) return;
+        const ids = sorted.map(i => i.id).filter(id => id !== movedId);
+        ids.splice(sorted.findIndex(i => i.id === targetId), 0, movedId);
+        saveOrder(ids);
+    }
+
+    function stopDrag() {
+        setDragId(null);
+        setOverId(null);
     }
 
     return (
@@ -75,13 +109,42 @@ function ImagesSection({ productId, images, onChange }) {
             <legend className="px-2.5 text-[17px] font-bold">Photos</legend>
 
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                {[...images].sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0)).map(image => (
-                    <div key={image.id} className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl border border-line bg-surface-100">
-                        <img src={image.imageUrl} alt="" className="max-h-full max-w-full object-contain p-2" />
-                        {image.primary && (
+                {sorted.map(image => (
+                    <div
+                        key={image.id}
+                        draggable
+                        onDragStart={() => setDragId(image.id)}
+                        onDragOver={e => {
+                            // без preventDefault браузер не разрешит бросить сюда
+                            e.preventDefault();
+                            setOverId(image.id);
+                        }}
+                        onDragLeave={() => setOverId(id => (id === image.id ? null : id))}
+                        onDrop={e => {
+                            e.preventDefault();
+                            if (dragId != null) moveTo(dragId, image.id);
+                            stopDrag();
+                        }}
+                        onDragEnd={stopDrag}
+                        className={`relative flex aspect-[4/3] cursor-grab items-center justify-center overflow-hidden rounded-xl border-2 bg-white active:cursor-grabbing ${
+                            overId === image.id && dragId !== image.id ? 'border-brand-600' : 'border-line'
+                        } ${dragId === image.id ? 'opacity-40' : ''}`}
+                    >
+                        <img src={image.imageUrl} alt="" draggable={false} className="pointer-events-none max-h-full max-w-full object-contain p-2" />
+                        {image.primary ? (
                             <span className="absolute left-2 top-2 flex items-center gap-1 rounded-full bg-deep-900 px-2 py-0.5 text-[11px] font-bold text-white">
                                 <Star size={11} strokeWidth={2.4} /> Main
                             </span>
+                        ) : (
+                            <button
+                                type="button"
+                                aria-label="Make main photo"
+                                title="Make main"
+                                onClick={() => moveTo(image.id, sorted[0].id)}
+                                className="absolute left-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-white text-ink-600 shadow hover:text-brand-600"
+                            >
+                                <Star size={15} strokeWidth={2} />
+                            </button>
                         )}
                         <button
                             type="button"
@@ -106,7 +169,7 @@ function ImagesSection({ productId, images, onChange }) {
             </div>
 
             <input ref={inputRef} type="file" accept="image/*" multiple onChange={handleFiles} className="hidden" />
-            <p className="mt-3 text-[13px] text-ink-400">JPG, PNG or WebP up to 5 MB. The first photo becomes the main one in the catalog.</p>
+            <p className="mt-3 text-[13px] text-ink-400">JPG, PNG or WebP up to 5 MB. Drag photos to change the order, the first one is the main photo in the catalog.</p>
             {error && <div className="mt-3"><FormError message={error} /></div>}
         </fieldset>
     );
@@ -207,6 +270,7 @@ function AdminProductFormPage() {
                         name: product.name ?? '',
                         description: product.description ?? '',
                         price: product.price ?? '',
+                        compareAtPrice: product.compareAtPrice ?? '',
                         quantity: product.quantity ?? '',
                         brandId: brandList?.find(b => b.name === product.brandName)?.id ?? '',
                         categoryId: categoryList.find(c => c.name === product.categoryName)?.id ?? '',
@@ -233,6 +297,7 @@ function AdminProductFormPage() {
             name: form.name.trim(),
             description: form.description.trim() || null,
             price: Number(form.price),
+            compareAtPrice: form.compareAtPrice === '' ? null : Number(form.compareAtPrice),
             quantity: Number(form.quantity),
             brandId: form.brandId ? Number(form.brandId) : null,
             categoryId: form.categoryId ? Number(form.categoryId) : null,
@@ -290,13 +355,18 @@ function AdminProductFormPage() {
                             <Field id="p-price" label="Price, MDL">
                                 <input id="p-price" type="number" required min="0" step="0.01" inputMode="decimal" value={form.price} onChange={update('price')} className={`${fieldClass} h-12`} />
                             </Field>
+                            <Field id="p-compare" label="Old price, MDL" hint="Fill in only for a discount: the shop shows it crossed out.">
+                                <input id="p-compare" type="number" min="0" step="0.01" inputMode="decimal" value={form.compareAtPrice} onChange={update('compareAtPrice')} className={`${fieldClass} h-12`} />
+                            </Field>
                             <Field id="p-quantity" label="In stock, pcs">
                                 <input id="p-quantity" type="number" required min="0" step="1" inputMode="numeric" value={form.quantity} onChange={update('quantity')} className={`${fieldClass} h-12`} />
                             </Field>
                             <Field id="p-category" label="Category">
                                 <select id="p-category" value={form.categoryId} onChange={update('categoryId')} className={`${fieldClass} h-12 cursor-pointer px-3`}>
                                     <option value="">No category</option>
-                                    {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                                    {flattenTree(categories).map(c => (
+                                        <option key={c.id} value={c.id}>{'\u00A0\u00A0'.repeat(c.depth)}{c.name}</option>
+                                    ))}
                                 </select>
                             </Field>
                             <Field

@@ -65,3 +65,12 @@ body {
   background: var(--color-surface);
   -webkit-font-smoothing: antialiased;
 }
+/* iPhone зумит страницу, если тапнуть в поле со шрифтом меньше 16px. правило без слоя, поэтому
+   перебивает text-sm из Tailwind, но только на телефонах */
+@media (max-width: 639px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}

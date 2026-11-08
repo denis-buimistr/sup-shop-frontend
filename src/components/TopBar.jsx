@@ -3,7 +3,7 @@ import { Truck, Award, Store, MessageCircle, Phone, ChevronDown } from 'lucide-r
 
 function TopBar() {
     return (
-        <div className="bg-deep-900 text-[13px] text-[#CFE0E5]">
+        <div className="hidden bg-deep-900 text-[13px] text-[#CFE0E5] md:block">
             <div className="mx-auto flex max-w-[1320px] flex-wrap items-center justify-between gap-x-7 gap-y-3 min-h-10 px-6 py-1.5">
                 <div className="flex flex-wrap items-center gap-x-8 gap-y-2.5">
           <span className="flex items-center gap-2">
