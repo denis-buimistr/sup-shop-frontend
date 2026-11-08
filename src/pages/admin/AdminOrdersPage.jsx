@@ -4,7 +4,7 @@ import { FormError } from '../../components/AuthShell';
 import { useToast } from '../../context/toast';
 import { formatPrice, formatOrderNumber, formatDate } from '../../utils/format';
 import { getErrorMessage } from '../../utils/forms';
-import { ORDER_STATUSES, PAYMENT_LABELS, formatDelivery, getOrderStatus, getNextStatuses } from '../../utils/orders';
+import { ORDER_STATUSES, formatDelivery, getOrderStatus, getNextStatuses, getPaymentLabel } from '../../utils/orders';
 
 const FILTERS = [{ id: 'ALL', label: 'All' }, ...Object.entries(ORDER_STATUSES).map(([id, s]) => ({ id, label: s.label }))];
 
@@ -103,7 +103,7 @@ function OrderRow({ order, onStatusChange }) {
                         {order.paymentMethod && (
                             <>
                                 <dt className="font-semibold text-ink-900">Payment</dt>
-                                <dd className="text-ink-600">{PAYMENT_LABELS[order.paymentMethod] ?? order.paymentMethod}</dd>
+                                <dd className="text-ink-600">{getPaymentLabel(order.paymentMethod)}</dd>
                             </>
                         )}
                         {order.comment && (

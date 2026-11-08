@@ -6,6 +6,8 @@ import { useToast } from '../../context/toast';
 import { getErrorMessage } from '../../utils/forms';
 import { invalidateCatalogCache } from '../../hooks/useCatalogData';
 import { flattenTree, selfAndDescendantIds } from '../../utils/categories';
+import { emptyTranslations, loadTranslations, saveTranslations } from '../../utils/translations';
+import TranslationFields from '../../components/admin/TranslationFields';
 
 const fieldClass =
     'w-full rounded-lg border border-line-input bg-white px-3.5 text-[15px] text-ink-900 outline-none focus:border-[1.5px] focus:border-brand-600';
@@ -17,6 +19,7 @@ function AdminCategoriesPage() {
     const [categories, setCategories] = useState(null);
     const [loadError, setLoadError] = useState(null);
     const [form, setForm] = useState(EMPTY_FORM);
+    const [translations, setTranslations] = useState(emptyTranslations);
     // null — форма создаёт новую категорию, иначе редактирует категорию с этим id
     const [editingId, setEditingId] = useState(null);
     const [saving, setSaving] = useState(false);
@@ -44,6 +47,10 @@ function AdminCategoriesPage() {
             description: category.description ?? '',
             parentId: category.parentId ?? '',
         });
+        setTranslations(emptyTranslations());
+        loadTranslations(`/categories/${category.id}`)
+            .then(setTranslations)
+            .catch(err => setError(getErrorMessage(err, 'Could not load translations.')));
         setError(null);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -51,6 +58,7 @@ function AdminCategoriesPage() {
     function resetForm() {
         setEditingId(null);
         setForm(EMPTY_FORM);
+        setTranslations(emptyTranslations());
         setError(null);
     }
 
@@ -66,8 +74,10 @@ function AdminCategoriesPage() {
         };
         const request = editingId ? api.put(`/categories/${editingId}`, body) : api.post('/categories', body);
 
+        // переводы сохраняю после самой категории: новой категории id выдаёт только бэкенд
         request
-            .then(({ data }) => {
+            .then(({ data }) => saveTranslations(`/categories/${data.id}`, translations).then(() => data))
+            .then(data => {
                 setCategories(current => [...current.filter(c => c.id !== data.id), data]);
                 invalidateCatalogCache();
                 showToast({ title: editingId ? 'Category updated' : 'Category added', body: data.name });
@@ -139,6 +149,9 @@ function AdminCategoriesPage() {
                             className={`${fieldClass} h-12`}
                         />
                     </p>
+                </div>
+                <div className="mt-5">
+                    <TranslationFields idPrefix="c" value={translations} onChange={setTranslations} />
                 </div>
                 {error && <div className="mt-3"><FormError message={error} /></div>}
                 <div className="mt-4 flex flex-wrap gap-3">

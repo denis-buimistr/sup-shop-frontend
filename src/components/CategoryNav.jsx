@@ -1,15 +1,19 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from '../i18n/routing';
+import { useNavigate } from '../i18n/hooks';
 import { ChevronDown } from 'lucide-react';
 import { useBrands, useCategories } from '../hooks/useCatalogData';
 import { getChildren, getRoots } from '../utils/categories';
 import { findCategoryPhoto } from '../data/categoryPhotos';
+import { useTranslation } from 'react-i18next';
 
-const topClass = 'flex items-center gap-1.5 py-4 text-[13px] font-bold uppercase tracking-[0.05em] transition-colors';
+// на 1024–1279 сжимаю шрифт и промежутки, иначе длинные русские и румынские названия не влезают в одну строку
+const topClass = 'flex items-center gap-1 py-4 text-[12px] font-bold uppercase tracking-[0.02em] transition-colors xl:gap-1.5 xl:text-[13px] xl:tracking-[0.05em]';
 const linkClass = 'flex items-baseline justify-between gap-2.5 py-2 text-[15px] font-medium text-ink-900 hover:text-brand-600';
 
 // Меню строится из категорий в БД: верхний уровень — разделы, в выпадающем блоке — подкатегории и бренды
 function CategoryNav() {
+    const { t } = useTranslation();
     const categories = useCategories();
     const brands = useBrands();
     const navigate = useNavigate();
@@ -61,12 +65,12 @@ function CategoryNav() {
     return (
         <nav
             ref={navRef}
-            aria-label="Product categories"
+            aria-label={t('nav.label')}
             onPointerLeave={e => e.pointerType === 'mouse' && hoverClose()}
             onPointerEnter={() => clearTimeout(hoverTimer.current)}
             className="relative hidden border-b border-line bg-white lg:block"
         >
-            <div className="mx-auto flex max-w-[1320px] flex-wrap items-center gap-x-[26px] gap-y-1 px-6">
+            <div className="mx-auto flex max-w-[1320px] flex-wrap items-center gap-x-3.5 gap-y-1 px-6 xl:gap-x-[26px]">
                 {roots.map(root => {
                     const isOpen = openId === root.id;
                     return (
@@ -99,7 +103,7 @@ function CategoryNav() {
                     onPointerEnter={e => e.pointerType === 'mouse' && hoverClose()}
                     className={`${topClass} text-alert hover:text-ink-900`}
                 >
-                    Sale
+                    {t('menu.sale')}
                 </Link>
             </div>
 
@@ -121,13 +125,13 @@ function CategoryNav() {
                                 onClick={close}
                                 className="mt-3 inline-flex text-sm font-bold text-brand-600 hover:text-brand-700"
                             >
-                                Shop all {active.name} ({active.productCount}) →
+                                {t('nav.shopAll', { name: active.name, count: active.productCount })}
                             </Link>
                         </div>
 
                         {brands?.length > 0 && (
                             <div className="min-w-0 flex-[1_1_200px]">
-                                <p className="mb-3.5 text-[11px] font-bold uppercase tracking-[0.12em] text-ink-400">Brands</p>
+                                <p className="mb-3.5 text-[11px] font-bold uppercase tracking-[0.12em] text-ink-400">{t('nav.brands')}</p>
                                 {brands.map(brand => (
                                     <Link
                                         key={brand.id}
@@ -157,7 +161,7 @@ function CategoryNav() {
                                     onClick={close}
                                     className="relative inline-flex rounded-full bg-brand-600 px-[22px] py-3 text-sm font-bold text-white hover:bg-brand-700"
                                 >
-                                    See the deals
+                                    {t('nav.seeDeals')}
                                 </Link>
                             </div>
                         )}

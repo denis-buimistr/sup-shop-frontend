@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../i18n/routing';
 import { CircleCheck, Minus, Plus, Truck } from 'lucide-react';
 import api from '../api/client';
 import SimpleHeader from '../components/SimpleHeader';
@@ -9,14 +9,13 @@ import SimpleFooter from '../components/SimpleFooter';
 import { BoardPlaceholder } from '../components/ProductCard';
 import { useCart, useAddToCart, FREE_DELIVERY_FROM } from '../context/cart';
 import { formatPrice, getStock } from '../utils/format';
+import { useTranslation } from 'react-i18next';
 
-const GUARANTEES = [
-    'Pay cash or card to the courier on delivery',
-    '14 days to return unused gear',
-    '2-year official warranty, service in Chișinău',
-];
+// тексты в cart.guarantees.<key>
+const GUARANTEES = ['cod', 'returns', 'warranty'];
 
 function CartPage() {
+    const { t } = useTranslation();
     const { items, count, subtotal, setQty, removeItem, syncItems } = useCart();
     // товары на момент открытия корзины: обновляю их один раз, а не на каждое изменение количества
     const [idsOnOpen] = useState(() => items.map(item => item.id));
@@ -34,7 +33,7 @@ function CartPage() {
             <SimpleHeader
                 action={
                     <Link to="/catalog" className="text-sm font-semibold text-brand-600 hover:text-brand-700">
-                        Continue shopping
+                        {t('cart.continue')}
                     </Link>
                 }
             />
@@ -42,8 +41,8 @@ function CartPage() {
             <CheckoutSteps active={[0]} />
 
             <Container as="main" className="flex-grow pt-8">
-                <h1 className="mb-1.5 text-[38px] font-extrabold tracking-[-0.025em] text-ink-900">Your cart</h1>
-                <p className="mb-7 text-base text-ink-400">{count} items</p>
+                <h1 className="mb-1.5 text-[38px] font-extrabold tracking-[-0.025em] text-ink-900">{t('cart.title')}</h1>
+                <p className="mb-7 text-base text-ink-400">{t('cart.items', { count })}</p>
 
                 <div className="flex flex-wrap items-start gap-7">
                     <div className="min-w-0 flex-[999_1_560px]">
@@ -52,8 +51,8 @@ function CartPage() {
                                 <p className="mb-2.5 flex items-center gap-2.5 text-[15px] font-semibold text-tint-900">
                                     {freeDelivery ? <CircleCheck size={18} strokeWidth={1.8} /> : <Truck size={18} strokeWidth={1.8} />}
                                     {freeDelivery
-                                        ? 'Your order qualifies for free delivery across Moldova'
-                                        : `Add ${formatPrice(FREE_DELIVERY_FROM - subtotal)} more for free delivery`}
+                                        ? t('cart.freeReached')
+                                        : t('cart.freeLeft', { price: formatPrice(FREE_DELIVERY_FROM - subtotal) })}
                                 </p>
                                 <div className="h-1.5 overflow-hidden rounded-full bg-white">
                                     <span className="block h-full bg-brand-600" style={{ width: `${progress}%` }} />
@@ -92,14 +91,14 @@ function CartPage() {
                                                 onClick={() => removeItem(item.id)}
                                                 className="py-1 text-sm font-semibold text-danger hover:underline"
                                             >
-                                                Remove
+                                                {t('cart.remove')}
                                             </button>
                                         </div>
 
                                         <div className="flex h-[46px] flex-none items-center gap-1 rounded-full border-[1.5px] border-line-input p-[3px]">
                                             <button
                                                 type="button"
-                                                aria-label={`Decrease quantity of ${item.name}`}
+                                                aria-label={t('cart.decreaseOf', { name: item.name })}
                                                 onClick={() => setQty(item.id, item.qty - 1)}
                                                 className="flex h-[38px] w-[38px] items-center justify-center rounded-full text-ink-900 hover:bg-surface-100"
                                             >
@@ -108,7 +107,7 @@ function CartPage() {
                                             <span aria-live="polite" className="min-w-[30px] text-center text-[15px] font-bold">{item.qty}</span>
                                             <button
                                                 type="button"
-                                                aria-label={`Increase quantity of ${item.name}`}
+                                                aria-label={t('cart.increaseOf', { name: item.name })}
                                                 onClick={() => setQty(item.id, item.qty + 1)}
                                                 className="flex h-[38px] w-[38px] items-center justify-center rounded-full text-ink-900 hover:bg-surface-100"
                                             >
@@ -128,13 +127,13 @@ function CartPage() {
 
                             {items.length === 0 && (
                                 <div className="px-6 py-14 text-center">
-                                    <p className="mb-2.5 text-xl font-bold">Your cart is empty</p>
-                                    <p className="mb-[22px] text-[15px] text-ink-400">Nothing here yet — the boards are waiting.</p>
+                                    <p className="mb-2.5 text-xl font-bold">{t('cart.empty.title')}</p>
+                                    <p className="mb-[22px] text-[15px] text-ink-400">{t('cart.empty.body')}</p>
                                     <Link
                                         to="/catalog"
                                         className="inline-flex rounded-full bg-brand-600 px-[26px] py-3.5 text-[15px] font-bold text-white hover:bg-brand-700"
                                     >
-                                        Browse the catalog
+                                        {t('wishlist.empty.cta')}
                                     </Link>
                                 </div>
                             )}
@@ -143,28 +142,28 @@ function CartPage() {
                         {items.length > 0 && <AddOns cartIds={items.map(item => item.id)} />}
                     </div>
 
-                    <aside aria-label="Order summary" className="min-w-0 flex-[1_1_360px]">
+                    <aside aria-label={t('cart.summary.title')} className="min-w-0 flex-[1_1_360px]">
                         <div className="rounded-[22px] border border-line bg-surface-50 p-[26px]">
-                            <h2 className="mb-5 text-[22px] font-extrabold tracking-[-0.02em]">Order summary</h2>
+                            <h2 className="mb-5 text-[22px] font-extrabold tracking-[-0.02em]">{t('cart.summary.title')}</h2>
 
                             <p className="mb-3 flex justify-between gap-4 text-[15px] text-ink-600">
-                                <span>Subtotal ({count} items)</span>
+                                <span>{t('cart.summary.subtotal', { count })}</span>
                                 <span className="font-semibold tabular-nums">{formatPrice(subtotal)}</span>
                             </p>
                             <p className="mb-3 flex justify-between gap-4 text-[15px] text-ink-600">
-                                <span>Delivery across Moldova</span>
-                                <span className="font-semibold">{freeDelivery ? 'Free' : 'Calculated at checkout'}</span>
+                                <span>{t('cart.summary.delivery')}</span>
+                                <span className="font-semibold">{freeDelivery ? t('cart.summary.free') : t('cart.summary.atCheckout')}</span>
                             </p>
                             <p className="mb-3 flex justify-between gap-4 text-[15px] text-ink-600">
-                                <span>Estimated arrival</span>
-                                <span className="font-semibold">1–3 working days</span>
+                                <span>{t('cart.summary.arrival')}</span>
+                                <span className="font-semibold">{t('cart.summary.days')}</span>
                             </p>
 
                             <p className="my-5 flex items-baseline justify-between gap-4 border-t border-line-divider pt-[18px]">
-                                <span className="text-lg font-bold">Total</span>
+                                <span className="text-lg font-bold">{t('cart.summary.total')}</span>
                                 <span className="text-[28px] font-extrabold tabular-nums">{formatPrice(subtotal)}</span>
                             </p>
-                            <p className="-mt-2.5 mb-5 text-right text-[13px] text-ink-400">VAT included</p>
+                            <p className="-mt-2.5 mb-5 text-right text-[13px] text-ink-400">{t('common.vatIncluded')}</p>
 
                             <Link
                                 to="/checkout"
@@ -175,20 +174,20 @@ function CartPage() {
                                         : 'bg-brand-600 text-white hover:bg-brand-700'
                                 }`}
                             >
-                                Proceed to checkout
+                                {t('cart.checkout')}
                             </Link>
                             <Link
                                 to="/catalog"
                                 className="flex items-center justify-center rounded-full border-[1.5px] border-ink-900 bg-white p-3.5 text-[15px] font-bold text-ink-900 hover:bg-surface-50"
                             >
-                                Continue shopping
+                                {t('cart.continue')}
                             </Link>
 
                             <div className="mt-[22px] border-t border-line-divider pt-5">
-                                {GUARANTEES.map(text => (
-                                    <p key={text} className="mb-2.5 flex items-start gap-2.5 text-sm leading-[1.5] text-ink-600">
+                                {GUARANTEES.map(key => (
+                                    <p key={key} className="mb-2.5 flex items-start gap-2.5 text-sm leading-[1.5] text-ink-600">
                                         <CircleCheck size={17} strokeWidth={1.8} className="mt-0.5 flex-none text-brand-600" />
-                                        {text}
+                                        {t(`cart.guarantees.${key}`)}
                                     </p>
                                 ))}
                             </div>
@@ -204,6 +203,7 @@ function CartPage() {
 
 // «Add to your order»: пара недорогих аксессуаров, которых ещё нет в корзине
 function AddOns({ cartIds }) {
+    const { t } = useTranslation();
     const addToCart = useAddToCart();
     const [products, setProducts] = useState([]);
 
@@ -218,7 +218,7 @@ function AddOns({ cartIds }) {
 
     return (
         <section>
-            <h2 className="mb-4 mt-9 text-[22px] font-extrabold tracking-[-0.02em]">Add to your order</h2>
+            <h2 className="mb-4 mt-9 text-[22px] font-extrabold tracking-[-0.02em]">{t('cart.addOns.title')}</h2>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                 {suggestions.map(product => (
                     <div key={product.id} className="flex items-center gap-3.5 rounded-[18px] border border-line bg-white p-4">
@@ -237,7 +237,7 @@ function AddOns({ cartIds }) {
                         <button
                             type="button"
                             onClick={() => addToCart(product)}
-                            aria-label={`Add ${product.name} to cart`}
+                            aria-label={t('cart.addOns.add', { name: product.name })}
                             className="flex h-10 w-10 flex-none items-center justify-center rounded-full border-[1.5px] border-brand-600 bg-white text-brand-600 hover:bg-tint-100"
                         >
                             <Plus size={18} strokeWidth={2.2} />

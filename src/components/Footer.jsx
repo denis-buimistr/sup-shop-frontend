@@ -1,14 +1,15 @@
-import { Link } from 'react-router-dom';
+import { Link } from '../i18n/routing';
 import { Truck, ShieldCheck, RotateCcw, Store, Phone, MapPin } from 'lucide-react';
 import Container from './Container';
 import PaymentBadges from './PaymentBadges';
 import Logo from './Logo';
+import { useTranslation } from 'react-i18next';
 
 const USPS = [
-    { icon: Truck, title: 'Free delivery', body: 'On orders over 2,000 MDL' },
-    { icon: ShieldCheck, title: '2-year warranty', body: 'Official dealer, local service' },
-    { icon: RotateCcw, title: '14-day returns', body: 'Unused gear, no questions' },
-    { icon: Store, title: 'Showroom', body: 'Test before you buy, Chișinău' },
+    { icon: Truck, key: 'delivery' },
+    { icon: ShieldCheck, key: 'warranty' },
+    { icon: RotateCcw, key: 'returns' },
+    { icon: Store, key: 'showroom' },
 ];
 
 const SOCIALS = [
@@ -18,45 +19,46 @@ const SOCIALS = [
     { name: 'Telegram', short: 'TG' },
 ];
 
+// подписи ссылок лежат в footer.links.* в файлах переводов
 const COLUMNS = [
     {
-        title: 'SHOP',
+        key: 'shop',
         links: [
-            { label: 'SUP boards', to: '/catalog/sup' },
-            { label: 'Paddles', to: '/catalog/paddles' },
-            { label: 'Wing foiling', to: '/catalog/foil-wing' },
-            { label: 'Wetsuits', to: '/catalog/wetsuits' },
-            { label: 'Accessories', to: '/catalog/accessories' },
-            { label: 'Sale', to: '/catalog?onSale=true' },
+            { key: 'supBoards', to: '/catalog/sup' },
+            { key: 'paddles', to: '/catalog/paddles' },
+            { key: 'wingFoiling', to: '/catalog/foil-wing' },
+            { key: 'wetsuits', to: '/catalog/wetsuits' },
+            { key: 'accessories', to: '/catalog/accessories' },
+            { key: 'sale', to: '/catalog?onSale=true' },
         ],
     },
     {
-        title: 'HELP',
+        key: 'help',
         links: [
-            { label: 'Delivery & payment', to: '/contacts' },
-            { label: 'Returns in 14 days', to: '/contacts' },
-            { label: 'Warranty & service', to: '/contacts' },
-            { label: 'How to choose a SUP', to: '/catalog/sup' },
-            { label: 'FAQ', to: '/contacts' },
+            { key: 'delivery', to: '/contacts' },
+            { key: 'returns', to: '/contacts' },
+            { key: 'warranty', to: '/contacts' },
+            { key: 'howToChoose', to: '/catalog/sup' },
+            { key: 'faq', to: '/contacts' },
         ],
     },
     {
-        title: 'ACCOUNT',
+        key: 'account',
         links: [
-            { label: 'Sign in', to: '/login' },
-            { label: 'Create account', to: '/register' },
-            { label: 'Wishlist', to: '/wishlist' },
-            { label: 'Cart', to: '/cart' },
+            { key: 'signIn', to: '/login' },
+            { key: 'createAccount', to: '/register' },
+            { key: 'wishlist', to: '/wishlist' },
+            { key: 'cart', to: '/cart' },
         ],
     },
     {
-        title: 'COMPANY',
+        key: 'company',
         links: [
-            { label: 'About us', to: '/contacts' },
-            { label: 'Showroom', to: '/contacts' },
-            { label: 'Contacts', to: '/contacts' },
-            { label: 'Terms of sale', to: '/contacts' },
-            { label: 'Privacy policy', to: '/contacts' },
+            { key: 'about', to: '/contacts' },
+            { key: 'showroom', to: '/contacts' },
+            { key: 'contacts', to: '/contacts' },
+            { key: 'terms', to: '/contacts' },
+            { key: 'privacy', to: '/contacts' },
         ],
     },
 ];
@@ -64,6 +66,8 @@ const COLUMNS = [
 const YEAR = new Date().getFullYear();
 
 function Footer({ showUsps = true }) {
+    const { t } = useTranslation();
+
     return (
         <>
             {showUsps && (
@@ -72,13 +76,13 @@ function Footer({ showUsps = true }) {
                         {USPS.map(usp => {
                             const Icon = usp.icon;
                             return (
-                                <div key={usp.title} className="flex items-start gap-3.5">
+                                <div key={usp.key} className="flex items-start gap-3.5">
                                     <span className="flex h-[42px] w-[42px] flex-none items-center justify-center rounded-full bg-white text-brand-600">
                                         <Icon size={20} strokeWidth={1.8} />
                                     </span>
                                     <span>
-                                        <span className="block text-[15px] font-bold text-ink-900">{usp.title}</span>
-                                        <span className="mt-0.5 block text-[13px] leading-[1.5] text-ink-400">{usp.body}</span>
+                                        <span className="block text-[15px] font-bold text-ink-900">{t(`footer.usp.${usp.key}.title`)}</span>
+                                        <span className="mt-0.5 block text-[13px] leading-[1.5] text-ink-400">{t(`footer.usp.${usp.key}.body`)}</span>
                                     </span>
                                 </div>
                             );
@@ -95,7 +99,7 @@ function Footer({ showUsps = true }) {
                             <Logo />
                         </div>
                         <p className="mb-[22px] max-w-[310px] text-sm leading-[1.65] text-deep-muted">
-                            Paddleboards, paddles and watersports gear for Moldova. Showroom and test centre in Chișinău.
+                            {t('footer.about')}
                         </p>
 
                         <p className="mb-2.5 flex items-center gap-2.5 text-[15px] font-bold text-white">
@@ -104,7 +108,7 @@ function Footer({ showUsps = true }) {
                         </p>
                         <p className="mb-[22px] flex items-start gap-2.5 text-sm leading-[1.5]">
                             <MapPin size={17} strokeWidth={1.8} className="mt-0.5 flex-none text-deep-accent" />
-                            <span>Chișinău, Moldova</span>
+                            <span>{t('footer.city')}</span>
                         </p>
 
                         <p className="flex gap-2.5">
@@ -122,28 +126,28 @@ function Footer({ showUsps = true }) {
                     </div>
 
                     {COLUMNS.map(column => (
-                        <nav key={column.title} aria-label={column.title} className="min-w-0 flex-[1_1_170px]">
-                            <p className="mb-4 text-[13px] font-bold tracking-[0.1em] text-white">{column.title}</p>
+                        <nav key={column.key} aria-label={t(`footer.columns.${column.key}`)} className="min-w-0 flex-[1_1_170px]">
+                            <p className="mb-4 text-[13px] font-bold tracking-[0.1em] text-white">{t(`footer.columns.${column.key}`)}</p>
                             {column.links.map(link => (
                                 <Link
-                                    key={link.label}
+                                    key={link.key}
                                     to={link.to}
                                     className="block py-[7px] text-sm leading-[1.5] hover:text-white"
                                 >
-                                    {link.label}
+                                    {t(`footer.links.${link.key}`)}
                                 </Link>
                             ))}
                         </nav>
                     ))}
 
                     <div className="min-w-0 flex-[1_1_260px]">
-                        <p className="mb-4 text-[13px] font-bold tracking-[0.1em] text-white">NEWSLETTER</p>
+                        <p className="mb-4 text-[13px] font-bold tracking-[0.1em] text-white">{t('footer.newsletter')}</p>
                         <p className="mb-3.5 text-sm leading-[1.6] text-deep-muted">
-                            New arrivals and race dates, once a month.
+                            {t('footer.newsletterText')}
                         </p>
                         <form className="flex flex-col gap-2.5" onSubmit={e => e.preventDefault()}>
                             <label htmlFor="footer-email" className="text-[13px] font-semibold">
-                                Email address
+                                {t('footer.email')}
                             </label>
                             <input
                                 id="footer-email"
@@ -155,7 +159,7 @@ function Footer({ showUsps = true }) {
                                 type="submit"
                                 className="h-12 rounded-full bg-brand-600 text-[15px] font-bold text-white hover:bg-brand-700"
                             >
-                                Subscribe
+                                {t('footer.subscribe')}
                             </button>
                         </form>
                     </div>
@@ -164,10 +168,10 @@ function Footer({ showUsps = true }) {
                 <div className="border-t border-deep-line">
                     <Container className="flex flex-wrap items-center justify-between gap-x-7 gap-y-4 py-[22px]">
                         <p className="text-[13px] leading-[1.6] text-deep-muted">
-                            © {YEAR} SUP Shop Moldova · Chișinău
+                            {t('footer.copyright', { year: YEAR })}
                         </p>
                         <div className="flex flex-wrap items-center gap-2.5">
-                            <span className="mr-1 text-xs text-deep-muted">We accept</span>
+                            <span className="mr-1 text-xs text-deep-muted">{t('footer.weAccept')}</span>
                             <PaymentBadges />
                         </div>
                     </Container>

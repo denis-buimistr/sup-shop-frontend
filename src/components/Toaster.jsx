@@ -1,9 +1,11 @@
-import { Link } from 'react-router-dom';
+import { Link } from '../i18n/routing';
 import { CircleCheck, X } from 'lucide-react';
 import { useToast } from '../context/toast';
+import { useTranslation } from 'react-i18next';
 
 // Уведомления в правом верхнем углу: «Added to cart», «Order placed»
 function Toaster() {
+    const { t } = useTranslation();
     const { toasts, dismiss } = useToast();
 
     return (
@@ -33,7 +35,7 @@ function Toaster() {
                     </div>
                     <button
                         type="button"
-                        aria-label="Close notification"
+                        aria-label={t('toast.close')}
                         onClick={() => dismiss(toast.id)}
                         className="-m-1 flex h-8 w-8 flex-none items-center justify-center rounded-full text-ink-400 hover:bg-surface-100 hover:text-ink-900"
                     >

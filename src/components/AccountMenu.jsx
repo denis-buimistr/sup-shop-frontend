@@ -1,15 +1,18 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from '../i18n/routing';
+import { useNavigate } from '../i18n/hooks';
 import { User, ChevronDown } from 'lucide-react';
 import { useAuth } from '../context/auth';
+import { useTranslation } from 'react-i18next';
 
 const MENU_LINKS = [
-    { label: 'My orders', to: '/profile' },
-    { label: 'Settings', to: '/profile?tab=settings' },
+    { key: 'account.myOrders', to: '/profile' },
+    { key: 'account.settings', to: '/profile?tab=settings' },
 ];
 
 // Гость видит ссылку на вход; вошедший — своё имя и выпадающее меню из макета (Nav · Account menu)
 function AccountMenu() {
+    const { t } = useTranslation();
     const { user, isAdmin, logout } = useAuth();
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
@@ -39,7 +42,7 @@ function AccountMenu() {
         return (
             <Link to="/login" className="flex items-center gap-2 hover:text-brand-600">
                 <User size={22} strokeWidth={1.8} />
-                <span className="hidden md:inline">Sign in</span>
+                <span className="hidden md:inline">{t('header.signIn')}</span>
             </Link>
         );
     }
@@ -83,7 +86,7 @@ function AccountMenu() {
                             onClick={() => setOpen(false)}
                             className="block rounded-[10px] px-3 py-2.5 text-[15px] font-semibold text-brand-600 hover:bg-surface-50"
                         >
-                            Admin panel
+                            {t('account.adminPanel')}
                         </Link>
                     )}
                     {MENU_LINKS.map(link => (
@@ -94,7 +97,7 @@ function AccountMenu() {
                             onClick={() => setOpen(false)}
                             className="block rounded-[10px] px-3 py-2.5 text-[15px] font-normal text-ink-900 hover:bg-surface-50"
                         >
-                            {link.label}
+                            {t(link.key)}
                         </Link>
                     ))}
                     <Link
@@ -103,7 +106,7 @@ function AccountMenu() {
                         onClick={() => setOpen(false)}
                         className="block rounded-[10px] px-3 py-2.5 text-[15px] font-normal text-ink-900 hover:bg-surface-50"
                     >
-                        Cart
+                        {t('header.cart')}
                     </Link>
                     <button
                         type="button"
@@ -111,7 +114,7 @@ function AccountMenu() {
                         onClick={handleLogout}
                         className="block w-full rounded-[10px] px-3 py-2.5 text-left text-[15px] font-semibold text-danger hover:bg-surface-50"
                     >
-                        Sign out
+                        {t('account.signOut')}
                     </button>
                 </div>
             )}

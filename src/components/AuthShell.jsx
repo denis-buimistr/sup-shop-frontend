@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../i18n/routing';
 import { CircleAlert } from 'lucide-react';
 import SimpleHeader from './SimpleHeader';
 import { inputClass } from '../utils/forms';
+import { useTranslation } from 'react-i18next';
 
 // Общий каркас для входа и регистрации: форма слева, панель с преимуществами справа
 function AuthShell({ headerAction, children, aside }) {
@@ -41,6 +42,7 @@ export function Field({ id, label, hint, children }) {
 }
 
 export function PasswordInput({ id, autoComplete, value, onChange }) {
+    const { t } = useTranslation();
     const [reveal, setReveal] = useState(false);
 
     return (
@@ -59,7 +61,7 @@ export function PasswordInput({ id, autoComplete, value, onChange }) {
                 onClick={() => setReveal(r => !r)}
                 className="absolute right-2.5 top-1.5 h-10 px-3.5 text-sm font-semibold text-brand-600"
             >
-                {reveal ? 'Hide' : 'Show'}
+                {reveal ? t('auth.hide') : t('auth.show')}
             </button>
         </span>
     );

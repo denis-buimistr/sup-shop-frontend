@@ -1,3 +1,5 @@
+import i18n from '../i18n/config';
+
 // Статусы Order.Status на бэкенде → подпись и цвет плашки
 export const ORDER_STATUSES = {
     NEW: { label: 'Processing', className: 'bg-badge-warm-bg text-badge-warm-ink' },
@@ -29,11 +31,20 @@ export const PAYMENT_LABELS = {
     BANK_TRANSFER: 'Bank transfer',
 };
 
+// подписи на текущем языке, английские словари выше остаются для админки
+export function getDeliveryLabel(method) {
+    return i18n.t(`delivery.${method}`, { defaultValue: DELIVERY_LABELS[method] ?? method });
+}
+
+export function getPaymentLabel(method) {
+    return i18n.t(`payment.${method}`, { defaultValue: PAYMENT_LABELS[method] ?? method });
+}
+
 // у старых заказов deliveryMethod нет, там всё склеено в shippingAddress — просто показываем его
 export function formatDelivery(order) {
     const address = [order.city, order.shippingAddress].filter(Boolean).join(', ');
     if (!order.deliveryMethod) return address;
-    const label = DELIVERY_LABELS[order.deliveryMethod] ?? order.deliveryMethod;
+    const label = getDeliveryLabel(order.deliveryMethod);
     return address ? `${label} · ${address}` : label;
 }
 
@@ -42,5 +53,7 @@ export function getNextStatuses(status) {
 }
 
 export function getOrderStatus(status) {
-    return ORDER_STATUSES[status] ?? { label: status, className: 'bg-surface-100 text-ink-600' };
+    const known = ORDER_STATUSES[status];
+    if (!known) return { label: status, className: 'bg-surface-100 text-ink-600' };
+    return { ...known, label: i18n.t(`orders.status.${status}`, { defaultValue: known.label }) };
 }

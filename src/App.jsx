@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import Toaster from './components/Toaster';
 import ScrollToTop from './components/ScrollToTop';
+import { LanguageRoute } from './i18n/routing';
 import AdminRoute from './components/AdminRoute';
 import AdminLayout from './components/AdminLayout';
 import CatalogPage from './pages/CatalogPage';
@@ -26,23 +27,26 @@ function App() {
         <BrowserRouter>
             <ScrollToTop />
             <Routes>
-                <Route path="/" element={<Layout />}>
-                    <Route index element={<HomePage />} />
-                    <Route path="catalog" element={<CatalogPage />} />
-                    <Route path="catalog/:slug" element={<CatalogPage />} />
-                    <Route path="products/:slug" element={<ProductPage />} />
-                    <Route path="contacts" element={<ContactsPage />} />
-                    <Route path="wishlist" element={<WishlistPage />} />
+                {/* английский без префикса, румынский и русский под /ro и /ru. LanguageRoute переключает язык по адресу */}
+                <Route path=":lang?" element={<LanguageRoute />}>
+                    <Route element={<Layout />}>
+                        <Route index element={<HomePage />} />
+                        <Route path="catalog" element={<CatalogPage />} />
+                        <Route path="catalog/:slug" element={<CatalogPage />} />
+                        <Route path="products/:slug" element={<ProductPage />} />
+                        <Route path="contacts" element={<ContactsPage />} />
+                        <Route path="wishlist" element={<WishlistPage />} />
+                    </Route>
+
+                    {/* в макете у корзины, оформления, профиля и входа своя короткая шапка без меню */}
+                    <Route path="cart" element={<CartPage />} />
+                    <Route path="checkout" element={<CheckoutPage />} />
+                    <Route path="profile" element={<ProfilePage />} />
+                    <Route path="login" element={<LoginPage />} />
+                    <Route path="register" element={<RegisterPage />} />
                 </Route>
 
-                {/* в макете у корзины, оформления, профиля и входа своя короткая шапка без меню */}
-                <Route path="cart" element={<CartPage />} />
-                <Route path="checkout" element={<CheckoutPage />} />
-                <Route path="profile" element={<ProfilePage />} />
-                <Route path="login" element={<LoginPage />} />
-                <Route path="register" element={<RegisterPage />} />
-
-                {/* AdminRoute проверяет роль, AdminLayout рисует шапку и меню, страницы попадают в его <Outlet /> */}
+                {/* админка внутренняя, её не перевожу. AdminRoute проверяет роль, AdminLayout рисует шапку и меню */}
                 <Route path="admin" element={<AdminRoute />}>
                     <Route element={<AdminLayout />}>
                         <Route index element={<Navigate to="orders" replace />} />

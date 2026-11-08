@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../../i18n/routing';
 import api from '../../api/client';
 import ProductCard from '../ProductCard';
 import { useAddToCart } from '../../context/cart';
 import { formatPrice, getPrimaryImage } from '../../utils/format';
+import { useTranslation } from 'react-i18next';
 
 export function SectionHead({ eyebrow, title, link, linkLabel }) {
     return (
@@ -35,6 +36,7 @@ export function WaveDivider() {
 
 // ряд из 4 товаров одной категории; пустую категорию просто не показываю
 export function ProductRow({ category, eyebrow, title }) {
+    const { t } = useTranslation();
     const [page, setPage] = useState(null);
 
     useEffect(() => {
@@ -51,7 +53,7 @@ export function ProductRow({ category, eyebrow, title }) {
                 eyebrow={eyebrow}
                 title={title}
                 link={`/catalog/${category}`}
-                linkLabel={`View all ${page.page.totalElements} →`}
+                linkLabel={t('common.viewAll', { count: page.page.totalElements })}
             />
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
                 {page.content.map(product => <ProductCard key={product.id} product={product} />)}
@@ -62,6 +64,7 @@ export function ProductRow({ category, eyebrow, title }) {
 
 // «доска месяца»: настоящий товар из базы, если его сняли с продажи — блок прячется
 export function FeaturedProduct({ slug }) {
+    const { t } = useTranslation();
     const addToCart = useAddToCart();
     const [product, setProduct] = useState(null);
 
@@ -82,11 +85,11 @@ export function FeaturedProduct({ slug }) {
             <div className="mx-auto flex max-w-[1320px] flex-wrap items-center gap-12 px-6 py-14">
                 <div className="min-w-0 flex-[999_1_460px]">
                     <div className="relative rounded-[26px] bg-white px-6 py-7">
-                        <span className="absolute left-5 top-5 rounded-full bg-alert px-3.5 py-[7px] text-xs font-bold text-white">Board of the month</span>
+                        <span className="absolute left-5 top-5 rounded-full bg-alert px-3.5 py-[7px] text-xs font-bold text-white">{t('featured.badge')}</span>
                         {photo ? (
                             <img src={photo.imageUrl} alt={product.name} className="mx-auto mt-6 block h-[320px] w-full object-contain" />
                         ) : (
-                            <svg viewBox="0 0 520 240" className="mt-5 block h-auto w-full" role="img" aria-label={`Illustration of ${product.name}`}>
+                            <svg viewBox="0 0 520 240" className="mt-5 block h-auto w-full" role="img" aria-label={t('featured.illustration', { name: product.name })}>
                                 <ellipse cx="260" cy="212" rx="196" ry="13" fill="#0A2A3B" opacity="0.08" />
                                 <path d="M22 118c0 0 84-52 238-52s238 52 238 52-84 52-238 52S22 118 22 118Z" fill="#0B7A91" />
                                 <path d="M22 118c0 0 84-52 238-52s238 52 238 52" fill="none" stroke="#ffffff" strokeOpacity="0.4" strokeWidth="5" />
@@ -114,7 +117,7 @@ export function FeaturedProduct({ slug }) {
                             </>
                         )}
                     </p>
-                    <p className="mb-6 text-sm text-ink-400">VAT included</p>
+                    <p className="mb-6 text-sm text-ink-400">{t('common.vatIncluded')}</p>
 
                     <div className="mb-5 flex flex-wrap gap-3.5">
                         <button
@@ -123,13 +126,13 @@ export function FeaturedProduct({ slug }) {
                             onClick={() => addToCart({ ...product, image: photo?.imageUrl })}
                             className="flex flex-[999_1_240px] items-center justify-center rounded-full bg-brand-600 px-[30px] py-[18px] text-[17px] font-bold text-white hover:bg-brand-700 disabled:opacity-50"
                         >
-                            {product.quantity === 0 ? 'Sold out' : 'Add to cart'}
+                            {product.quantity === 0 ? t('card.soldOut') : t('common.addToCart')}
                         </button>
                         <Link
                             to={`/products/${product.slug}`}
                             className="flex flex-[1_1_160px] items-center justify-center rounded-full border-[1.5px] border-ink-900 bg-white px-[26px] py-[17px] text-base font-bold text-ink-900 hover:bg-surface-50"
                         >
-                            Full details
+                            {t('featured.fullDetails')}
                         </Link>
                     </div>
 

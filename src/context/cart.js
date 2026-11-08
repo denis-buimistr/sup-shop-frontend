@@ -1,5 +1,6 @@
 import { createContext, useContext } from 'react';
 import { useToast } from './toast';
+import i18n from '../i18n/config';
 
 // Порог бесплатной доставки по Молдове, MDL
 export const FREE_DELIVERY_FROM = 2000;
@@ -18,9 +19,9 @@ export function useAddToCart() {
     return (product, qty = 1) => {
         addItem(product, qty);
         showToast({
-            title: 'Added to cart',
+            title: i18n.t('toast.addedToCart'),
             body: qty > 1 ? `${qty} × ${product.name}` : product.name,
-            link: { to: '/cart', label: 'Go to cart' },
+            link: { to: '/cart', label: i18n.t('toast.goToCart') },
         });
     };
 }

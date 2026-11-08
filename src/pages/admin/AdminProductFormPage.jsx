@@ -6,6 +6,8 @@ import { FormError } from '../../components/AuthShell';
 import { useToast } from '../../context/toast';
 import { getErrorMessage } from '../../utils/forms';
 import { flattenTree } from '../../utils/categories';
+import { emptyTranslations, loadTranslations, saveTranslations } from '../../utils/translations';
+import TranslationFields from '../../components/admin/TranslationFields';
 
 // Значения enum Product.BoardType на бэкенде; пусто — не доска (весло, гидрокостюм, насос…)
 const BOARD_TYPES = [
@@ -249,6 +251,7 @@ function AdminProductFormPage() {
 
     const [form, setForm] = useState(EMPTY);
     const [images, setImages] = useState([]);
+    const [translations, setTranslations] = useState(emptyTranslations);
     const [brands, setBrands] = useState(null);
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(!isNew);
@@ -260,9 +263,11 @@ function AdminProductFormPage() {
         const brandsRequest = api.get('/brands').then(r => r.data).catch(() => null);
         const categoriesRequest = api.get('/categories').then(r => r.data).catch(() => []);
         const productRequest = isNew ? Promise.resolve(null) : api.get(`/products/${id}`).then(r => r.data);
+        const translationsRequest = isNew ? Promise.resolve(emptyTranslations()) : loadTranslations(`/products/${id}`);
 
-        Promise.all([brandsRequest, categoriesRequest, productRequest])
-            .then(([brandList, categoryList, product]) => {
+        Promise.all([brandsRequest, categoriesRequest, productRequest, translationsRequest])
+            .then(([brandList, categoryList, product, productTranslations]) => {
+                setTranslations(productTranslations);
                 setBrands(brandList);
                 setCategories(categoryList);
                 if (product) {
@@ -306,8 +311,10 @@ function AdminProductFormPage() {
 
         const request = isNew ? api.post('/products', body) : api.put(`/products/${id}`, body);
 
+        // сначала сам товар, потом переводы: новому товару id выдаёт только бэкенд
         request
-            .then(({ data }) => {
+            .then(({ data }) => saveTranslations(`/products/${data.id}`, translations).then(() => data))
+            .then(data => {
                 if (isNew) {
                     showToast({ title: 'Product created', body: 'Now add some photos' });
                     navigate(`/admin/products/${data.id}`, { replace: true });
@@ -394,6 +401,15 @@ function AdminProductFormPage() {
                             </Field>
                         </div>
                     </fieldset>
+
+                    <TranslationFields
+                        idPrefix="p"
+                        value={translations}
+                        onChange={setTranslations}
+                        nameLabel="Name (optional)"
+                        nameHint="Model names like Starboard All Star usually stay in English."
+                        descriptionRows={4}
+                    />
 
                     {error && <FormError message={error} />}
 

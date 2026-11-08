@@ -1,15 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from '../i18n/routing';
+import { useNavigate } from '../i18n/hooks';
 import { Search, X } from 'lucide-react';
 import api from '../api/client';
 import { BoardPlaceholder } from './ProductCard';
 import { formatPrice, getPrimaryImage } from '../utils/format';
+import { Trans, useTranslation } from 'react-i18next';
 
 const MIN_LENGTH = 2;
 const DEBOUNCE_MS = 250;
 
 // Поиск в шапке: подсказки появляются по мере ввода, Enter ведёт на страницу результатов
 function SearchBox() {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const [query, setQuery] = useState('');
     const [result, setResult] = useState(null);
@@ -58,7 +61,7 @@ function SearchBox() {
 
     return (
         <form ref={boxRef} role="search" onSubmit={handleSubmit} className="relative order-last flex w-full min-w-0 lg:order-none lg:w-auto lg:flex-[999_1_380px]">
-            <label htmlFor="site-search" className="sr-only">Search the shop</label>
+            <label htmlFor="site-search" className="sr-only">{t('search.label')}</label>
             <Search size={18} className="pointer-events-none absolute left-[18px] top-1/2 -translate-y-1/2 text-ink-400" />
             <input
                 id="site-search"
@@ -70,7 +73,7 @@ function SearchBox() {
                     setOpen(true);
                 }}
                 onFocus={() => setOpen(true)}
-                placeholder="Search for paddleboards, paddles, accessories…"
+                placeholder={t('search.placeholder')}
                 aria-expanded={showPanel}
                 aria-controls="search-results"
                 className="h-12 w-full rounded-full border border-line bg-surface-50 pl-[46px] pr-11 text-[15px] text-ink-900 outline-none focus:border-brand-600 [&::-webkit-search-cancel-button]:hidden"
@@ -82,7 +85,7 @@ function SearchBox() {
                         setQuery('');
                         setResult(null);
                     }}
-                    aria-label="Clear search"
+                    aria-label={t('search.clear')}
                     className="absolute right-3 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full text-ink-400 hover:bg-surface-100 hover:text-ink-900"
                 >
                     <X size={16} strokeWidth={2} />
@@ -94,11 +97,11 @@ function SearchBox() {
                     id="search-results"
                     className="absolute left-0 right-0 top-[calc(100%+8px)] z-50 overflow-hidden rounded-[18px] border border-line bg-white shadow-[0_18px_36px_-12px_rgba(14,42,51,0.25)]"
                 >
-                    {!current && <p className="px-5 py-4 text-sm text-ink-400">Searching…</p>}
+                    {!current && <p className="px-5 py-4 text-sm text-ink-400">{t('search.searching')}</p>}
 
                     {current && current.content.length === 0 && (
                         <p className="px-5 py-4 text-sm text-ink-600">
-                            Nothing found for <span className="font-semibold text-ink-900">“{term}”</span>. Try a brand or a board type.
+                            <Trans i18nKey="search.nothingFound" values={{ term }} components={{ b: <span className="font-semibold text-ink-900" /> }} />
                         </p>
                     )}
 
@@ -129,7 +132,7 @@ function SearchBox() {
 
                     {current && current.page.totalElements > 0 && (
                         <Link to={`/catalog?q=${encodeURIComponent(term)}`} onClick={() => setOpen(false)} className="block px-5 py-3.5 text-sm font-bold text-brand-600 hover:bg-surface-50">
-                            See all {current.page.totalElements} results for “{term}” →
+                            {t('search.seeAll', { count: current.page.totalElements, term })}
                         </Link>
                     )}
                 </div>
