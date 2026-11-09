@@ -75,8 +75,12 @@ function OrderCard({ order, onBuyAgain }) {
             <div className="px-[22px] py-[18px]">
                 {items.map(item => (
                     <div key={item.id ?? item.productName} className="flex items-center gap-3.5 py-2">
-                        <span className="flex h-[50px] w-[60px] flex-none items-center justify-center rounded-xl bg-surface-100">
-                            <BoardPlaceholder width={44} />
+                        <span className="flex h-[50px] w-[60px] flex-none items-center justify-center overflow-hidden rounded-xl border border-line bg-white">
+                            {item.imageUrl ? (
+                                <img src={item.imageUrl} alt="" className="max-h-full max-w-full object-contain p-1 mix-blend-multiply" />
+                            ) : (
+                                <BoardPlaceholder width={44} />
+                            )}
                         </span>
                         <span className="min-w-0 flex-grow text-[15px] font-semibold">
                             {item.productId ? (
