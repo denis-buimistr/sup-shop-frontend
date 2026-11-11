@@ -1,23 +1,23 @@
-import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { Link, Navigate } from '../i18n/routing';
-import { useNavigate } from '../i18n/hooks';
-import { CircleCheck } from 'lucide-react';
+import {useState} from 'react';
+import {useLocation} from 'react-router-dom';
+import {Link, Navigate} from '../i18n/routing';
+import {useNavigate} from '../i18n/hooks';
+import {CircleCheck} from 'lucide-react';
 import api from '../api/client';
-import AuthShell, { HeaderButton, Field, PasswordInput, FormError, SubmitButton } from '../components/AuthShell';
-import { inputClass, getErrorMessage } from '../utils/forms';
-import { BoardPlaceholder } from '../components/ProductCard';
-import { useAuth } from '../context/auth';
-import { Trans, useTranslation } from 'react-i18next';
+import AuthShell, {HeaderButton, Field, PasswordInput, FormError, SubmitButton} from '../components/AuthShell';
+import {inputClass, getErrorMessage} from '../utils/forms';
+import {BoardPlaceholder} from '../components/ProductCard';
+import {useAuth} from '../context/auth';
+import {Trans, useTranslation} from 'react-i18next';
 
 // тексты в login.perks.<key>
 const PERKS = ['track', 'wishlist', 'faster', 'demo'];
 
 function LoginPage() {
-    const { t } = useTranslation();
+    const {t} = useTranslation();
     const navigate = useNavigate();
     const location = useLocation();
-    const { user, login } = useAuth();
+    const {user, login} = useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
@@ -26,17 +26,17 @@ function LoginPage() {
     // после входа возвращаем туда, откуда отправили на логин
     const redirectTo = location.state?.from ?? '/';
 
-    if (user) return <Navigate to={redirectTo} replace />;
+    if (user) return <Navigate to={redirectTo} replace/>;
 
     function handleSubmit(e) {
         e.preventDefault();
         setError(null);
         setLoading(true);
 
-        api.post('/auth/login', { username, password })
+        api.post('/auth/login', {username, password})
             .then(response => {
                 login(response.data);
-                navigate(redirectTo, { replace: true });
+                navigate(redirectTo, {replace: true});
             })
             .catch(err => {
                 setError(getErrorMessage(err, t('errors.login')));
@@ -56,14 +56,10 @@ function LoginPage() {
                         </h2>
                         {PERKS.map(perk => (
                             <p key={perk} className="mb-4 flex items-start gap-3 text-base leading-[1.55]">
-                                <CircleCheck size={20} strokeWidth={1.8} className="mt-0.5 flex-none text-deep-accent" />
+                                <CircleCheck size={20} strokeWidth={1.8} className="mt-0.5 flex-none text-deep-accent"/>
                                 {t(`login.perks.${perk}`)}
                             </p>
                         ))}
-                        <div className="mt-8 flex flex-col items-center gap-3 rounded-[20px] bg-deep-800 p-6">
-                            <BoardPlaceholder width={220} />
-                            <p className="text-[13px] font-semibold tracking-[0.08em] text-brand-light">[LIFESTYLE PHOTO]</p>
-                        </div>
                     </div>
                 </aside>
             }
@@ -95,10 +91,11 @@ function LoginPage() {
                         />
                     </Field>
 
-                    <FormError message={error} />
+                    <FormError message={error}/>
 
                     <label className="flex cursor-pointer items-center gap-2.5 text-sm text-ink-600">
-                        <input type="checkbox" defaultChecked className="h-[18px] w-[18px] cursor-pointer accent-brand-600" />
+                        <input type="checkbox" defaultChecked
+                               className="h-[18px] w-[18px] cursor-pointer accent-brand-600"/>
                         <span>{t('login.keepSignedIn')}</span>
                     </label>
 
@@ -106,10 +103,15 @@ function LoginPage() {
                 </div>
 
                 <p className="mt-7 text-[15px] text-ink-600">
-                    <Trans i18nKey="login.newHere" components={{ link: <Link to="/register" className="font-bold text-brand-600 hover:text-brand-700" /> }} />
+                    <Trans i18nKey="login.newHere" components={{
+                        link: <Link to="/register" className="font-bold text-brand-600 hover:text-brand-700"/>
+                    }}/>
                 </p>
                 <p className="mt-[18px] text-[13px] leading-[1.6] text-ink-400">
-                    <Trans i18nKey="login.terms" components={{ terms: <Link to="/contacts" className="text-brand-600" />, privacy: <Link to="/contacts" className="text-brand-600" /> }} />
+                    <Trans i18nKey="login.terms" components={{
+                        terms: <Link to="/contacts" className="text-brand-600"/>,
+                        privacy: <Link to="/contacts" className="text-brand-600"/>
+                    }}/>
                 </p>
             </form>
         </AuthShell>
