@@ -10,7 +10,7 @@ export function SectionHead({ eyebrow, title, link, linkLabel }) {
     return (
         <div className="mb-[26px] flex flex-wrap items-end justify-between gap-4">
             <div>
-                <p className="mb-2.5 text-xs font-bold tracking-[0.16em] text-brand-600">{eyebrow}</p>
+                <p className="mb-2.5 text-xs font-bold tracking-[0.16em] text-brand-700">{eyebrow}</p>
                 <h2 className="text-[30px] font-extrabold leading-[1.1] tracking-[-0.025em] text-ink-900 sm:text-[34px]">{title}</h2>
             </div>
             {link && (
