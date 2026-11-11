@@ -60,7 +60,7 @@
 
 body {
   margin: 0;
-  font-family: Inter, system-ui, -apple-system, sans-serif;
+  font-family: 'Inter Variable', system-ui, -apple-system, sans-serif;
   color: var(--color-ink-900);
   background: var(--color-surface);
   -webkit-font-smoothing: antialiased;
