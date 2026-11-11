@@ -16,8 +16,6 @@ import HomePage from './pages/HomePage';
 import WishlistPage from './pages/WishlistPage';
 import {lazy, Suspense} from 'react';
 
-import {lazy, Suspense} from 'react';
-
 // админку грузим только при заходе в /admin, покупателю её код не нужен
 const AdminLayout = lazy(() => import('./components/AdminLayout'));
 const AdminOrdersPage = lazy(() => import('./pages/admin/AdminOrdersPage'));

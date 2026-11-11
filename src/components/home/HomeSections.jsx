@@ -104,7 +104,7 @@ export function FeaturedProduct({ slug }) {
                 </div>
 
                 <div className="min-w-0 flex-[1_1_420px]">
-                    <p className="mb-3 text-xs font-bold uppercase tracking-[0.16em] text-brand-600">{product.brandName}</p>
+                    <p className="mb-3 text-xs font-bold uppercase tracking-[0.16em] text-brand-700">{product.brandName}</p>
                     <h2 className="mb-3.5 text-[32px] font-extrabold leading-[1.08] tracking-[-0.03em] text-ink-900 sm:text-[38px]">{product.name}</h2>
                     {product.description && <p className="mb-6 text-[17px] leading-[1.65] text-ink-600">{product.description}</p>}
 
