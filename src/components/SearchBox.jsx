@@ -63,7 +63,7 @@ function SearchBox() {
         <form ref={boxRef} role="search" onSubmit={handleSubmit} className="relative order-last flex w-full min-w-0 lg:order-none lg:w-auto lg:flex-[999_1_380px]">
             <label htmlFor="site-search" className="sr-only">{t('search.label')}</label>
             <Search size={18} className="pointer-events-none absolute left-[18px] top-1/2 -translate-y-1/2 text-ink-400" />
-            <input
+            <input role="combobox" aria-autocomplete="list"
                 id="site-search"
                 type="search"
                 autoComplete="off"

@@ -75,6 +75,10 @@ function ProductCard({ product }) {
                         <img
                             src={image.imageUrl}
                             alt={product.name}
+                            width={600}
+                            height={600}
+                            loading="lazy"
+                            decoding="async"
                             className="max-h-full max-w-full object-contain mix-blend-multiply transition-transform duration-300 hover:scale-[1.03]"
                         />
                     ) : (
@@ -167,5 +171,7 @@ export function BoardPlaceholder({ width = 170, className = '' }) {
         </svg>
     );
 }
+
+
 
 export default ProductCard;

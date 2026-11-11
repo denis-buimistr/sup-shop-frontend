@@ -42,7 +42,7 @@ function AccountMenu() {
         return (
             <Link to="/login" className="flex items-center gap-2 hover:text-brand-600">
                 <User size={22} strokeWidth={1.8} />
-                <span className="hidden md:inline">{t('header.signIn')}</span>
+                <span className="sr-only md:not-sr-only">{t('header.signIn')}</span>
             </Link>
         );
     }

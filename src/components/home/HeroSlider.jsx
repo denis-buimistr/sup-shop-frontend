@@ -145,7 +145,7 @@ function HeroSlider() {
                 <button type="button" onClick={() => go(1)} aria-label={t('hero.next')} className="flex h-[46px] w-[46px] items-center justify-center rounded-full border-[1.5px] bg-white/75" style={{ borderColor: hasPhoto ? '#ffffff' : slide.outline }}>
                     <ChevronRight size={18} strokeWidth={2.2} />
                 </button>
-                <div className="ml-2 flex gap-2.5">
+                <div className="ml-1 flex">
                     {SLIDES.map((s, n) => (
                         <button
                             key={s.id}
@@ -153,8 +153,10 @@ function HeroSlider() {
                             onClick={() => setIndex(n)}
                             aria-label={t('hero.show', { n: n + 1, name: t(`hero.${s.id}.eyebrow`) })}
                             aria-current={n === index}
-                            className={`h-2 rounded-full transition-all ${n === index ? 'w-[34px]' : 'w-2 opacity-40'} ${hasPhoto ? 'bg-white' : 'bg-ink-900'}`}
-                        />
+                            className="p-2"
+                        >
+                            <span className={`block h-2 rounded-full transition-all ${n === index ? 'w-[34px]' : 'w-2 opacity-40'} ${hasPhoto ? 'bg-white' : 'bg-ink-900'}`} />
+                        </button>
                     ))}
                 </div>
                 <p className="ml-auto text-[13px] font-semibold" style={{ color: hasPhoto ? '#E6EFF2' : slide.bodyInk }}>
