@@ -99,7 +99,7 @@ function RegisterPage() {
 
                 <div className="flex flex-col gap-[18px]">
                     <Field id="r-username" label={t('login.username')}>
-                        <input id="r-username" autoComplete="username" required minLength={3} maxLength={50} value={form.username} onChange={update('username')} className={inputClass} />
+                        <input id="r-username" autoComplete="username" required minLength={3} maxLength={50} pattern="[A-Za-z0-9._\-]+" title={t('register.usernameHint')} value={form.username} onChange={update('username')} className={inputClass} />
                     </Field>
 
                     <Field id="r-fullname" label={t('register.fullName')} hint={t('register.fullNameHint')}>

@@ -6,7 +6,6 @@ import {CircleCheck} from 'lucide-react';
 import api from '../api/client';
 import AuthShell, {HeaderButton, Field, PasswordInput, FormError, SubmitButton} from '../components/AuthShell';
 import {inputClass, getErrorMessage} from '../utils/forms';
-import {BoardPlaceholder} from '../components/ProductCard';
 import {useAuth} from '../context/auth';
 import {Trans, useTranslation} from 'react-i18next';
 
@@ -71,7 +70,7 @@ function LoginPage() {
                 </p>
 
                 <div className="flex flex-col gap-[18px]">
-                    <Field id="l-username" label={t('login.username')}>
+                    <Field id="l-username" label={t('login.identifier')}>
                         <input
                             id="l-username"
                             autoComplete="username"
