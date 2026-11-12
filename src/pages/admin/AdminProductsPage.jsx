@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Plus } from 'lucide-react';
 import api from '../../api/client';
 import { FormError } from '../../components/AuthShell';
+import { BoardPlaceholder } from '../../components/ProductCard';
 import { useToast } from '../../context/toast';
 import { formatPrice, getPrimaryImage } from '../../utils/format';
 import { getErrorMessage } from '../../utils/forms';
