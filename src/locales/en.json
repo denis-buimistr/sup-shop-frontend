@@ -553,6 +553,7 @@
     "title": "Sign in",
     "subtitle": "Your orders, wishlist and saved addresses, all in one place.",
     "username": "Username",
+    "identifier": "Email or username",
     "password": "Password",
     "keepSignedIn": "Keep me signed in",
     "submitting": "Signing in…",
@@ -562,6 +563,7 @@
     "createAccount": "Create account"
   },
   "register": {
+    "usernameHint": "Latin letters, digits, dot, dash and underscore",
     "perks": {
       "warranty": {
         "title": "Warranty without paperwork",

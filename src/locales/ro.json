@@ -553,6 +553,7 @@
     "title": "Autentificare",
     "subtitle": "Comenzile, favoritele și adresele salvate, toate într-un singur loc.",
     "username": "Nume de utilizator",
+    "identifier": "Email sau nume de utilizator",
     "password": "Parolă",
     "keepSignedIn": "Rămâneți autentificat",
     "submitting": "Se autentifică…",
@@ -562,6 +563,7 @@
     "createAccount": "Creați un cont"
   },
   "register": {
+    "usernameHint": "Litere latine, cifre, punct, cratimă și liniuță de jos",
     "perks": {
       "warranty": {
         "title": "Garanție fără hârtii",
