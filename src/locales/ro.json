@@ -560,7 +560,7 @@
     "keepSignedIn": "Rămâneți autentificat",
     "submitting": "Se autentifică…",
     "submit": "Intră în cont",
-    "newHere": "Sunteți nou? <link>Creați un cont</link> — durează un minut.",
+    "newHere": "Sunteți nou? <a>Creați un cont</a> — durează un minut.",
     "terms": "Autentificându-vă, acceptați <terms>condițiile de vânzare</terms> și <privacy>politica de confidențialitate</privacy>.",
     "createAccount": "Creați un cont",
     "forgot": "Ai uitat parola?"
@@ -610,7 +610,7 @@
     "accept": "Accept <terms>condițiile de vânzare</terms> și <privacy>politica de confidențialitate</privacy>.",
     "submitting": "Se creează…",
     "submit": "Creează contul",
-    "haveAccount": "Aveți deja un cont? <link>Autentificați-vă</link>"
+    "haveAccount": "Aveți deja un cont? <a>Autentificați-vă</a>"
   },
   "profile": {
     "order": "Comanda",
@@ -721,9 +721,9 @@
       "topic": "Despre ce este vorba?",
       "message": "Mesaj",
       "messagePlaceholder": "Am 82 kg și vâslesc mai ales pe Nistru…",
-      "consent": "Sunt de acord cu prelucrarea datelor personale conform <link>politicii de confidențialitate</link>.",
+      "consent": "Sunt de acord cu prelucrarea datelor personale conform <a>politicii de confidențialitate</a>.",
       "send": "Trimite mesajul",
-      "sent": "Aplicația de email ar trebui să se deschidă cu mesajul gata. Dacă nu s-a deschis, scrieți la <link>{{email}}</link>."
+      "sent": "Aplicația de email ar trebui să se deschidă cu mesajul gata. Dacă nu s-a deschis, scrieți la <a>{{email}}</a>."
     },
     "faqTitle": "Răspunsuri rapide",
     "legalTitle": "Date despre companie"
@@ -735,8 +735,10 @@
     "submit": "Trimite linkul",
     "submitting": "Se trimite…",
     "sentTitle": "Verifică emailul",
-    "sentText": "Dacă există un cont cu {{email}}, ți-am trimis un link pentru resetarea parolei. Linkul funcționează 30 de minute. Verifică și dosarul spam.",
-    "backToSignIn": "Înapoi la autentificare"
+    "sentText": "Dacă există un cont cu <b>{{email}}</b>, ți-am trimis un link pentru resetarea parolei. Funcționează 30 de minute.",
+    "backToSignIn": "Înapoi la autentificare",
+    "notReceived": "Nu a venit în câteva minute? Verifică dosarul spam și adresa sau <a>creează un cont</a>.",
+    "tryAnother": "Încearcă alt email"
   },
   "reset": {
     "title": "Setează o parolă nouă",

@@ -108,7 +108,7 @@ function LoginPage() {
 
                 <p className="mt-7 text-[15px] text-ink-600">
                     <Trans i18nKey="login.newHere" components={{
-                        link: <Link to="/register" className="font-bold text-brand-600 hover:text-brand-700"/>
+                        a: <Link to="/register" className="font-bold text-brand-600 hover:text-brand-700"/>
                     }}/>
                 </p>
                 <p className="mt-[18px] text-[13px] leading-[1.6] text-ink-400">

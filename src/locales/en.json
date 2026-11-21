@@ -560,7 +560,7 @@
     "keepSignedIn": "Keep me signed in",
     "submitting": "Signing in…",
     "submit": "Sign in",
-    "newHere": "New here? <link>Create an account</link> — it takes a minute.",
+    "newHere": "New here? <a>Create an account</a> — it takes a minute.",
     "terms": "By signing in you accept our <terms>terms of sale</terms> and <privacy>privacy policy</privacy>.",
     "createAccount": "Create account",
     "forgot": "Forgot password?"
@@ -610,7 +610,7 @@
     "accept": "I accept the <terms>terms of sale</terms> and the <privacy>privacy policy</privacy>.",
     "submitting": "Creating…",
     "submit": "Create my account",
-    "haveAccount": "Already have an account? <link>Sign in</link>"
+    "haveAccount": "Already have an account? <a>Sign in</a>"
   },
   "profile": {
     "order": "Order",
@@ -721,9 +721,9 @@
       "topic": "What is it about?",
       "message": "Message",
       "messagePlaceholder": "I weigh 82 kg and paddle mostly on the Nistru…",
-      "consent": "I agree to the processing of my personal data under the <link>privacy policy</link>.",
+      "consent": "I agree to the processing of my personal data under the <a>privacy policy</a>.",
       "send": "Send message",
-      "sent": "Your email app should open with the message ready. If it didn't, write to <link>{{email}}</link>."
+      "sent": "Your email app should open with the message ready. If it didn't, write to <a>{{email}}</a>."
     },
     "faqTitle": "Quick answers",
     "legalTitle": "Company details"
@@ -735,8 +735,10 @@
     "submit": "Send link",
     "submitting": "Sending…",
     "sentTitle": "Check your email",
-    "sentText": "If an account with {{email}} exists, we have sent a link to reset the password. The link works for 30 minutes. Check the spam folder too.",
-    "backToSignIn": "Back to sign in"
+    "sentText": "If an account with <b>{{email}}</b> exists, we've sent a link to reset the password. It works for 30 minutes.",
+    "backToSignIn": "Back to sign in",
+    "notReceived": "Didn't get it in a few minutes? Check the spam folder and the address, or <a>create an account</a>.",
+    "tryAnother": "Try another email"
   },
   "reset": {
     "title": "Set a new password",
