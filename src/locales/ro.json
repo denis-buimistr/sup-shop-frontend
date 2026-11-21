@@ -464,7 +464,9 @@
     "saveProfile": "Nu am putut salva modificările.",
     "changePassword": "Nu am putut schimba parola.",
     "loadOrders": "Nu am putut încărca comenzile.",
-    "buyAgain": "Nu am putut adăuga produsele în coș."
+    "buyAgain": "Nu am putut adăuga produsele în coș.",
+    "forgotPassword": "Nu am putut trimite emailul. Încearcă din nou.",
+    "resetPassword": "Nu am putut schimba parola. Încearcă din nou."
   },
   "checkout": {
     "shipping": {
@@ -560,7 +562,8 @@
     "submit": "Intră în cont",
     "newHere": "Sunteți nou? <link>Creați un cont</link> — durează un minut.",
     "terms": "Autentificându-vă, acceptați <terms>condițiile de vânzare</terms> și <privacy>politica de confidențialitate</privacy>.",
-    "createAccount": "Creați un cont"
+    "createAccount": "Creați un cont",
+    "forgot": "Ai uitat parola?"
   },
   "register": {
     "usernameHint": "Litere latine, cifre, punct, cratimă și liniuță de jos",
@@ -724,5 +727,28 @@
     },
     "faqTitle": "Răspunsuri rapide",
     "legalTitle": "Date despre companie"
+  },
+  "forgot": {
+    "title": "Ai uitat parola?",
+    "subtitle": "Introdu emailul contului și îți trimitem un link pentru a seta o parolă nouă.",
+    "email": "Email",
+    "submit": "Trimite linkul",
+    "submitting": "Se trimite…",
+    "sentTitle": "Verifică emailul",
+    "sentText": "Dacă există un cont cu {{email}}, ți-am trimis un link pentru resetarea parolei. Linkul funcționează 30 de minute. Verifică și dosarul spam.",
+    "backToSignIn": "Înapoi la autentificare"
+  },
+  "reset": {
+    "title": "Setează o parolă nouă",
+    "subtitle": "Alege o parolă nouă pentru contul tău.",
+    "password": "Parola nouă",
+    "passwordHint": "Cel puțin 8 caractere",
+    "submit": "Salvează parola",
+    "submitting": "Se salvează…",
+    "doneTitle": "Parola a fost schimbată",
+    "doneText": "Acum te poți autentifica cu parola nouă.",
+    "goToSignIn": "Autentificare",
+    "noToken": "Această pagină se deschide din linkul din email. Linkul pare să fie stricat sau incomplet.",
+    "requestNew": "Cere un link nou"
   }
 }

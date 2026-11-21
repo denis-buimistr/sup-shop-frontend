@@ -464,7 +464,9 @@
     "saveProfile": "Could not save the changes.",
     "changePassword": "Could not change the password.",
     "loadOrders": "Could not load your orders.",
-    "buyAgain": "Could not add the items to the cart."
+    "buyAgain": "Could not add the items to the cart.",
+    "forgotPassword": "Could not send the email. Please try again.",
+    "resetPassword": "Could not change the password. Please try again."
   },
   "checkout": {
     "shipping": {
@@ -560,7 +562,8 @@
     "submit": "Sign in",
     "newHere": "New here? <link>Create an account</link> — it takes a minute.",
     "terms": "By signing in you accept our <terms>terms of sale</terms> and <privacy>privacy policy</privacy>.",
-    "createAccount": "Create account"
+    "createAccount": "Create account",
+    "forgot": "Forgot password?"
   },
   "register": {
     "usernameHint": "Latin letters, digits, dot, dash and underscore",
@@ -724,5 +727,28 @@
     },
     "faqTitle": "Quick answers",
     "legalTitle": "Company details"
+  },
+  "forgot": {
+    "title": "Forgot your password?",
+    "subtitle": "Enter the email of your account and we will send you a link to set a new password.",
+    "email": "Email",
+    "submit": "Send link",
+    "submitting": "Sending…",
+    "sentTitle": "Check your email",
+    "sentText": "If an account with {{email}} exists, we have sent a link to reset the password. The link works for 30 minutes. Check the spam folder too.",
+    "backToSignIn": "Back to sign in"
+  },
+  "reset": {
+    "title": "Set a new password",
+    "subtitle": "Choose a new password for your account.",
+    "password": "New password",
+    "passwordHint": "At least 8 characters",
+    "submit": "Save new password",
+    "submitting": "Saving…",
+    "doneTitle": "Password changed",
+    "doneText": "You can now sign in with your new password.",
+    "goToSignIn": "Sign in",
+    "noToken": "This page opens from the link in the email. The link seems to be broken or incomplete.",
+    "requestNew": "Request a new link"
   }
 }

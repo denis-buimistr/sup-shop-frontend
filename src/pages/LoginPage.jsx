@@ -92,11 +92,16 @@ function LoginPage() {
 
                     <FormError message={error}/>
 
-                    <label className="flex cursor-pointer items-center gap-2.5 text-sm text-ink-600">
-                        <input type="checkbox" defaultChecked
-                               className="h-[18px] w-[18px] cursor-pointer accent-brand-600"/>
-                        <span>{t('login.keepSignedIn')}</span>
-                    </label>
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                        <label className="flex cursor-pointer items-center gap-2.5 text-sm text-ink-600">
+                            <input type="checkbox" defaultChecked
+                                   className="h-[18px] w-[18px] cursor-pointer accent-brand-600"/>
+                            <span>{t('login.keepSignedIn')}</span>
+                        </label>
+                        <Link to="/forgot-password" className="text-sm font-semibold text-brand-600 hover:text-brand-700">
+                            {t('login.forgot')}
+                        </Link>
+                    </div>
 
                     <SubmitButton loading={loading}>{loading ? t('login.submitting') : t('login.submit')}</SubmitButton>
                 </div>
