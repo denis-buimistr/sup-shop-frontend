@@ -146,7 +146,7 @@ function RegisterPage() {
                 </div>
 
                 <p className="mt-[26px] text-[15px] text-ink-600">
-                    <Trans i18nKey="register.haveAccount" components={{ link: <Link to="/login" className="font-bold text-brand-600 hover:text-brand-700" /> }} />
+                    <Trans i18nKey="register.haveAccount" components={{ a: <Link to="/login" className="font-bold text-brand-600 hover:text-brand-700" /> }} />
                 </p>
             </form>
         </AuthShell>

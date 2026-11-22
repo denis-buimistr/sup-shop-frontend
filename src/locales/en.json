@@ -464,7 +464,9 @@
     "saveProfile": "Could not save the changes.",
     "changePassword": "Could not change the password.",
     "loadOrders": "Could not load your orders.",
-    "buyAgain": "Could not add the items to the cart."
+    "buyAgain": "Could not add the items to the cart.",
+    "forgotPassword": "Could not send the email. Please try again.",
+    "resetPassword": "Could not change the password. Please try again."
   },
   "checkout": {
     "shipping": {
@@ -558,9 +560,10 @@
     "keepSignedIn": "Keep me signed in",
     "submitting": "Signing in…",
     "submit": "Sign in",
-    "newHere": "New here? <link>Create an account</link> — it takes a minute.",
+    "newHere": "New here? <a>Create an account</a> — it takes a minute.",
     "terms": "By signing in you accept our <terms>terms of sale</terms> and <privacy>privacy policy</privacy>.",
-    "createAccount": "Create account"
+    "createAccount": "Create account",
+    "forgot": "Forgot password?"
   },
   "register": {
     "usernameHint": "Latin letters, digits, dot, dash and underscore",
@@ -607,7 +610,7 @@
     "accept": "I accept the <terms>terms of sale</terms> and the <privacy>privacy policy</privacy>.",
     "submitting": "Creating…",
     "submit": "Create my account",
-    "haveAccount": "Already have an account? <link>Sign in</link>"
+    "haveAccount": "Already have an account? <a>Sign in</a>"
   },
   "profile": {
     "order": "Order",
@@ -718,11 +721,36 @@
       "topic": "What is it about?",
       "message": "Message",
       "messagePlaceholder": "I weigh 82 kg and paddle mostly on the Nistru…",
-      "consent": "I agree to the processing of my personal data under the <link>privacy policy</link>.",
+      "consent": "I agree to the processing of my personal data under the <a>privacy policy</a>.",
       "send": "Send message",
-      "sent": "Your email app should open with the message ready. If it didn't, write to <link>{{email}}</link>."
+      "sent": "Your email app should open with the message ready. If it didn't, write to <a>{{email}}</a>."
     },
     "faqTitle": "Quick answers",
     "legalTitle": "Company details"
+  },
+  "forgot": {
+    "title": "Forgot your password?",
+    "subtitle": "Enter the email of your account and we will send you a link to set a new password.",
+    "email": "Email",
+    "submit": "Send link",
+    "submitting": "Sending…",
+    "sentTitle": "Check your email",
+    "sentText": "If an account with <b>{{email}}</b> exists, we've sent a link to reset the password. It works for 30 minutes.",
+    "backToSignIn": "Back to sign in",
+    "notReceived": "Didn't get it in a few minutes? Check the spam folder and the address, or <a>create an account</a>.",
+    "tryAnother": "Try another email"
+  },
+  "reset": {
+    "title": "Set a new password",
+    "subtitle": "Choose a new password for your account.",
+    "password": "New password",
+    "passwordHint": "At least 8 characters",
+    "submit": "Save new password",
+    "submitting": "Saving…",
+    "doneTitle": "Password changed",
+    "doneText": "You can now sign in with your new password.",
+    "goToSignIn": "Sign in",
+    "noToken": "This page opens from the link in the email. The link seems to be broken or incomplete.",
+    "requestNew": "Request a new link"
   }
 }

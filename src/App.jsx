@@ -12,6 +12,8 @@ import ProfilePage from './pages/ProfilePage';
 import ContactsPage from './pages/ContactsPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 import HomePage from './pages/HomePage';
 import WishlistPage from './pages/WishlistPage';
 import {lazy, Suspense} from 'react';
@@ -48,6 +50,8 @@ function App() {
                         <Route path="profile" element={<ProfilePage/>}/>
                         <Route path="login" element={<LoginPage/>}/>
                         <Route path="register" element={<RegisterPage/>}/>
+                        <Route path="forgot-password" element={<ForgotPasswordPage/>}/>
+                        <Route path="reset-password" element={<ResetPasswordPage/>}/>
                     </Route>
 
                     {/* админка внутренняя, её не перевожу. AdminRoute проверяет роль, AdminLayout рисует шапку и меню */}

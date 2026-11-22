@@ -195,7 +195,7 @@ function ContactsPage() {
 
                             <label className="flex cursor-pointer items-start gap-[11px] text-sm leading-[1.55] text-ink-600">
                                 <input type="checkbox" required className="mt-0.5 h-[18px] w-[18px] flex-none cursor-pointer accent-brand-600" />
-                                <span><Trans i18nKey="contacts.form.consent" components={{ link: <Link to="/contacts" className="text-brand-600" /> }} /></span>
+                                <span><Trans i18nKey="contacts.form.consent" components={{ a: <Link to="/contacts" className="text-brand-600" /> }} /></span>
                             </label>
 
                             <button type="submit" className="h-[52px] rounded-full bg-brand-600 text-base font-bold text-white hover:bg-brand-700">
@@ -207,7 +207,7 @@ function ContactsPage() {
                                     <Trans
                                         i18nKey="contacts.form.sent"
                                         values={{ email: EMAILS[0].address }}
-                                        components={{ link: <a href={`mailto:${EMAILS[0].address}`} className="font-semibold text-brand-600" /> }}
+                                        components={{ a: <a href={`mailto:${EMAILS[0].address}`} className="font-semibold text-brand-600" /> }}
                                     />
                                 </p>
                             )}
